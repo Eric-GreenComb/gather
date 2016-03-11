@@ -1,10 +1,9 @@
 package user
 
 import (
-	"github.com/leanote/leanote/app/db"
-	"github.com/leanote/leanote/app/info"
-	. "github.com/leanote/leanote/app/lea"
-	"gopkg.in/mgo.v2/bson"
+	"fmt"
+
+	"github.com/banerwai/gather/service"
 )
 
 // 找回密码
@@ -16,47 +15,30 @@ type PasswordService struct {
 
 // 1. 找回密码, 通过email找用户,
 // 用户存在, 生成code
-func (self *PasswordService) FindPwd(email string) (ok bool, msg string) {
-	ok = false
-	userId := userService.GetUserId(email)
-	if userId == "" {
-		msg = "用户不存在"
-		return
-	}
+func (self *PasswordService) FindPwd(email string) bool {
 
-	token := tokenService.NewToken(userId, email, info.TokenPwd)
-	if token == "" {
-		return false, "db error"
-	}
+	fmt.Println(self.getRender())
+	fmt.Println(self.getToken(email))
 
-	// 发送邮件
-	ok, msg = emailService.FindPwdSendEmail(token, email)
-	return
+	return true
 }
 
-// 重置密码时
-// 修改密码
-// 先验证
-func (self *PasswordService) UpdatePwd(token, pwd string) (bool, string) {
-	var tokenInfo info.Token
-	var ok bool
-	var msg string
+func (self *PasswordService) getRender() string {
+	var _render service.RenderService
+	_render_service, _ := _render.DefaultService()
+	defer _render.CloseService()
 
-	// 先验证
-	if ok, msg, tokenInfo = tokenService.VerifyToken(token, info.TokenPwd); !ok {
-		return ok, msg
-	}
+	_r := _render_service.RenderHello("hello", "eric")
 
-	passwd := GenPwd(pwd)
-	if passwd == "" {
-		return false, "GenerateHash error"
-	}
+	return _r
+}
 
-	// 修改密码之
-	ok = db.UpdateByQField(db.Users, bson.M{"_id": tokenInfo.UserId}, "Pwd", passwd)
+func (self *PasswordService) getToken(email string) int64 {
+	var _token service.TokenService
+	_token_service, _ := _token.DefaultService()
+	defer _token.CloseService()
 
-	// 删除token
-	tokenService.DeleteToken(tokenInfo.UserId.Hex(), info.TokenPwd)
+	_verify := _token_service.VerifyToken(email, 1)
 
-	return ok, ""
+	return _verify
 }

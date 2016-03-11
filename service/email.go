@@ -3,20 +3,20 @@ package service
 import (
 	"github.com/apache/thrift/lib/go/thrift"
 
-	thriftclient "github.com/banerwai/micros/render/client/thrift"
-	thriftservice "github.com/banerwai/micros/render/service"
-	thriftrender "github.com/banerwai/micros/render/thrift/gen-go/render"
+	thriftclient "github.com/banerwai/micros/email/client/thrift"
+	thriftservice "github.com/banerwai/micros/email/service"
+	thriftemail "github.com/banerwai/micros/email/thrift/gen-go/email"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	"github.com/banerwai/micros/common/etcd"
 )
 
-type RenderService struct {
+type EmailService struct {
 	trans thrift.TTransport
 }
 
-func (self *RenderService) DefaultService() (thriftservice.RenderService, error) {
-	_addr, _err := etcd.GetValue("/banerwai/micros/render/addr")
+func (self *EmailService) DefaultService() (thriftservice.EmailService, error) {
+	_addr, _err := etcd.GetValue("/banerwai/micros/email/addr")
 
 	if _err != nil {
 		return nil, _err
@@ -25,7 +25,7 @@ func (self *RenderService) DefaultService() (thriftservice.RenderService, error)
 	return self.OpenService(_addr)
 }
 
-func (self *RenderService) OpenService(addr string) (thriftservice.RenderService, error) {
+func (self *EmailService) OpenService(addr string) (thriftservice.EmailService, error) {
 
 	transportSocket, err := thrift.NewTSocket(addr)
 	if err != nil {
@@ -38,15 +38,15 @@ func (self *RenderService) OpenService(addr string) (thriftservice.RenderService
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftrender.NewRenderServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftemail.NewEmailServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
-	var svc thriftservice.RenderService
+	var svc thriftservice.EmailService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
 
 	return svc, err
 }
 
-func (self *RenderService) CloseService() {
+func (self *EmailService) CloseService() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}

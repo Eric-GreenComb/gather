@@ -1,8 +1,6 @@
 package service
 
 import (
-	"os"
-
 	"github.com/apache/thrift/lib/go/thrift"
 
 	thriftclient "github.com/banerwai/micros/token/client/thrift"
@@ -10,31 +8,42 @@ import (
 	thrifttoken "github.com/banerwai/micros/token/thrift/gen-go/token"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
+	"github.com/banerwai/micros/common/etcd"
 )
 
 type TokenService struct {
 	trans thrift.TTransport
 }
 
-func (self *TokenService) OpenService(addr string) thriftservice.TokenService {
+func (self *TokenService) DefaultService() (thriftservice.TokenService, error) {
+	_addr, _err := etcd.GetValue("/banerwai/micros/token/addr")
+
+	if _err != nil {
+		return nil, _err
+	}
+
+	return self.OpenService(_addr)
+}
+
+func (self *TokenService) OpenService(addr string) (thriftservice.TokenService, error) {
 
 	transportSocket, err := thrift.NewTSocket(addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
-		os.Exit(1)
+		return nil, err
 	}
 	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
 	if err := self.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
-		os.Exit(1)
+		return nil, err
 	}
 	cli := thrifttoken.NewTokenServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.TokenService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
 
-	return svc
+	return svc, err
 }
 
 func (self *TokenService) CloseService() {
