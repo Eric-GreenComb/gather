@@ -1,53 +1,47 @@
 package service
 
 import (
-	"github.com/apache/thrift/lib/go/thrift"
+	"encoding/json"
+	gatherbean "github.com/banerwai/gather/bean"
 
-	thriftclient "github.com/banerwai/micros/email/client/thrift"
-	thriftservice "github.com/banerwai/micros/email/service"
-	thriftemail "github.com/banerwai/micros/email/thrift/gen-go/email"
+	gatherredis "github.com/banerwai/gather/common/redis"
 
-	gatherthrift "github.com/banerwai/gather/common/thrift"
-	"github.com/banerwai/micros/common/etcd"
+	"github.com/banerwai/gather/common/gearman"
+	gearmanclient "github.com/mikespook/gearman-go/client"
 )
 
 type EmailService struct {
-	trans thrift.TTransport
 }
 
-func (self *EmailService) DefaultService() (thriftservice.EmailService, error) {
-	_addr, _err := etcd.GetValue("/banerwai/micros/email/addr")
-
-	if _err != nil {
-		return nil, _err
-	}
-
-	return self.OpenService(_addr)
-}
-
-func (self *EmailService) OpenService(addr string) (thriftservice.EmailService, error) {
-
-	transportSocket, err := thrift.NewTSocket(addr)
+func (self *EmailService) LPush2Redis(key string, email gatherbean.Email) error {
+	b, err := json.Marshal(email)
 	if err != nil {
-		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
-		return nil, err
+		return err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
-	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
-		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
-		return nil, err
+
+	conn := gatherredis.RedisPool.Get()
+	defer conn.Close()
+
+	_, err = conn.Do("LPUSH", key, string(b))
+
+	if err != nil {
+		return err
 	}
-	cli := thriftemail.NewEmailServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
-	var svc thriftservice.EmailService
-	svc = thriftclient.New(cli, gatherthrift.Logger)
-
-	return svc, err
+	return nil
 }
 
-func (self *EmailService) CloseService() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+func (self *EmailService) Send2Gearman(key string) error {
+	c, err := gearmanclient.New(gearmanclient.Network, gearman.GearmanAddr)
+	if err != nil {
+		return err
 	}
+	defer c.Close()
+
+	_, err = c.DoBg("SendEmail", []byte(key), gearmanclient.JobNormal)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

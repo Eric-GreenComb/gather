@@ -3,17 +3,14 @@ package service
 import (
 	"testing"
 
-	thriftemailbean "github.com/banerwai/micros/email/thrift/gen-go/email"
+	"github.com/banerwai/gather/bean"
 )
 
-// need start micro render service localhost:6003
-func TestEmailDefaultService(t *testing.T) {
+func TestLPush2Redis(t *testing.T) {
 
 	var _email EmailService
-	__email_service, _ := _email.DefaultService()
-	defer _email.CloseService()
 
-	_email_bean := thriftemailbean.Email{}
+	_email_bean := bean.Email{}
 	// change email
 	_email_bean.Host = "smtp.126.com:25"
 	_email_bean.User = "xxx@126.com"
@@ -23,9 +20,20 @@ func TestEmailDefaultService(t *testing.T) {
 	_email_bean.Body = "This is a test email"
 	_email_bean.Mailtype = "html"
 
-	v := __email_service.SendEmail(&_email_bean)
+	_err := _email.LPush2Redis("banerwai:email:activeuser", _email_bean)
 
-	if v != true {
-		t.Errorf("TestCategoryDefaultService error")
+	if _err != nil {
+		t.Errorf("LPush2Redis error")
+	}
+}
+
+func TestSend2Gearman(t *testing.T) {
+
+	var _email EmailService
+
+	_err := _email.Send2Gearman("banerwai:email:activeuser")
+
+	if _err != nil {
+		t.Errorf("LPush2Redis error")
 	}
 }
