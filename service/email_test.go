@@ -6,7 +6,7 @@ import (
 	"github.com/banerwai/gather/bean"
 )
 
-func TestLPush2Redis(t *testing.T) {
+func TestEmailLPush2Redis(t *testing.T) {
 
 	var _email EmailService
 
@@ -27,7 +27,7 @@ func TestLPush2Redis(t *testing.T) {
 	}
 }
 
-func TestSend2Gearman(t *testing.T) {
+func TestEmailSend2Gearman(t *testing.T) {
 
 	var _email EmailService
 
