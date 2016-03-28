@@ -37,5 +37,15 @@ const (
 const (
 	ExperienceLevel_ENTRY LEVEL = iota // 0
 	ExperienceLevel_INTERMEDIATE
-	ExperienceLevel_EXPERT = iota // 0
+	ExperienceLevel_EXPERT
+)
+
+// Hours Rate
+const (
+	HoursRate_Lessthan50Yuan = iota // 0
+	HoursRate_50_100Yuan
+	HoursRate_100_150Yuan
+	HoursRate_150_200Yua
+	HoursRate_200_300Yua
+	HoursRate_Morethan300Yua
 )
