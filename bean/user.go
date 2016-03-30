@@ -6,12 +6,12 @@ import (
 )
 
 type User struct {
-	Id           bson.ObjectId `bson:"_id,omitempty"`           // 必须要设置bson:"_id" 不然mgo不会认为是主键
-	Email        string        `Email json:"email"`             // 全是小写
-	Verified     bool          `Verified json:"verified"`       // Email是否已验证过?
-	Username     string        `Username json:"username"`       // 不区分大小写, 全是小写
-	UsernameRaw  string        `UsernameRaw json:"usernameraw"` // 可能有大小写
-	Pwd          string        `bson:"Pwd" json:"-"`
-	CreatedTime  time.Time     `CreatedTime json:"createdtime"`
-	LastActivity time.Time     `LastActivity json:"LastActivity"`
+	Id           bson.ObjectId `bson:"_id,omitempty"`                  // 必须要设置bson:"_id" 不然mgo不会认为是主键
+	Email        string        `bson:"email" json:"email"`             // 全是小写
+	Verified     bool          `bson:"verified" json:"verified"`       // Email是否已验证过?
+	Username     string        `bson:"username" json:"username"`       // 不区分大小写, 全是小写
+	UsernameRaw  string        `bson:"usernameraw" json:"usernameraw"` // 可能有大小写
+	Pwd          string        `bson:"pwd" json:"-"`
+	CreatedTime  time.Time     `bson:"createdtime" json:"createdtime"`
+	LastActivity time.Time     `bson:"lastactivity" json:"lastactivity"`
 }

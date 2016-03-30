@@ -33,7 +33,7 @@ const (
 	Visibility_Private
 )
 
-// Experience Level
+// Skill Experience Level
 const (
 	ExperienceLevel_ENTRY LEVEL = iota // 0
 	ExperienceLevel_INTERMEDIATE
@@ -48,4 +48,17 @@ const (
 	HoursRate_150_200Yua
 	HoursRate_200_300Yua
 	HoursRate_Morethan300Yua
+)
+
+// Hours Billed
+const (
+	HoursBilled_Atleast1Hour = iota // 0
+	HoursBilled_Atleast100Hour
+	HoursBilled_Morethan1000Hour
+)
+
+// Job Success
+const (
+	JobSuccess_80 = itoa // 0
+	JobSuccess_90
 )

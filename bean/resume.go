@@ -5,13 +5,21 @@ import (
 )
 
 type Resume struct {
-	Id                  bson.ObjectId       `bson:"_id,omitempty" json:"_id"`
-	UserID              bson.ObjectId       `bson:"user_id" json:"user_id"`
-	AuthEmail           string              `bson:"auth_email" json:"auth_email"`
+	Id        bson.ObjectId `bson:"_id,omitempty" json:"_id"`
+	UserID    bson.ObjectId `bson:"user_id" json:"user_id"`
+	AuthEmail string        `bson:"auth_email" json:"auth_email"`
+	Phone     string        `bson:"phone" json:"phone"`
+
+	SkillExperiences    []SkillExperience   `bson:"experience_level" json:"experience_level"`
 	Portfolioes         []Portfolio         `bson:"portfolioes" json:"portfolioes"`
 	EmploymentHistories []EmploymentHistory `bson:"employment_histories" json:"employment_histories"`
 	Educations          []Education         `bson:"educations" json:"educations"`
 	OtherExperiences    []OtherExperience   `bson:"other_experiences" json:"other_experiences"`
+}
+
+type SkillExperience struct {
+	SkillTitle string `bson:"skill_title" json:"skill_title"`
+	SkillLevel int    `bson:"skill_level" json:"skill_level"` // /gather/global/const.go : Skill Experience Level
 }
 
 type Portfolio struct {
