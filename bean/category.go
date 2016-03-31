@@ -9,6 +9,7 @@ import ()
 //  - Subcategories
 type Category struct {
 	ID            string        `json:"id"`
+	Serialnumber  int32         `json:"serialnumber"`
 	Name          string        `json:"name"`
 	Desc          string        `json:"desc"`
 	Subcategories []SubCategory `json:"subcategories"`
@@ -19,7 +20,8 @@ type Category struct {
 //  - Name
 //  - Desc
 type SubCategory struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Desc string `json:"desc"`
+	ID           string `json:"id"`
+	Serialnumber int32  `json:"serialnumber"`
+	Name         string `json:"name"`
+	Desc         string `json:"desc"`
 }

@@ -2,21 +2,22 @@ package bean
 
 import (
 	"labix.org/v2/mgo/bson"
+	"time"
 )
 
 type Profile struct {
 	Id     bson.ObjectId `bson:"_id,omitempty" json:"_id"`
 	UserID bson.ObjectId `bson:"user_id" json:"user_id"`
 
-	// select key
-	SubCategory    string `bson:"subcategory_id" json:"subcategory_id"`
-	HoursBilled    int    `bson:"hours_billed" json:"hours_billed"`       // /gather/global/const.go : Hours Billed
-	AvailableHours int    `bson:"available_hours" json:"available_hours"` // /gather/global/const.go : Available Hours
-	JobSuccess     int    `bson:"job_success" json:"job_success"`         // /gather/global/const.go : Job Success
-	LastActivity   int    `bson:"last_activity" json:"last_activity"`     // /gather/global/const.go : Last Activity
-	FreelancerType int    `bson:"freelancer_type" json:"freelancer_type"` // /gather/global/const.go : Freelancer Type
-	HourlyRate     int    `bson:"hourly_rate" json:"hourly_rate"`         // /gather/global/const.go : Hours Rate
-	LocationCity   string `bson:"location_city" json:"location_city"`
+	// select key     -1 is all
+	Serialnumber   int `bson:"serial_number" json:"serial_number"`     // /gather/bean/category.go Category/SubCategory Serialnumber
+	HoursBilled    int `bson:"hours_billed" json:"hours_billed"`       // /gather/global/business_const.go : Hours Billed
+	AvailableHours int `bson:"available_hours" json:"available_hours"` // /gather/global/business_const.go : Available Hours
+	JobSuccess     int `bson:"job_success" json:"job_success"`         // /gather/global/business_const.go : Job Success
+	LastActivity   int `bson:"last_activity" json:"last_activity"`     // /gather/global/business_const.go : Last Activity
+	FreelancerType int `bson:"freelancer_type" json:"freelancer_type"` // /gather/global/business_const.go : Freelancer Type
+	HourlyRate     int `bson:"hourly_rate" json:"hourly_rate"`         // /gather/global/business_const.go : Hours Rate
+	RegionID       int `bson:"region_id" json:"region_id"`             // /gather/global/base_const.go : Region ID
 
 	// show
 	Name              string         `bson:"freelancer_name" json:"freelancer_name"`
