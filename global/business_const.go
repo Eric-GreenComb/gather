@@ -35,7 +35,7 @@ const (
 
 // Skill Experience Level
 const (
-	ExperienceLevel_ENTRY LEVEL = iota // 0
+	ExperienceLevel_ENTRY = iota // 0
 	ExperienceLevel_INTERMEDIATE
 	ExperienceLevel_EXPERT
 )
@@ -59,6 +59,6 @@ const (
 
 // Job Success
 const (
-	JobSuccess_80 = itoa // 0
+	JobSuccess_80 = iota // 0
 	JobSuccess_90
 )
