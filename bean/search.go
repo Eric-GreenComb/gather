@@ -1,9 +1,6 @@
 package bean
 
-import (
-	"labix.org/v2/mgo/bson"
-	"time"
-)
+import ()
 
 type ProfileSearchCondition struct {
 	// select key     -1 is all
