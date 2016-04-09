@@ -9,7 +9,7 @@ import (
 
 // token type
 const (
-	TokenPwd = iota
+	TokenPwd = iota // 0
 	TokenActiveEmail
 	TokenUpdateEmail
 )
