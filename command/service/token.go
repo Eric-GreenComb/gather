@@ -3,9 +3,9 @@ package service
 import (
 	"github.com/apache/thrift/lib/go/thrift"
 
-	thriftclient "github.com/banerwai/micros/token/client/thrift"
-	thriftservice "github.com/banerwai/micros/token/service"
-	thrifttoken "github.com/banerwai/micros/token/thrift/gen-go/token"
+	thriftclient "github.com/banerwai/micros/command/token/client/thrift"
+	thriftservice "github.com/banerwai/micros/command/token/service"
+	thrifttoken "github.com/banerwai/micros/command/token/thrift/gen-go/token"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	"github.com/banerwai/micros/common/etcd"
@@ -16,7 +16,7 @@ type TokenService struct {
 }
 
 func (self *TokenService) DefaultService() (thriftservice.TokenService, error) {
-	_addr, _err := etcd.GetValue("/banerwai/micros/token/addr")
+	_addr, _err := etcd.GetValue("/banerwai/micros/command/token/addr")
 
 	if _err != nil {
 		return nil, _err

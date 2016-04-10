@@ -3,20 +3,20 @@ package service
 import (
 	"github.com/apache/thrift/lib/go/thrift"
 
-	thriftclient "github.com/banerwai/micros/render/client/thrift"
-	thriftservice "github.com/banerwai/micros/render/service"
-	thriftrender "github.com/banerwai/micros/render/thrift/gen-go/render"
+	thriftclient "github.com/banerwai/micros/query/category/client/thrift"
+	thriftservice "github.com/banerwai/micros/query/category/service"
+	thriftcategory "github.com/banerwai/micros/query/category/thrift/gen-go/category"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	"github.com/banerwai/micros/common/etcd"
 )
 
-type RenderService struct {
+type CategoryService struct {
 	trans thrift.TTransport
 }
 
-func (self *RenderService) DefaultService() (thriftservice.RenderService, error) {
-	_addr, _err := etcd.GetValue("/banerwai/micros/render/addr")
+func (self *CategoryService) DefaultService() (thriftservice.CategoryService, error) {
+	_addr, _err := etcd.GetValue("/banerwai/micros/query/category/addr")
 
 	if _err != nil {
 		return nil, _err
@@ -25,7 +25,7 @@ func (self *RenderService) DefaultService() (thriftservice.RenderService, error)
 	return self.OpenService(_addr)
 }
 
-func (self *RenderService) OpenService(addr string) (thriftservice.RenderService, error) {
+func (self *CategoryService) OpenService(addr string) (thriftservice.CategoryService, error) {
 
 	transportSocket, err := thrift.NewTSocket(addr)
 	if err != nil {
@@ -38,15 +38,15 @@ func (self *RenderService) OpenService(addr string) (thriftservice.RenderService
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftrender.NewRenderServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftcategory.NewCategoryServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
-	var svc thriftservice.RenderService
+	var svc thriftservice.CategoryService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
 
 	return svc, err
 }
 
-func (self *RenderService) CloseService() {
+func (self *CategoryService) CloseService() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}

@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-// need start micro render service localhost:6030
+// need start micro render service localhost:9010
 func TestCategoryDefaultService(t *testing.T) {
 
 	var _category CategoryService

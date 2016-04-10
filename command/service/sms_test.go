@@ -3,7 +3,7 @@ package service
 import (
 	"testing"
 
-	"github.com/banerwai/gather/bean"
+	"github.com/banerwai/gather/command/bean"
 )
 
 func TestSmsLPush2Redis(t *testing.T) {

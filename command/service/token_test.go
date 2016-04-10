@@ -11,15 +11,10 @@ func TestTokenOpenService(t *testing.T) {
 	_token_service, _ := _token.DefaultService()
 	defer _token.CloseService()
 
+	_token_service.NewToken_("ministor@126.com", 1)
 	v := _token_service.VerifyToken("ministor@126.com", 1)
 
 	if v != 1 {
-		t.Errorf("TestOpenService error")
-	}
-
-	v = _token_service.VerifyToken("ministor@gmail.com", 1)
-
-	if v != -1 {
 		t.Errorf("TestOpenService error")
 	}
 }
