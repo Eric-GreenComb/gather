@@ -3,44 +3,31 @@ package service
 import (
 	"github.com/apache/thrift/lib/go/thrift"
 
-	thriftclient "github.com/banerwai/micros/command/token/client/thrift"
-	thriftservice "github.com/banerwai/micros/command/token/service"
-	thrifttoken "github.com/banerwai/micros/command/token/thrift/gen-go/token"
+	thriftclient "github.com/banerwai/micros/command/auth/client/thrift"
+	thriftservice "github.com/banerwai/micros/command/auth/service"
+	thriftauth "github.com/banerwai/micros/command/auth/thrift/gen-go/auth"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	"github.com/banerwai/gommon/etcd"
 )
 
-type TokenService struct {
+type AuthService struct {
 	trans thrift.TTransport
-	addr  string
 }
 
-func (self *TokenService) Default() (thriftservice.TokenService, error) {
-	_err := self.Init()
+func (self *TokenService) DefaultService() (thriftservice.TokenService, error) {
+	_addr, _err := etcd.GetValue("/banerwai/micros/command/token/addr")
 
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return self.OpenService(_addr)
 }
 
-func (self *TokenService) Init() error {
-	_addr, _err := etcd.GetValue("/banerwai/micros/command/token/addr")
+func (self *TokenService) OpenService(addr string) (thriftservice.TokenService, error) {
 
-	if _err != nil {
-		return _err
-	}
-
-	self.addr = _addr
-
-	return nil
-}
-
-func (self *TokenService) Open() (thriftservice.TokenService, error) {
-
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
@@ -59,7 +46,7 @@ func (self *TokenService) Open() (thriftservice.TokenService, error) {
 	return svc, err
 }
 
-func (self *TokenService) Close() {
+func (self *TokenService) CloseService() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}

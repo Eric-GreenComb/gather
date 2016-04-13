@@ -3,7 +3,8 @@ package gearman
 import (
 	"log"
 
-	"github.com/banerwai/micros/common/etcd"
+	"github.com/banerwai/global"
+	"github.com/banerwai/gommon/etcd"
 	"github.com/mikespook/gearman-go/client"
 )
 
@@ -14,7 +15,7 @@ var GearmanResponseHandler client.ResponseHandler
 
 func init() {
 	var _err error
-	GearmanAddr, _err = etcd.GetValue("/banerwai/gearman/conn")
+	GearmanAddr, _err = etcd.GetValue(global.ETCD_KEY_GEARMAN_ADDR)
 	if _err != nil {
 		return
 	}

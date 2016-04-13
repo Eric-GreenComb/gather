@@ -3,7 +3,7 @@ package redis
 import (
 	"github.com/garyburd/redigo/redis"
 
-	"github.com/banerwai/micros/common/etcd"
+	"github.com/banerwai/gommon/etcd"
 )
 
 // 重写生成连接池方法

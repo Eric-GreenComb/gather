@@ -8,26 +8,40 @@ import (
 	thriftprofile "github.com/banerwai/micros/query/profile/thrift/gen-go/profile"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
-	"github.com/banerwai/micros/common/etcd"
+	banerwaiglobal "github.com/banerwai/global"
+	"github.com/banerwai/gommon/etcd"
 )
 
 type ProfileService struct {
 	trans thrift.TTransport
+	addr  string
 }
 
-func (self *CategoryService) DefaultService() (thriftservice, error) {
-	_addr, _err := etcd.GetValue("/banerwai/micros/query/profile/addr")
+func (self *ProfileService) Default() (thriftservice.ProfileService, error) {
+	_err := self.Init()
 
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.OpenService(_addr)
+	return self.Open()
 }
 
-func (self *CategoryService) OpenService(addr string) (thriftservice.CategoryService, error) {
+func (self *ProfileService) Init() error {
+	_addr, _err := etcd.GetValue(banerwaiglobal.ETCD_KEY_MICROS_QUERY_PROFILE)
 
-	transportSocket, err := thrift.NewTSocket(addr)
+	if _err != nil {
+		return _err
+	}
+
+	self.addr = _addr
+
+	return nil
+}
+
+func (self *ProfileService) Open() (thriftservice.ProfileService, error) {
+
+	transportSocket, err := thrift.NewTSocket(self.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
@@ -38,15 +52,15 @@ func (self *CategoryService) OpenService(addr string) (thriftservice.CategorySer
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftcategory.NewCategoryServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftprofile.NewProfileServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
-	var svc thriftservice.CategoryService
+	var svc thriftservice.ProfileService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
 
 	return svc, err
 }
 
-func (self *CategoryService) CloseService() {
+func (self *ProfileService) Close() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}

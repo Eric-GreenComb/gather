@@ -8,26 +8,40 @@ import (
 	thriftcategory "github.com/banerwai/micros/query/category/thrift/gen-go/category"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
-	"github.com/banerwai/micros/common/etcd"
+	banerwaiglobal "github.com/banerwai/global"
+	"github.com/banerwai/gommon/etcd"
 )
 
 type CategoryService struct {
 	trans thrift.TTransport
+	addr  string
 }
 
-func (self *CategoryService) DefaultService() (thriftservice.CategoryService, error) {
-	_addr, _err := etcd.GetValue("/banerwai/micros/query/category/addr")
+func (self *CategoryService) Default() (thriftservice.CategoryService, error) {
+	_err := self.Init()
 
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.OpenService(_addr)
+	return self.Open()
 }
 
-func (self *CategoryService) OpenService(addr string) (thriftservice.CategoryService, error) {
+func (self *CategoryService) Init() error {
+	_addr, _err := etcd.GetValue(banerwaiglobal.ETCD_KEY_MICROS_QUERY_CATEGORY)
 
-	transportSocket, err := thrift.NewTSocket(addr)
+	if _err != nil {
+		return _err
+	}
+
+	self.addr = _addr
+
+	return nil
+}
+
+func (self *CategoryService) Open() (thriftservice.CategoryService, error) {
+
+	transportSocket, err := thrift.NewTSocket(self.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
@@ -46,7 +60,7 @@ func (self *CategoryService) OpenService(addr string) (thriftservice.CategorySer
 	return svc, err
 }
 
-func (self *CategoryService) CloseService() {
+func (self *CategoryService) Close() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}
