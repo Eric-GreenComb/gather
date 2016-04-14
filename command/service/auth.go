@@ -8,26 +8,40 @@ import (
 	thriftauth "github.com/banerwai/micros/command/auth/thrift/gen-go/auth"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
+	"github.com/banerwai/global"
 	"github.com/banerwai/gommon/etcd"
 )
 
 type AuthService struct {
 	trans thrift.TTransport
+	addr  string
 }
 
-func (self *TokenService) DefaultService() (thriftservice.TokenService, error) {
-	_addr, _err := etcd.GetValue("/banerwai/micros/command/token/addr")
+func (self *AuthService) Default() (thriftservice.AuthService, error) {
+	_err := self.Init()
 
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.OpenService(_addr)
+	return self.Open()
 }
 
-func (self *TokenService) OpenService(addr string) (thriftservice.TokenService, error) {
+func (self *AuthService) Init() error {
+	_addr, _err := etcd.GetValue(global.ETCD_KEY_MICROS_COMMAND_AUTH)
 
-	transportSocket, err := thrift.NewTSocket(addr)
+	if _err != nil {
+		return _err
+	}
+
+	self.addr = _addr
+
+	return nil
+}
+
+func (self *AuthService) Open() (thriftservice.AuthService, error) {
+
+	transportSocket, err := thrift.NewTSocket(self.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
@@ -38,15 +52,15 @@ func (self *TokenService) OpenService(addr string) (thriftservice.TokenService, 
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thrifttoken.NewTokenServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftauth.NewAuthServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
-	var svc thriftservice.TokenService
+	var svc thriftservice.AuthService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
 
 	return svc, err
 }
 
-func (self *TokenService) CloseService() {
+func (self *AuthService) Close() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}

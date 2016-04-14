@@ -8,6 +8,7 @@ import (
 	thrifttoken "github.com/banerwai/micros/command/token/thrift/gen-go/token"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
+	"github.com/banerwai/global"
 	"github.com/banerwai/gommon/etcd"
 )
 
@@ -27,7 +28,7 @@ func (self *TokenService) Default() (thriftservice.TokenService, error) {
 }
 
 func (self *TokenService) Init() error {
-	_addr, _err := etcd.GetValue("/banerwai/micros/command/token/addr")
+	_addr, _err := etcd.GetValue(global.ETCD_KEY_MICROS_COMMAND_TOKEN)
 
 	if _err != nil {
 		return _err
