@@ -17,6 +17,7 @@ func TestCategoryDefaultService(t *testing.T) {
 	}
 	_category_service.Close()
 
+	_category_service.Init()
 	_thrift_service, _ = _category_service.Open()
 	defer _category_service.Close()
 

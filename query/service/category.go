@@ -9,6 +9,7 @@ import (
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	banerwaiglobal "github.com/banerwai/global"
+	banerwaicrypto "github.com/banerwai/gommon/crypto"
 	"github.com/banerwai/gommon/etcd"
 )
 
@@ -19,7 +20,6 @@ type CategoryService struct {
 
 func (self *CategoryService) Default() (thriftservice.CategoryService, error) {
 	_err := self.Init()
-
 	if _err != nil {
 		return nil, _err
 	}
@@ -28,13 +28,14 @@ func (self *CategoryService) Default() (thriftservice.CategoryService, error) {
 }
 
 func (self *CategoryService) Init() error {
-	_addr, _err := etcd.GetValue(banerwaiglobal.ETCD_KEY_MICROS_QUERY_CATEGORY)
+
+	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_QUERY_CATEGORY)
 
 	if _err != nil {
 		return _err
 	}
 
-	self.addr = _addr
+	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }

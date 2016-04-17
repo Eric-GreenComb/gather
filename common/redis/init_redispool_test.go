@@ -45,5 +45,4 @@ func TestRedisPool(t *testing.T) {
 		}
 		fmt.Println("email", _email)
 	}
-
 }
