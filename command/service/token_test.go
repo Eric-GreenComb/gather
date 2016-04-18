@@ -21,6 +21,7 @@ func TestTokenOpenService(t *testing.T) {
 	}
 	_token_service.Close()
 
+	_token_service.Init()
 	_thrift_service, _ = _token_service.Open()
 	defer _token_service.Close()
 	v2 := _thrift_service.DeleteToken("ministor@126.com", 1)

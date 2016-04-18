@@ -9,6 +9,7 @@ import (
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	banerwaiglobal "github.com/banerwai/global"
+	banerwaicrypto "github.com/banerwai/gommon/crypto"
 	"github.com/banerwai/gommon/etcd"
 )
 
@@ -19,7 +20,6 @@ type RenderService struct {
 
 func (self *RenderService) Default() (thriftservice.RenderService, error) {
 	_err := self.Init()
-
 	if _err != nil {
 		return nil, _err
 	}
@@ -28,13 +28,13 @@ func (self *RenderService) Default() (thriftservice.RenderService, error) {
 }
 
 func (self *RenderService) Init() error {
-	_addr, _err := etcd.GetValue(banerwaiglobal.ETCD_KEY_MICROS_QUERY_RENDER)
+	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_QUERY_RENDER)
 
 	if _err != nil {
 		return _err
 	}
 
-	self.addr = _addr
+	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }

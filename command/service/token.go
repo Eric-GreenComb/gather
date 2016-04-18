@@ -8,7 +8,8 @@ import (
 	thrifttoken "github.com/banerwai/micros/command/token/thrift/gen-go/token"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
-	"github.com/banerwai/global"
+	banerwaiglobal "github.com/banerwai/global"
+	banerwaicrypto "github.com/banerwai/gommon/crypto"
 	"github.com/banerwai/gommon/etcd"
 )
 
@@ -19,7 +20,6 @@ type TokenService struct {
 
 func (self *TokenService) Default() (thriftservice.TokenService, error) {
 	_err := self.Init()
-
 	if _err != nil {
 		return nil, _err
 	}
@@ -28,13 +28,14 @@ func (self *TokenService) Default() (thriftservice.TokenService, error) {
 }
 
 func (self *TokenService) Init() error {
-	_addr, _err := etcd.GetValue(global.ETCD_KEY_MICROS_COMMAND_TOKEN)
+
+	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_COMMAND_TOKEN)
 
 	if _err != nil {
 		return _err
 	}
 
-	self.addr = _addr
+	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }

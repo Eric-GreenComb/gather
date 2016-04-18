@@ -9,6 +9,7 @@ import (
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	banerwaiglobal "github.com/banerwai/global"
+	banerwaicrypto "github.com/banerwai/gommon/crypto"
 	"github.com/banerwai/gommon/etcd"
 )
 
@@ -18,8 +19,8 @@ type ProfileService struct {
 }
 
 func (self *ProfileService) Default() (thriftservice.ProfileService, error) {
-	_err := self.Init()
 
+	_err := self.Init()
 	if _err != nil {
 		return nil, _err
 	}
@@ -28,13 +29,14 @@ func (self *ProfileService) Default() (thriftservice.ProfileService, error) {
 }
 
 func (self *ProfileService) Init() error {
-	_addr, _err := etcd.GetValue(banerwaiglobal.ETCD_KEY_MICROS_QUERY_PROFILE)
+
+	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_QUERY_PROFILE)
 
 	if _err != nil {
 		return _err
 	}
 
-	self.addr = _addr
+	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }

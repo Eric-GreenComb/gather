@@ -17,6 +17,7 @@ func TestTokenOpenService(t *testing.T) {
 	}
 	_auth_service.Close()
 
+	_auth_service.Init()
 	_thrift_service, _ = _auth_service.Open()
 	defer _auth_service.Close()
 	v2 := _thrift_service.Login("emailOrUsername", "pwd")

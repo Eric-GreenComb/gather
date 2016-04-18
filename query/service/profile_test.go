@@ -23,6 +23,7 @@ func TestProfileDefaultService(t *testing.T) {
 	}
 	_profile_service.Close()
 
+	_profile_service.Init()
 	_thrift_service, _ = _profile_service.Open()
 	defer _profile_service.Close()
 

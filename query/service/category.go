@@ -19,6 +19,7 @@ type CategoryService struct {
 }
 
 func (self *CategoryService) Default() (thriftservice.CategoryService, error) {
+
 	_err := self.Init()
 	if _err != nil {
 		return nil, _err
