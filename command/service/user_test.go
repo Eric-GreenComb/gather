@@ -20,8 +20,8 @@ func TestUserOpenService(t *testing.T) {
 	_user_service.Init()
 	_thrift_service, _ = _user_service.Open()
 	defer _user_service.Close()
-	v2 := _thrift_service.CountUser()
-	if v2 != 100 {
-		t.Errorf("CountUser error")
+	v2 := _thrift_service.ResetPwd("email", "pwd")
+	if v2 != true {
+		t.Errorf("ResetPwd error")
 	}
 }
