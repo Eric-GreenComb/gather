@@ -7,6 +7,7 @@ import (
 
 type User struct {
 	Id           bson.ObjectId `bson:"_id,omitempty"`                  // 必须要设置bson:"_id" 不然mgo不会认为是主键
+	Invited      bson.ObjectId `bson:"invited" json:"invited"`         // invited by someone
 	Email        string        `bson:"email" json:"email"`             // 全是小写
 	Verified     bool          `bson:"verified" json:"verified"`       // Email是否已验证过?
 	Username     string        `bson:"username" json:"username"`       // 不区分大小写, 全是小写
