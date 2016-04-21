@@ -1,12 +1,11 @@
 package service
 
 import (
-	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 
-	thriftclient "github.com/banerwai/micros/command/auth/client/thrift"
-	thriftservice "github.com/banerwai/micros/command/auth/service"
-	thriftauth "github.com/banerwai/micros/command/auth/thrift/gen-go/auth"
+	thriftclient "github.com/banerwai/micros/query/user/client/thrift"
+	thriftservice "github.com/banerwai/micros/query/user/service"
+	thriftuser "github.com/banerwai/micros/query/user/thrift/gen-go/user"
 
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	banerwaiglobal "github.com/banerwai/global"
@@ -14,12 +13,12 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
-type AuthService struct {
+type UserService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *AuthService) Default() (thriftservice.AuthService, error) {
+func (self *UserService) Default() (thriftservice.UserService, error) {
 	_err := self.Init()
 	if _err != nil {
 		return nil, _err
@@ -28,9 +27,9 @@ func (self *AuthService) Default() (thriftservice.AuthService, error) {
 	return self.Open()
 }
 
-func (self *AuthService) Init() error {
+func (self *UserService) Init() error {
 
-	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_COMMAND_AUTH)
+	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_QUERY_USER)
 
 	if _err != nil {
 		return _err
@@ -41,7 +40,7 @@ func (self *AuthService) Init() error {
 	return nil
 }
 
-func (self *AuthService) Open() (thriftservice.AuthService, error) {
+func (self *UserService) Open() (thriftservice.UserService, error) {
 
 	transportSocket, err := thrift.NewTSocket(self.addr)
 	if err != nil {
@@ -54,15 +53,15 @@ func (self *AuthService) Open() (thriftservice.AuthService, error) {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftauth.NewAuthServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftuser.NewUserServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
-	var svc thriftservice.AuthService
+	var svc thriftservice.UserService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
 
 	return svc, err
 }
 
-func (self *AuthService) Close() {
+func (self *UserService) Close() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}
