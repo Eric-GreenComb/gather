@@ -2,8 +2,6 @@ package service
 
 import (
 	"testing"
-
-	"fmt"
 )
 
 // need start micro render service localhost:6040
@@ -12,13 +10,8 @@ func TestTokenOpenService(t *testing.T) {
 	var _token_service TokenService
 	_thrift_service, _ := _token_service.Default()
 
-	v := _thrift_service.NewToken_("ministor@126.com", 1)
-	fmt.Println(v)
+	_thrift_service.NewToken_("ministor@126.com", 1)
 
-	v1 := _thrift_service.VerifyToken("ministor@126.com", 1)
-	if v1 != 1 {
-		t.Errorf("VerifyToken error")
-	}
 	_token_service.Close()
 
 	_token_service.Init()
