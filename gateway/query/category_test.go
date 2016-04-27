@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -21,8 +22,10 @@ func TestCategoryDefaultService(t *testing.T) {
 	_thrift_service, _ = _category_service.Open()
 	defer _category_service.Close()
 
-	v1 := _thrift_service.SayHi("ministor")
-	if v1 != "hi,ministor" {
+	_b := _thrift_service.LoadCategory("category.json")
+	fmt.Println(_b)
+	v1 := _thrift_service.GetSubCategories(10100)
+	if !strings.Contains(v1, "10101") {
 		t.Errorf("TestCategoryDefaultService error")
 	}
 }
