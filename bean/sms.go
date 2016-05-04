@@ -2,11 +2,10 @@ package bean
 
 import ()
 
-type Sms struct {
-	Name    string `json:"name"`
-	Pwd     string `json:"pwd"`
-	Content string `json:"content"`
-	Mobile  string `json:"mobile"`
-	Sign    string `json:"sign"`
-	Extno   string `json:"extno"`
+// alidayu sms struct
+type SMS struct {
+	RecNum          string `json:"rec_num"`
+	SmsFreeSignName string `json:"sms_free_sign_name"`
+	SmsTemplateCode string `json:"sms_template_code"`
+	SmsParam        string `json:"sms_param"`
 }
