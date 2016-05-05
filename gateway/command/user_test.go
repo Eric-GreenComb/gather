@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-// need start micro render service localhost:6020
+// need start micro render service localhost:36020
 func TestUserOpenService(t *testing.T) {
 
 	var _user_service UserService

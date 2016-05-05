@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-// need start micro render service localhost:6020
+// need start micro render service localhost:36020
 func TestTokenOpenService(t *testing.T) {
 
 	var _auth_service AuthService

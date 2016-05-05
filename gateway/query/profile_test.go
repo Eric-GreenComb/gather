@@ -7,7 +7,7 @@ import (
 	banerwaiglobal "github.com/banerwai/global"
 )
 
-// need start micro render service localhost:9050
+// need start micro render service localhost:39050
 func TestProfileDefaultService(t *testing.T) {
 
 	var _profile_service ProfileService
