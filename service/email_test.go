@@ -1,4 +1,4 @@
-package command
+package service
 
 import (
 	"testing"
@@ -6,7 +6,7 @@ import (
 	"github.com/banerwai/gather/bean"
 )
 
-func TestEmailLPush2Redis(t *testing.T) {
+func TestEmailServiceSendEmail(t *testing.T) {
 
 	var _email EmailService
 
@@ -20,20 +20,9 @@ func TestEmailLPush2Redis(t *testing.T) {
 	_email_bean.Body = "This is a test email"
 	_email_bean.Mailtype = "html"
 
-	_err := _email.LPush2Redis("banerwai:email:activeuser", _email_bean)
+	_err := _email.SendEmail("banerwai:email:activeuser", _email_bean)
 
 	if _err != nil {
-		t.Errorf("LPush2Redis error")
-	}
-}
-
-func TestEmailSend2Gearman(t *testing.T) {
-
-	var _email EmailService
-
-	_err := _email.Send2Gearman("banerwai:email:activeuser")
-
-	if _err != nil {
-		t.Errorf("Send2Gearman error")
+		t.Errorf("SendEmail error")
 	}
 }

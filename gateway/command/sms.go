@@ -1,8 +1,8 @@
-package service
+package command
 
 import (
 	"encoding/json"
-	gatherbean "github.com/banerwai/gather/command/bean"
+	gatherbean "github.com/banerwai/gather/bean"
 
 	gatherredis "github.com/banerwai/gather/common/redis"
 
@@ -13,7 +13,7 @@ import (
 type SmsService struct {
 }
 
-func (self *SmsService) LPush2Redis(key string, sms gatherbean.Sms) error {
+func (self *SmsService) LPush2Redis(key string, sms gatherbean.SMS) error {
 	b, err := json.Marshal(sms)
 	if err != nil {
 		return err

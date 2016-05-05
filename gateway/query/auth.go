@@ -1,4 +1,4 @@
-package service
+package query
 
 import (
 	"github.com/apache/thrift/lib/go/thrift"
