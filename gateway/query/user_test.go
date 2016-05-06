@@ -3,7 +3,7 @@ package query
 import (
 	"testing"
 
-	"github.com/banerwai/gather/query/dto"
+	"github.com/banerwai/gather/dto"
 	"labix.org/v2/mgo/bson"
 )
 

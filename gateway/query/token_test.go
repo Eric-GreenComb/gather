@@ -3,7 +3,7 @@ package query
 import (
 	"testing"
 
-	"github.com/banerwai/gather/command/bean"
+	"github.com/banerwai/gather/bean"
 )
 
 // need start micro render service localhost:6020
