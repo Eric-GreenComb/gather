@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-// need start micro render service localhost:6020
 func TestProfileAddProfile(t *testing.T) {
 
 	var _service ProfileService

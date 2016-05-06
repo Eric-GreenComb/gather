@@ -5,7 +5,6 @@ import (
 	"testing"
 )
 
-// need start micro render service localhost:6020
 func TestTokenADV(t *testing.T) {
 
 	var _service TokenService
