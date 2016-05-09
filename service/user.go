@@ -1,8 +1,13 @@
 package service
 
 import (
+	"github.com/banerwai/gather/bean"
+	"github.com/banerwai/gather/dto"
+
 	"github.com/banerwai/gather/gateway/command"
 	"github.com/banerwai/gather/gateway/query"
+
+	"labix.org/v2/mgo/bson"
 )
 
 type UserService struct {
@@ -20,6 +25,14 @@ func (self *UserService) CreateUser(mmap map[string]string) (v string) {
 	defer _command_service.Close()
 	v = _service.CreateUser(mmap)
 	return
+}
+
+func (self *UserService) CreateBeanUser(user bean.User) (v string) {
+	_mmap := make(map[string]string)
+	_mmap["invited"] = user.Invited.String()
+	_mmap["email"] = user.Email
+	_mmap["pwd"] = user.Pwd
+	return self.CreateUser(_mmap)
 }
 
 func (self *UserService) ResetPwd(email string, newpwd string) (v bool) {
@@ -45,6 +58,17 @@ func (self *UserService) GetUser(email string) (v string) {
 	defer _query_service.Close()
 	v = _service.GetUser(email)
 	return
+}
+
+func (self *UserService) GetDtoUser(email string) dto.UserDto {
+	var _user dto.UserDto
+	_data := self.GetUser(email)
+	if len(_data) == 0 {
+		return _user
+	}
+	bson.Unmarshal([]byte(_data), &_user)
+
+	return _user
 }
 
 func (self *UserService) CountUser() (v int64) {
