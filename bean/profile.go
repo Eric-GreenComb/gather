@@ -40,3 +40,31 @@ type AgencyMember struct {
 	Email      string        `bson:"email" json:"email"`
 	Phone      string        `bson:"phone" json:"phone"`
 }
+
+type ProfileDto struct {
+	Id     bson.ObjectId `bson:"_id,omitempty" json:"_id"`
+	UserID bson.ObjectId `bson:"user_id" json:"user_id"`
+
+	Name              string         `bson:"freelancer_name" json:"freelancer_name"`
+	JobTitle          string         `bson:"job_title" json:"job_title"`
+	Overview          string         `bson:"overview" json:"overview"` // searchkey
+	WorkHours         int            `bson:"work_hours" json:"work_hours"`
+	PortfolioNums     int            `bson:"portfolio_nums" json:"portfolio_nums"`
+	SkillTags         string         `bson:"skill_tags" json:"skill_tags"`
+	AgencyHourlyRates string         `bson:"agency_hourly_rates" json:"agency_hourly_rates"`
+	AgencyMembers     []AgencyMember `bson:"agency_members" json:"agency_members"`
+
+	CreatedTime time.Time `bson:"createdtime" json:"createdtime"`
+}
+
+type ProfileSearchDto struct {
+	SerialNumber   int    `json:"serial_number"`
+	HoursBilled    int    `json:"hours_billed"`
+	AvailableHours int    `json:"available_hours"`
+	JobSuccess     int    `json:"job_success"`
+	LastActivity   int    `json:"last_activity"`
+	FreelancerType int    `json:"freelancer_type"`
+	HourlyRate     int    `json:"hourly_rate"`
+	RegionId       int    `json:"region_id"`
+	SearchKey      string `json:"search_key"`
+}

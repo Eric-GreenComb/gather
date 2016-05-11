@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/banerwai/gather/gateway/query"
 
-	"github.com/banerwai/gather/dto"
+	"github.com/banerwai/gather/bean"
 
 	"encoding/json"
 )
@@ -31,8 +31,8 @@ func (self *CategoryService) GetCategories() (v string) {
 	return
 }
 
-func (self *CategoryService) GetDtoCategories() []dto.Category {
-	var cats []dto.Category
+func (self *CategoryService) GetDtoCategories() []bean.Category {
+	var cats []bean.Category
 	_json := self.GetCategories()
 	if len(_json) == 0 {
 		return cats
@@ -51,8 +51,8 @@ func (self *CategoryService) GetSubCategories(serialnumber int32) (v string) {
 	return
 }
 
-func (self *CategoryService) GetDtoSubCategories(serialnumber int32) []dto.SubCategory {
-	var subs []dto.SubCategory
+func (self *CategoryService) GetDtoSubCategories(serialnumber int32) []bean.SubCategory {
+	var subs []bean.SubCategory
 	_json := self.GetSubCategories(serialnumber)
 	if len(_json) == 0 {
 		return subs

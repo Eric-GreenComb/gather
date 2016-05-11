@@ -2,7 +2,6 @@ package service
 
 import (
 	"github.com/banerwai/gather/bean"
-	"github.com/banerwai/gather/dto"
 
 	"github.com/banerwai/gather/gateway/command"
 	"github.com/banerwai/gather/gateway/query"
@@ -60,8 +59,8 @@ func (self *UserService) GetUser(email string) (v string) {
 	return
 }
 
-func (self *UserService) GetDtoUser(email string) dto.UserDto {
-	var _user dto.UserDto
+func (self *UserService) GetDtoUser(email string) bean.UserDto {
+	var _user bean.UserDto
 	_data := self.GetUser(email)
 	if len(_data) == 0 {
 		return _user
