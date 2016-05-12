@@ -11,18 +11,19 @@ type Profile struct {
 
 	// select key     -1 is all
 	Serialnumber   int `bson:"serial_number" json:"serial_number"`     // /gather/bean/category.go Category/SubCategory Serialnumber
-	HoursBilled    int `bson:"hours_billed" json:"hours_billed"`       // /gather/global/business_const.go : Hours Billed
-	AvailableHours int `bson:"available_hours" json:"available_hours"` // /gather/global/business_const.go : Available Hours
-	JobSuccess     int `bson:"job_success" json:"job_success"`         // /gather/global/business_const.go : Job Success
-	LastActivity   int `bson:"last_activity" json:"last_activity"`     // /gather/global/business_const.go : Last Activity
-	FreelancerType int `bson:"freelancer_type" json:"freelancer_type"` // /gather/global/business_const.go : Freelancer Type
-	HourlyRate     int `bson:"hourly_rate" json:"hourly_rate"`         // /gather/global/business_const.go : Hours Rate
-	RegionID       int `bson:"region_id" json:"region_id"`             // /gather/global/base_const.go : Region ID
+	HoursBilled    int `bson:"hours_billed" json:"hours_billed"`       // /global/business_const.go : Hours Billed
+	AvailableHours int `bson:"available_hours" json:"available_hours"` // /global/business_const.go : Available Hours
+	JobSuccess     int `bson:"job_success" json:"job_success"`         // /global/business_const.go : Job Success
+	LastActivity   int `bson:"last_activity" json:"last_activity"`     // /global/business_const.go : Last Activity
+	FreelancerType int `bson:"freelancer_type" json:"freelancer_type"` // /global/business_const.go : Freelancer Type
+	HourlyRate     int `bson:"hourly_rate" json:"hourly_rate"`         // /global/business_const.go : Hours Rate
+	RegionID       int `bson:"region_id" json:"region_id"`             // /global/base_const.go : Region ID
 
 	// show
 	Name              string         `bson:"freelancer_name" json:"freelancer_name"`
 	JobTitle          string         `bson:"job_title" json:"job_title"`
 	Overview          string         `bson:"overview" json:"overview"` // searchkey
+	HourRate          float64        `bson:"hour_rate" json:"hour_rate"`
 	WorkHours         int            `bson:"work_hours" json:"work_hours"`
 	PortfolioNums     int            `bson:"portfolio_nums" json:"portfolio_nums"`
 	SkillTags         string         `bson:"skill_tags" json:"skill_tags"`
