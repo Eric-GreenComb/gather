@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/banerwai/gather/bean"
 	"github.com/banerwai/gather/gateway/command"
 	"github.com/banerwai/gather/gateway/query"
+	"github.com/banerwai/global/bean"
 )
 
 type TokenService struct {

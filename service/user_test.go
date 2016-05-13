@@ -3,7 +3,7 @@ package service
 import (
 	"testing"
 
-	"github.com/banerwai/gather/bean"
+	"github.com/banerwai/global/bean"
 )
 
 func TestUser(t *testing.T) {

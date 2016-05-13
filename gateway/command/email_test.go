@@ -3,7 +3,7 @@ package command
 import (
 	"testing"
 
-	"github.com/banerwai/gather/bean"
+	"github.com/banerwai/global/bean"
 )
 
 func TestEmailLPush2Redis(t *testing.T) {

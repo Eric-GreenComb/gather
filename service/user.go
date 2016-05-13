@@ -1,7 +1,7 @@
 package service
 
 import (
-	"github.com/banerwai/gather/bean"
+	"github.com/banerwai/global/bean"
 
 	"github.com/banerwai/gather/gateway/command"
 	"github.com/banerwai/gather/gateway/query"

@@ -2,7 +2,7 @@ package command
 
 import (
 	"encoding/json"
-	gatherbean "github.com/banerwai/gather/bean"
+	gatherbean "github.com/banerwai/global/bean"
 
 	gatherredis "github.com/banerwai/gather/common/redis"
 

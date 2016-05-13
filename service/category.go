@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/banerwai/gather/gateway/query"
 
-	"github.com/banerwai/gather/bean"
+	"github.com/banerwai/global/bean"
 
 	"encoding/json"
 )
