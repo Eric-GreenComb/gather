@@ -1,7 +1,10 @@
 package service
 
 import (
+	"fmt"
 	banerwaiglobal "github.com/banerwai/global"
+	"github.com/banerwai/global/bean"
+	"labix.org/v2/mgo/bson"
 	"testing"
 	"time"
 )
@@ -9,41 +12,55 @@ import (
 func TestProfileAddProfile(t *testing.T) {
 
 	var _service ProfileService
-	v := _service.AddProfile("email")
 
-	if v != "email" {
+	_defaultObjectId := "5707cb10ae6faa1d1071a189"
+
+	var _obj bean.Profile
+	_obj.Id = bson.ObjectIdHex(_defaultObjectId)
+	_obj.UserID = bson.ObjectIdHex(_defaultObjectId)
+	_obj.Name = "Test"
+	_obj.JobTitle = "this is a title"
+	_obj.Overview = "this is a overview go"
+	_obj.Serialnumber = 531770282584862733
+
+	_obj.HourRate = 15000
+	_obj.WorkHours = 40
+
+	_profile_id := _service.AddProfileBean(_obj)
+
+	if !bson.IsObjectIdHex(_profile_id) {
 		t.Errorf("AddProfile error")
 	}
 
-	v = _service.UpdateProfile("123456")
+	_map_update := make(map[string]string)
+	_map_update["freelancer_name"] = "freelancer_name"
+	_map_update["job_title"] = "job_title"
+	_map_update["hour_rate"] = "1601234"
+	_map_update["portfolio_nums"] = "4"
 
-	if v != "123456" {
-		t.Errorf("UpdateProfile error")
+	v := _service.UpdateProfileBase(_profile_id, _map_update)
+
+	if v != "OK" {
+		t.Errorf("UpdateProfileBase error")
 	}
 
-	v = _service.DeleteProfile("1111")
-	if v != "1111" {
-		t.Errorf("DeleteProfile error")
-	}
+	_bean, _ := _service.GetProfileBean(_profile_id)
+	fmt.Println(_bean)
 
-	v = _service.GetProfile("1234567")
-
-	if v != "1234567" {
+	if len(_bean.JobTitle) == 0 {
 		t.Errorf("GetProfile error")
 	}
 
 	option_mmap := make(map[string]int64)
 
-	option_mmap["available_hours"] = 0
-	option_mmap["job_success"] = 1
-	option_mmap["freelancer_type"] = 1
+	option_mmap["serial_number"] = 531770282584862733
 
 	key_mmap := make(map[string]string)
-	key_mmap["overview"] = "_key"
+	key_mmap["overview"] = "go"
 
-	v = _service.SearchProfiles(option_mmap, key_mmap, time.Now().Unix(), banerwaiglobal.Pagination_PAGESIZE_Web)
+	_beans, _ := _service.SearchProfilesBean(option_mmap, key_mmap, time.Now().Unix(), banerwaiglobal.Pagination_PAGESIZE_Web)
 
-	if v != "OK" {
+	if len(_beans) == 0 {
 		t.Errorf("SearchProfiles error")
 	}
 }
