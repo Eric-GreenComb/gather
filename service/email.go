@@ -2,20 +2,9 @@ package service
 
 import (
 	"encoding/json"
-	"flag"
 	"github.com/banerwai/global/bean"
 	"github.com/nats-io/nats"
 )
-
-var (
-	NatsUrls string
-)
-
-func init() {
-	var urls = flag.String("s", nats.DefaultURL, "The nats server URLs (separated by comma)")
-	flag.Parse()
-	NatsUrls = *urls
-}
 
 type EmailService struct {
 }

@@ -9,15 +9,21 @@ import (
 type SmsService struct {
 }
 
-func (self *SmsService) SendSms(key string, sms bean.SMS) error {
-	var _service command.SmsService
-	_err := _service.LPush2Redis(key, sms)
-	if _err != nil {
-		return _err
+func (self *SmsService) SendSms(sms bean.SMS) error {
+	nc, err := nats.Connect(NatsUrls)
+	defer nc.Close()
+
+	if err != nil {
+		return err
 	}
-	_err = _service.Send2Gearman(key)
-	if _err != nil {
-		return _err
+
+	b, err := json.Marshal(sms)
+	if err != nil {
+		return err
 	}
+
+	nc.Publish("sms", b)
+	nc.Flush()
+
 	return nil
 }
