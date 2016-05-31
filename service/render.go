@@ -13,9 +13,9 @@ type RenderService struct {
  * query section
  */
 
-func (self *RenderService) RenderHello(tmpl, name string) (v string) {
+func (self *RenderService) RenderTpl(tplname string, key_mmap map[string]string) (v string) {
 	_service, _ := _query_service.Default()
 	defer _query_service.Close()
-	v = _service.RenderHello(tmpl, name)
+	v = _service.RenderTpl(tplname, key_mmap)
 	return
 }

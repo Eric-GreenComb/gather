@@ -4,12 +4,17 @@ import (
 	"testing"
 )
 
-func TestAuth(t *testing.T) {
+func TestRenderTpl(t *testing.T) {
 
 	var _service RenderService
-	v := _service.RenderHello("hello", "eric")
-	if v != "<html><head></head><body><h1>Hello eric</h1></body></html>" {
-		t.Errorf("TestOpenService error")
+
+	_map_parse := make(map[string]string)
+	_map_parse["Hi"] = "Hello"
+	_map_parse["Name"] = "Eric"
+
+	v := _service.RenderTpl("hello", _map_parse)
+	if v != "<html><head></head><body><h1>Hello Eric</h1></body></html>" {
+		t.Errorf("TestRenderTpl error")
 	}
 
 }

@@ -11,9 +11,13 @@ func TestRenderOpenService(t *testing.T) {
 	_thrift_service, _ := _render_service.Default()
 	defer _render_service.Close()
 
-	v := _thrift_service.RenderHello("hello", "eric")
+	_map_parse := make(map[string]string)
+	_map_parse["Hi"] = "Hello"
+	_map_parse["Name"] = "Eric"
 
-	if v != "<html><head></head><body><h1>Hello eric</h1></body></html>" {
-		t.Errorf("TestOpenService error")
+	v := _thrift_service.RenderTpl("hello", _map_parse)
+
+	if v != "<html><head></head><body><h1>Hello Eric</h1></body></html>" {
+		t.Errorf("RenderTpl error")
 	}
 }
