@@ -2,7 +2,6 @@ package command
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/banerwai/global/bean"
 	"labix.org/v2/mgo/bson"
 	"testing"
@@ -22,7 +21,8 @@ func TestProfileService(t *testing.T) {
 	_obj.Name = "Test"
 	_obj.JobTitle = "this is a title"
 	_obj.Overview = "this is a overview go"
-	_obj.Serialnumber = 531770282584862733
+	_obj.CategoryNumber = 10100
+	_obj.SerialNumber = 10101
 
 	_obj.HourRate = 15000
 	_obj.WorkHours = 40

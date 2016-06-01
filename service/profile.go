@@ -128,6 +128,50 @@ func (self *ProfileService) GetProfilesByUserIdBean(user_id string) ([]bean.Prof
 	return profiles, nil
 }
 
+func (self *ProfileService) GetProfilesByCategory(category_id int64, timestamp int64, pagesize int64) (v string) {
+	_service, _ := _query_service.Default()
+	defer _query_service.Close()
+	v = _service.GetProfilesByCategory(category_id, timestamp, pagesize)
+	return
+}
+
+func (self *ProfileService) GetProfilesByCategoryBean(category_id int64, timestamp int64, pagesize int64) ([]bean.Profile, error) {
+	var profiles []bean.Profile
+
+	_json := self.GetProfilesByCategoryBean(category_id, timestamp, pagesize)
+	if len(_json) == 0 {
+		return profiles, errors.New("category_id :" + category_id + "'s profile is null")
+	}
+
+	err := json.Unmarshal([]byte(_json), &profiles)
+	if err != nil {
+		return profiles, errors.New("profiles unmarshal json error")
+	}
+	return profiles, nil
+}
+
+func (self *ProfileService) GetProfilesBySubCategory(subcategory_id int64, timestamp int64, pagesize int64) (v string) {
+	_service, _ := _query_service.Default()
+	defer _query_service.Close()
+	v = _service.GetProfilesBySubCategory(subcategory_id, timestamp, pagesize)
+	return
+}
+
+func (self *ProfileService) GetProfilesBySubCategoryBean(subcategory_id int64, timestamp int64, pagesize int64) ([]bean.Profile, error) {
+	var profiles []bean.Profile
+
+	_json := self.GetProfilesBySubCategoryBean(subcategory_id, timestamp, pagesize)
+	if len(_json) == 0 {
+		return profiles, errors.New("subcategory_id :" + subcategory_id + "'s profile is null")
+	}
+
+	err := json.Unmarshal([]byte(_json), &profiles)
+	if err != nil {
+		return profiles, errors.New("profiles unmarshal json error")
+	}
+	return profiles, nil
+}
+
 func (self *ProfileService) SearchProfiles(option_mmap map[string]int64, key_mmap map[string]string, timestamp int64, pagesize int64) (v string) {
 	_service, _ := _query_service.Default()
 	defer _query_service.Close()

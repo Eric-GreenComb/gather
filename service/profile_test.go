@@ -21,7 +21,8 @@ func TestProfileAddProfile(t *testing.T) {
 	_obj.Name = "Test"
 	_obj.JobTitle = "this is a title"
 	_obj.Overview = "this is a overview go"
-	_obj.Serialnumber = 531770282584862733
+	_obj.CategoryNumber = 10100
+	_obj.SerialNumber = 10101
 
 	_obj.HourRate = 15000
 	_obj.WorkHours = 40
@@ -53,7 +54,7 @@ func TestProfileAddProfile(t *testing.T) {
 
 	option_mmap := make(map[string]int64)
 
-	option_mmap["serial_number"] = 531770282584862733
+	option_mmap["serial_number"] = 10102
 
 	key_mmap := make(map[string]string)
 	key_mmap["overview"] = "go"
