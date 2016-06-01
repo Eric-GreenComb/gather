@@ -7,15 +7,15 @@ import (
 type AuthService struct {
 }
 
-var _query_service query.AuthService
+var _auth_query_service query.AuthService
 
 /**
  * query section
  */
 
 func (self *AuthService) Login(emailOrUsername string, pwd string) (v string) {
-	_service, _ := _query_service.Default()
-	defer _query_service.Close()
+	_service, _ := _auth_query_service.Default()
+	defer _auth_query_service.Close()
 	v = _service.Login(emailOrUsername, pwd)
 	return
 }

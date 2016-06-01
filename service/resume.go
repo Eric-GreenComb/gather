@@ -12,16 +12,16 @@ import (
 type ResumeService struct {
 }
 
-var _command_service command.ResumeService
-var _query_service query.ResumeService
+var _resume_command_service command.ResumeService
+var _resume_query_service query.ResumeService
 
 /**
  * command section
  */
 
 func (self *ResumeService) AddResume(resume string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.AddResume(resume)
 	return
 }
@@ -36,8 +36,8 @@ func (self *ResumeService) AddResumeBean(resume bean.Resume) (v string) {
 }
 
 func (self *ResumeService) UpdateResume(userid string, resume string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResume(userid, resume)
 	return
 }
@@ -52,15 +52,15 @@ func (self *ResumeService) UpdateResumeBean(userid string, resume bean.Resume) (
 }
 
 func (self *ResumeService) UpdateResumeBase(userid string, mmap map[string]string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResumeBase(userid, mmap)
 	return
 }
 
 func (self *ResumeService) UpdateResumeSkillExperience(userid string, experience_levels string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResumeSkillExperience(userid, experience_levels)
 	return
 }
@@ -75,8 +75,8 @@ func (self *ResumeService) UpdateResumeSkillExperienceBean(userid string, experi
 }
 
 func (self *ResumeService) UpdateResumeToolandArchs(userid string, tool_archs string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResumeToolandArchs(userid, tool_archs)
 	return
 }
@@ -91,8 +91,8 @@ func (self *ResumeService) UpdateResumeToolandArchsBean(userid string, tool_arch
 }
 
 func (self *ResumeService) UpdateResumePortfolioes(userid string, portfolioes string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResumePortfolioes(userid, portfolioes)
 	return
 }
@@ -107,8 +107,8 @@ func (self *ResumeService) UpdateResumePortfolioesBean(userid string, portfolioe
 }
 
 func (self *ResumeService) UpdateResumeEmploymentHistories(userid string, employment_histories string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResumeEmploymentHistories(userid, employment_histories)
 	return
 }
@@ -123,8 +123,8 @@ func (self *ResumeService) UpdateResumeEmploymentHistoriesBean(userid string, em
 }
 
 func (self *ResumeService) UpdateResumeEducations(userid string, educations string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResumeEducations(userid, educations)
 	return
 }
@@ -139,8 +139,8 @@ func (self *ResumeService) UpdateResumeEducationsBean(userid string, educations 
 }
 
 func (self *ResumeService) UpdateResumeOtherExperiences(userid string, other_experiences string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _resume_command_service.Default()
+	defer _resume_command_service.Close()
 	v = _service.UpdateResumeOtherExperiences(userid, other_experiences)
 	return
 }
@@ -158,8 +158,8 @@ func (self *ResumeService) UpdateResumeOtherExperiencesBean(userid string, other
  * query section
  */
 func (self *ResumeService) GetResume(userid string) (v string) {
-	_service, _ := _query_service.Default()
-	defer _query_service.Close()
+	_service, _ := _resume_query_service.Default()
+	defer _resume_query_service.Close()
 	v = _service.GetResume(userid)
 	return
 }

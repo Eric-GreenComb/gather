@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 )
 
-var _query_service query.CategoryService
+var _category_query_service query.CategoryService
 
 type CategoryService struct {
 }
@@ -18,20 +18,20 @@ type CategoryService struct {
  */
 
 func (self *CategoryService) LoadCategory(path string) (v bool) {
-	_service, _ := _query_service.Default()
-	defer _query_service.Close()
+	_service, _ := _category_query_service.Default()
+	defer _category_query_service.Close()
 	v = _service.LoadCategory(path)
 	return
 }
 
 func (self *CategoryService) GetCategories() (v string) {
-	_service, _ := _query_service.Default()
-	defer _query_service.Close()
+	_service, _ := _category_query_service.Default()
+	defer _category_query_service.Close()
 	v = _service.GetCategories()
 	return
 }
 
-func (self *CategoryService) GetDtoCategories() []bean.Category {
+func (self *CategoryService) GetCategoriesBean() []bean.Category {
 	var cats []bean.Category
 	_json := self.GetCategories()
 	if len(_json) == 0 {
@@ -45,13 +45,13 @@ func (self *CategoryService) GetDtoCategories() []bean.Category {
 }
 
 func (self *CategoryService) GetSubCategories(serialnumber int32) (v string) {
-	_service, _ := _query_service.Default()
-	defer _query_service.Close()
+	_service, _ := _category_query_service.Default()
+	defer _category_query_service.Close()
 	v = _service.GetSubCategories(serialnumber)
 	return
 }
 
-func (self *CategoryService) GetDtoSubCategories(serialnumber int32) []bean.SubCategory {
+func (self *CategoryService) GetSubCategoriesBean(serialnumber int32) []bean.SubCategory {
 	var subs []bean.SubCategory
 	_json := self.GetSubCategories(serialnumber)
 	if len(_json) == 0 {

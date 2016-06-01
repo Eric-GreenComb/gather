@@ -18,7 +18,7 @@ func TestAuth(t *testing.T) {
 		t.Errorf("GetSubCategories error")
 	}
 
-	v := _service.GetDtoSubCategories(10200)
+	v := _service.GetSubCategoriesBean(10200)
 	if len(v) != 10 {
 		t.Errorf("GetSubCategories error")
 	}

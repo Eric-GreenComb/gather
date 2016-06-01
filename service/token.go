@@ -9,23 +9,23 @@ import (
 type TokenService struct {
 }
 
-var _command_service command.TokenService
-var _query_service query.TokenService
+var _token_command_service command.TokenService
+var _token_query_service query.TokenService
 
 /**
  * command section
  */
 
 func (self *TokenService) NewToken_(key string, ttype int64) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _token_command_service.Default()
+	defer _token_command_service.Close()
 	v = _service.NewToken_(key, ttype)
 	return
 }
 
 func (self *TokenService) DeleteToken(key string, ttype int64) (v bool) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _token_command_service.Default()
+	defer _token_command_service.Close()
 	v = _service.DeleteToken(key, ttype)
 	return
 }
@@ -39,8 +39,8 @@ func (self *TokenService) DeleteToken(key string, ttype int64) (v bool) {
 // return -3 db error
 // return 1 验证pass
 func (self *TokenService) VerifyToken(token string, ttype int64, overhour float64) (v int64) {
-	_service, _ := _query_service.Default()
-	defer _query_service.Close()
+	_service, _ := _token_query_service.Default()
+	defer _token_query_service.Close()
 	v = _service.VerifyToken(token, ttype, overhour)
 	return
 }

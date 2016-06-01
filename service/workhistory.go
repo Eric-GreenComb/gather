@@ -12,16 +12,16 @@ import (
 type WorkHistoryService struct {
 }
 
-var _command_service command.WorkHistoryService
-var _query_service query.WorkHistoryService
+var _workhistory_command_service command.WorkHistoryService
+var _workhistory_query_service query.WorkHistoryService
 
 /**
  * command section
  */
 
 func (self *WorkHistoryService) UpdateWorkHistory(prifile_id, workhistory string) (v string) {
-	_service, _ := _command_service.Default()
-	defer _command_service.Close()
+	_service, _ := _workhistory_command_service.Default()
+	defer _workhistory_command_service.Close()
 	v = _service.UpdateWorkHistory(prifile_id, workhistory)
 	return
 }
@@ -39,8 +39,8 @@ func (self *WorkHistoryService) UpdateWorkHistoryBean(prifile_id string, workhis
  * query section
  */
 func (self *WorkHistoryService) GetWorkHistory(profile_id string) (v string) {
-	_service, _ := _query_service.Default()
-	defer _query_service.Close()
+	_service, _ := _workhistory_query_service.Default()
+	defer _workhistory_query_service.Close()
 	v = _service.GetWorkHistory(profile_id)
 	return
 }

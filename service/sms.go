@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/banerwai/gather/gateway/command"
-
+	"encoding/json"
 	"github.com/banerwai/global/bean"
+	"github.com/nats-io/nats"
 )
 
 type SmsService struct {
