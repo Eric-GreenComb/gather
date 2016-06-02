@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"github.com/banerwai/gather/flagparse"
 	"github.com/banerwai/global/bean"
 	"github.com/nats-io/nats"
 )
@@ -10,7 +11,7 @@ type EmailService struct {
 }
 
 func (self *EmailService) SendEmail(email bean.Email) error {
-	nc, err := nats.Connect(NatsUrls)
+	nc, err := nats.Connect(flagparse.NatsUrls)
 	defer nc.Close()
 
 	if err != nil {
@@ -29,7 +30,7 @@ func (self *EmailService) SendEmail(email bean.Email) error {
 }
 
 func (self *EmailService) SendTpl(email_extra bean.EmailExtra) error {
-	nc, err := nats.Connect(NatsUrls)
+	nc, err := nats.Connect(flagparse.NatsUrls)
 	defer nc.Close()
 
 	if err != nil {

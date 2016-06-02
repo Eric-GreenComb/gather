@@ -1,6 +1,7 @@
 package query
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -12,7 +13,7 @@ func TestTokenOpenService(t *testing.T) {
 	defer _auth_service.Close()
 
 	v := _thrift_service.Login("ministor@126.com", "a11111")
-	if v != "true" {
-		t.Errorf("Login error")
+	if strings.Contains(v, "error:") {
+		t.Errorf(v)
 	}
 }

@@ -1,11 +1,10 @@
 package thrift
 
 import (
-	"flag"
 	"os"
 
 	"github.com/apache/thrift/lib/go/thrift"
-
+	"github.com/banerwai/gather/flagparse"
 	"github.com/go-kit/kit/log"
 )
 
@@ -14,17 +13,11 @@ var ProtocolFactory thrift.TProtocolFactory
 var TransportFactory thrift.TTransportFactory
 
 func init() {
-	var (
-		thriftProtocol   = flag.String("thrift.protocol", "binary", "binary, compact, json, simplejson")
-		thriftBufferSize = flag.Int("thrift.buffer.size", 0, "0 for unbuffered")
-		thriftFramed     = flag.Bool("thrift.framed", false, "true to enable framing")
-	)
-	flag.Parse()
 
 	Logger = log.NewLogfmtLogger(os.Stdout)
 	Logger = log.NewContext(Logger).With("caller", log.DefaultCaller)
 
-	switch *thriftProtocol {
+	switch flagparse.ThriftProtocol {
 	case "compact":
 		ProtocolFactory = thrift.NewTCompactProtocolFactory()
 	case "simplejson":
@@ -34,16 +27,16 @@ func init() {
 	case "binary", "":
 		ProtocolFactory = thrift.NewTBinaryProtocolFactoryDefault()
 	default:
-		Logger.Log("protocol", *thriftProtocol, "err", "invalid protocol")
+		Logger.Log("protocol", flagparse.ThriftProtocol, "err", "invalid protocol")
 		os.Exit(1)
 	}
 
-	if *thriftBufferSize > 0 {
-		TransportFactory = thrift.NewTBufferedTransportFactory(*thriftBufferSize)
+	if flagparse.ThriftBufferSize > 0 {
+		TransportFactory = thrift.NewTBufferedTransportFactory(flagparse.ThriftBufferSize)
 	} else {
 		TransportFactory = thrift.NewTTransportFactory()
 	}
-	if *thriftFramed {
+	if flagparse.ThriftFramed {
 		TransportFactory = thrift.NewTFramedTransportFactory(TransportFactory)
 	}
 }

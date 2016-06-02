@@ -31,7 +31,7 @@ func TestUser(t *testing.T) {
 		t.Errorf("ActiveUser error")
 	}
 
-	_dto := _service.GetDtoUser("ministor@126.com")
+	_dto := _service.GetUserByEmailDto("ministor@126.com")
 	if _dto.Email != "ministor@126.com" {
 		t.Errorf("CountUser error")
 	}

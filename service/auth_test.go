@@ -7,9 +7,11 @@ import (
 func TestAuth(t *testing.T) {
 
 	var _service AuthService
-	s := _service.Login("ministor@126.com", "a11111")
-	if s != "true" {
-		t.Errorf("Login error")
+	_user, _err := _service.LoginDto("ministor@126.com", "a11111")
+	if _err != nil {
+		t.Errorf(_err.Error())
 	}
-
+	if _user.Email != "ministor@126.com" {
+		t.Errorf("user dto error")
+	}
 }

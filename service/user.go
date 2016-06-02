@@ -1,11 +1,10 @@
 package service
 
 import (
-	"github.com/banerwai/global/bean"
-
+	"errors"
 	"github.com/banerwai/gather/gateway/command"
 	"github.com/banerwai/gather/gateway/query"
-
+	"github.com/banerwai/global/bean"
 	"labix.org/v2/mgo/bson"
 )
 
@@ -61,25 +60,46 @@ func (self *UserService) ActiveUser(email string) (v bool) {
  * query section
  */
 
-func (self *UserService) GetUser(email string) (v string) {
+func (self *UserService) GetUserByEmail(email string) (v string) {
 	_service, _err := _user_query_service.Default()
 	if _err != nil {
 		return
 	}
 	defer _user_query_service.Close()
-	v = _service.GetUser(email)
+	v = _service.GetUserByEmail(email)
 	return
 }
 
-func (self *UserService) GetDtoUser(email string) bean.UserDto {
+func (self *UserService) GetUserByEmailDto(email string) (bean.UserDto, error) {
 	var _user bean.UserDto
-	_data := self.GetUser(email)
+	_data := self.GetUserByEmail(email)
 	if len(_data) == 0 {
-		return _user
+		return _user, errors.New("get user by email is error")
 	}
 	bson.Unmarshal([]byte(_data), &_user)
 
-	return _user
+	return _user, nil
+}
+
+func (self *UserService) GetUserByID(id string) (v string) {
+	_service, _err := _user_query_service.Default()
+	if _err != nil {
+		return
+	}
+	defer _user_query_service.Close()
+	v = _service.GetUserByID(id)
+	return
+}
+
+func (self *UserService) GetUserByIDDto(id string) (bean.UserDto, error) {
+	var _user bean.UserDto
+	_data := self.GetUserByID(id)
+	if len(_data) == 0 {
+		return _user, errors.New("get user by id is error")
+	}
+	bson.Unmarshal([]byte(_data), &_user)
+
+	return _user, nil
 }
 
 func (self *UserService) CountUser() (v int64) {
