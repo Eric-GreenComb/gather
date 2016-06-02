@@ -14,7 +14,10 @@ type RenderService struct {
  */
 
 func (self *RenderService) RenderTpl(tplname string, key_mmap map[string]string) (v string) {
-	_service, _ := _render_query_service.Default()
+	_service, _err := _render_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _render_query_service.Close()
 	v = _service.RenderTpl(tplname, key_mmap)
 	return

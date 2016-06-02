@@ -17,14 +17,20 @@ var _token_query_service query.TokenService
  */
 
 func (self *TokenService) NewToken_(key string, ttype int64) (v string) {
-	_service, _ := _token_command_service.Default()
+	_service, _err := _token_command_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _token_command_service.Close()
 	v = _service.NewToken_(key, ttype)
 	return
 }
 
 func (self *TokenService) DeleteToken(key string, ttype int64) (v bool) {
-	_service, _ := _token_command_service.Default()
+	_service, _err := _token_command_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _token_command_service.Close()
 	v = _service.DeleteToken(key, ttype)
 	return
@@ -39,7 +45,10 @@ func (self *TokenService) DeleteToken(key string, ttype int64) (v bool) {
 // return -3 db error
 // return 1 验证pass
 func (self *TokenService) VerifyToken(token string, ttype int64, overhour float64) (v int64) {
-	_service, _ := _token_query_service.Default()
+	_service, _err := _token_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _token_query_service.Close()
 	v = _service.VerifyToken(token, ttype, overhour)
 	return

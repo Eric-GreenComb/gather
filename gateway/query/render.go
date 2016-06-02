@@ -7,6 +7,7 @@ import (
 	thriftservice "github.com/banerwai/micros/query/render/service"
 	thriftrender "github.com/banerwai/micros/query/render/thrift/gen-go/render"
 
+	"errors"
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	banerwaiglobal "github.com/banerwai/global"
 	banerwaicrypto "github.com/banerwai/gommon/crypto"
@@ -32,6 +33,9 @@ func (self *RenderService) Init() error {
 
 	if _err != nil {
 		return _err
+	}
+	if len(_addrs) == 0 {
+		return errors.New("render query micro service is 0")
 	}
 
 	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]

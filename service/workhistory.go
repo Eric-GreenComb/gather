@@ -20,7 +20,10 @@ var _workhistory_query_service query.WorkHistoryService
  */
 
 func (self *WorkHistoryService) UpdateWorkHistory(prifile_id, workhistory string) (v string) {
-	_service, _ := _workhistory_command_service.Default()
+	_service, _err := _workhistory_command_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _workhistory_command_service.Close()
 	v = _service.UpdateWorkHistory(prifile_id, workhistory)
 	return
@@ -39,7 +42,10 @@ func (self *WorkHistoryService) UpdateWorkHistoryBean(prifile_id string, workhis
  * query section
  */
 func (self *WorkHistoryService) GetWorkHistory(profile_id string) (v string) {
-	_service, _ := _workhistory_query_service.Default()
+	_service, _err := _workhistory_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _workhistory_query_service.Close()
 	v = _service.GetWorkHistory(profile_id)
 	return

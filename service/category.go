@@ -18,14 +18,20 @@ type CategoryService struct {
  */
 
 func (self *CategoryService) LoadCategory(path string) (v bool) {
-	_service, _ := _category_query_service.Default()
+	_service, _err := _category_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _category_query_service.Close()
 	v = _service.LoadCategory(path)
 	return
 }
 
 func (self *CategoryService) GetCategories() (v string) {
-	_service, _ := _category_query_service.Default()
+	_service, _err := _category_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _category_query_service.Close()
 	v = _service.GetCategories()
 	return
@@ -45,7 +51,10 @@ func (self *CategoryService) GetCategoriesBean() []bean.Category {
 }
 
 func (self *CategoryService) GetSubCategories(serialnumber int32) (v string) {
-	_service, _ := _category_query_service.Default()
+	_service, _err := _category_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _category_query_service.Close()
 	v = _service.GetSubCategories(serialnumber)
 	return

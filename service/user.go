@@ -20,7 +20,10 @@ var _user_query_service query.UserService
  */
 
 func (self *UserService) CreateUser(mmap map[string]string) (v string) {
-	_service, _ := _user_command_service.Default()
+	_service, _err := _user_command_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _user_command_service.Close()
 	v = _service.CreateUser(mmap)
 	return
@@ -35,14 +38,20 @@ func (self *UserService) CreateBeanUser(user bean.User) (v string) {
 }
 
 func (self *UserService) ResetPwd(email string, newpwd string) (v bool) {
-	_service, _ := _user_command_service.Default()
+	_service, _err := _user_command_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _user_command_service.Close()
 	v = _service.ResetPwd(email, newpwd)
 	return
 }
 
 func (self *UserService) ActiveUser(email string) (v bool) {
-	_service, _ := _user_command_service.Default()
+	_service, _err := _user_command_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _user_command_service.Close()
 	v = _service.ActiveUser(email)
 	return
@@ -53,7 +62,10 @@ func (self *UserService) ActiveUser(email string) (v bool) {
  */
 
 func (self *UserService) GetUser(email string) (v string) {
-	_service, _ := _user_query_service.Default()
+	_service, _err := _user_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _user_query_service.Close()
 	v = _service.GetUser(email)
 	return
@@ -71,7 +83,10 @@ func (self *UserService) GetDtoUser(email string) bean.UserDto {
 }
 
 func (self *UserService) CountUser() (v int64) {
-	_service, _ := _user_query_service.Default()
+	_service, _err := _user_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _user_query_service.Close()
 	v = _service.CountUser()
 	return

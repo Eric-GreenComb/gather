@@ -14,7 +14,10 @@ var _auth_query_service query.AuthService
  */
 
 func (self *AuthService) Login(emailOrUsername string, pwd string) (v string) {
-	_service, _ := _auth_query_service.Default()
+	_service, _err := _auth_query_service.Default()
+	if _err != nil {
+		return
+	}
 	defer _auth_query_service.Close()
 	v = _service.Login(emailOrUsername, pwd)
 	return

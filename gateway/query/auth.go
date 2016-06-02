@@ -7,6 +7,7 @@ import (
 	thriftservice "github.com/banerwai/micros/query/auth/service"
 	thriftauth "github.com/banerwai/micros/query/auth/thrift/gen-go/auth"
 
+	"errors"
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	banerwaiglobal "github.com/banerwai/global"
 	banerwaicrypto "github.com/banerwai/gommon/crypto"
@@ -33,6 +34,9 @@ func (self *AuthService) Init() error {
 
 	if _err != nil {
 		return _err
+	}
+	if len(_addrs) == 0 {
+		return errors.New("auth query micro service is 0")
 	}
 
 	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]

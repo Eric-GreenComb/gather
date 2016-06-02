@@ -7,6 +7,7 @@ import (
 	thriftservice "github.com/banerwai/micros/command/workhistory/service"
 	thriftworkhistory "github.com/banerwai/micros/command/workhistory/thrift/gen-go/workhistory"
 
+	"errors"
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	banerwaiglobal "github.com/banerwai/global"
 	banerwaicrypto "github.com/banerwai/gommon/crypto"
@@ -33,6 +34,9 @@ func (self *WorkHistoryService) Init() error {
 
 	if _err != nil {
 		return _err
+	}
+	if len(_addrs) == 0 {
+		return errors.New("workhistory command micro service is 0")
 	}
 
 	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
