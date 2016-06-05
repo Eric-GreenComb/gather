@@ -30,7 +30,7 @@ func (self *UserService) CreateUser(mmap map[string]string) (v string) {
 
 func (self *UserService) CreateBeanUser(user bean.User) (v string) {
 	_mmap := make(map[string]string)
-	_mmap["invited"] = user.Invited.String()
+	_mmap["invited"] = user.Invited.Hex()
 	_mmap["email"] = user.Email
 	_mmap["pwd"] = user.Pwd
 	return self.CreateUser(_mmap)

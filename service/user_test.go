@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/banerwai/global/bean"
+	"labix.org/v2/mgo/bson"
 )
 
 func TestUser(t *testing.T) {
@@ -17,12 +18,12 @@ func TestUser(t *testing.T) {
 
 	// v := _service.CreateUser(user_mmap)
 	var _user bean.User
-	_user.Invited = "5707cb10ae6faa1d1071a189"
+	_user.Invited = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
 	_user.Email = "ministor@126.com"
 	_user.Pwd = "a11111"
 
 	v := _service.CreateBeanUser(_user)
-	if v != "OK" {
+	if !bson.IsObjectIdHex(v) {
 		t.Errorf("CreateUser error")
 	}
 
@@ -31,7 +32,7 @@ func TestUser(t *testing.T) {
 		t.Errorf("ActiveUser error")
 	}
 
-	_dto := _service.GetUserByEmailDto("ministor@126.com")
+	_dto, _ := _service.GetUserByEmailDto("ministor@126.com")
 	if _dto.Email != "ministor@126.com" {
 		t.Errorf("CountUser error")
 	}
