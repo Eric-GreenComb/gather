@@ -3,9 +3,9 @@ package command
 import (
 	"github.com/apache/thrift/lib/go/thrift"
 
-	thriftclient "github.com/banerwai/micros/command/contact/client/thrift"
-	thriftservice "github.com/banerwai/micros/command/contact/service"
-	thriftcontact "github.com/banerwai/micros/command/contact/thrift/gen-go/contact"
+	thriftclient "github.com/banerwai/micros/command/account/client/thrift"
+	thriftservice "github.com/banerwai/micros/command/account/service"
+	thriftaccount "github.com/banerwai/micros/command/account/thrift/gen-go/account"
 
 	"errors"
 	gatherthrift "github.com/banerwai/gather/common/thrift"
@@ -14,12 +14,12 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
-type ContactService struct {
+type AccountService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *ContactService) Default() (thriftservice.ContactService, error) {
+func (self *AccountService) Default() (thriftservice.AccountService, error) {
 	_err := self.Init()
 	if _err != nil {
 		return nil, _err
@@ -28,15 +28,15 @@ func (self *ContactService) Default() (thriftservice.ContactService, error) {
 	return self.Open()
 }
 
-func (self *ContactService) Init() error {
+func (self *AccountService) Init() error {
 
-	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_COMMAND_CONTACT)
+	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_COMMAND_ACCOUNT)
 
 	if _err != nil {
 		return _err
 	}
 	if len(_addrs) == 0 {
-		return errors.New("contact command micro service is 0")
+		return errors.New("account command micro service is 0")
 	}
 
 	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
@@ -44,7 +44,7 @@ func (self *ContactService) Init() error {
 	return nil
 }
 
-func (self *ContactService) Open() (thriftservice.ContactService, error) {
+func (self *AccountService) Open() (thriftservice.AccountService, error) {
 
 	transportSocket, err := thrift.NewTSocket(self.addr)
 	if err != nil {
@@ -57,15 +57,15 @@ func (self *ContactService) Open() (thriftservice.ContactService, error) {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftcontact.NewContactServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftaccount.NewAccountServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
 
-	var svc thriftservice.ContactService
+	var svc thriftservice.AccountService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
 
 	return svc, err
 }
 
-func (self *ContactService) Close() {
+func (self *AccountService) Close() {
 	if self.trans.IsOpen() {
 		self.trans.Close()
 	}
