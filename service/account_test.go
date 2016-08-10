@@ -24,8 +24,6 @@ func TestAccountService(t *testing.T) {
 	_obj.Currency = global.CURRENCY_CNY
 	_obj.Amount = 4000
 	_obj.PayType = global.PayType_BankRemittance
-	_obj.PayFee = _obj.Amount * 0 / 1000
-	_obj.RealCosts = _obj.Amount - _obj.PayFee
 
 	_billing_id := _service.CreateBillingBean(_obj)
 
