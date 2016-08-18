@@ -15,6 +15,7 @@ func main() {
 	router.SetupBaseRoute(r)
 
 	router.SetupV1UserRoute(r)
+	router.SetupV1AccountRoute(r)
 
 	// Get user value
 	r.GET("/user/:email", handler.GetUserByEmail)
