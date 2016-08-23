@@ -8,7 +8,6 @@ import (
 func SetupV1UserRoute(g *gin.Engine) {
 	r := g.Group("/api/v1")
 	{
-		r.GET("", handler.V1)
 		r.GET("/user/:email", handler.GetUserByEmail)
 		r.GET("/userid/:id", handler.GetUserByID)
 

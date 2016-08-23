@@ -11,6 +11,9 @@ var (
 	ThriftProtocol   string
 	ThriftBufferSize int
 	ThriftFramed     bool
+
+	BanerwaiApiPort string
+	BanerwaiApiKey  string
 )
 
 func init() {
@@ -21,6 +24,9 @@ func init() {
 		thriftProtocol   = flag.String("thrift.protocol", "binary", "binary, compact, json, simplejson")
 		thriftBufferSize = flag.Int("thrift.buffer.size", 0, "0 for unbuffered")
 		thriftFramed     = flag.Bool("thrift.framed", false, "true to enable framing")
+
+		banerwaiApiPort = flag.String("banerwai.api.port", ":3000", "the api listen port")
+		banerwaiApiKey  = flag.String("banerwai.api.key", "private_key", "key for api")
 	)
 
 	flag.Parse()
@@ -31,4 +37,7 @@ func init() {
 	ThriftProtocol = *thriftProtocol
 	ThriftBufferSize = *thriftBufferSize
 	ThriftFramed = *thriftFramed
+
+	BanerwaiApiPort = *banerwaiApiPort
+	BanerwaiApiKey = *banerwaiApiKey
 }

@@ -2,10 +2,8 @@ package handler
 
 import (
 	"github.com/banerwai/gather/service"
-	"github.com/banerwai/global"
 	"github.com/banerwai/global/bean"
 	"github.com/gin-gonic/gin"
-	"labix.org/v2/mgo/bson"
 	"net/http"
 	"strconv"
 	"time"
@@ -40,9 +38,9 @@ func GetDealBillingBeans(c *gin.Context) {
 
 	_timestamp, _err := strconv.ParseInt(_timestamp_str, 10, 64)
 	if _err != nil {
-		_timestamp := time.Now().Unix()
+		_timestamp = time.Now().Unix()
 	}
-	_pagesize, _err := strconv.ParseInt(_timestamp_str, 10, 64)
+	_pagesize, _err := strconv.ParseInt(_pagesize_str, 10, 64)
 	if _err != nil {
 		_pagesize = 10
 	}
@@ -63,9 +61,9 @@ func GetBillingBeans(c *gin.Context) {
 
 	_timestamp, _err := strconv.ParseInt(_timestamp_str, 10, 64)
 	if _err != nil {
-		_timestamp := time.Now().Unix()
+		_timestamp = time.Now().Unix()
 	}
-	_pagesize, _err := strconv.ParseInt(_timestamp_str, 10, 64)
+	_pagesize, _err := strconv.ParseInt(_pagesize_str, 10, 64)
 	if _err != nil {
 		_pagesize = 10
 	}

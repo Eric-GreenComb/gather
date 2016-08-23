@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupV1UserRoute(g *gin.Engine) {
+func SetupV1AccountRoute(g *gin.Engine) {
 	r := g.Group("/api/v1")
 	{
 		r.GET("/account/:uid", handler.GetAccountBean)

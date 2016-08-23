@@ -12,3 +12,14 @@ func SetupBaseRoute(g *gin.Engine) {
 		r.GET("/ping", handler.Ping)
 	}
 }
+
+func SetupV1BussnessRoute(g *gin.Engine) {
+	r := g.Group("/api/v1")
+	{
+		r.GET("", handler.V1)
+	}
+
+	SetupV1UserRoute(g)
+	SetupV1AccountRoute(g)
+	SetupV1AuthRoute(g)
+}
