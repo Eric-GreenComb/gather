@@ -11,6 +11,14 @@ import (
 
 func GetAccountBean(c *gin.Context) {
 	_uid := c.Params.ByName("uid")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _uid, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
+
 	var _service service.AccountService
 	_obj, _err := _service.GetAccountBean(_uid)
 	if _err != nil {
@@ -22,6 +30,14 @@ func GetAccountBean(c *gin.Context) {
 
 func GetBillingBean(c *gin.Context) {
 	_id := c.Params.ByName("id")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _id, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
+
 	var _service service.AccountService
 	_obj, _err := _service.GetBillingBean(_id)
 	if _err != nil {
@@ -33,12 +49,19 @@ func GetBillingBean(c *gin.Context) {
 
 func GetDealBillingBeans(c *gin.Context) {
 	_uid := c.Query("uid")
-	_timestamp_str := c.Query("timestamp")
+	_stamp_str := c.Query("stamp")
 	_pagesize_str := c.Query("pagesize")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
 
-	_timestamp, _err := strconv.ParseInt(_timestamp_str, 10, 64)
+	if !ApiV1CheckSign(_sign, _uid, _stamp_str, _pagesize_str, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
+
+	_stamp, _err := strconv.ParseInt(_stamp_str, 10, 64)
 	if _err != nil {
-		_timestamp = time.Now().Unix()
+		_stamp = time.Now().Unix()
 	}
 	_pagesize, _err := strconv.ParseInt(_pagesize_str, 10, 64)
 	if _err != nil {
@@ -46,7 +69,7 @@ func GetDealBillingBeans(c *gin.Context) {
 	}
 
 	var _service service.AccountService
-	_objs, _err := _service.GetDealBillingBeans(_uid, _timestamp, _pagesize)
+	_objs, _err := _service.GetDealBillingBeans(_uid, _stamp, _pagesize)
 	if _err != nil {
 		c.String(http.StatusOK, _err.Error())
 		return
@@ -56,12 +79,19 @@ func GetDealBillingBeans(c *gin.Context) {
 
 func GetBillingBeans(c *gin.Context) {
 	_uid := c.Query("uid")
-	_timestamp_str := c.Query("timestamp")
+	_stamp_str := c.Query("stamp")
 	_pagesize_str := c.Query("pagesize")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
 
-	_timestamp, _err := strconv.ParseInt(_timestamp_str, 10, 64)
+	if !ApiV1CheckSign(_sign, _uid, _stamp_str, _pagesize_str, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
+
+	_stamp, _err := strconv.ParseInt(_stamp_str, 10, 64)
 	if _err != nil {
-		_timestamp = time.Now().Unix()
+		_stamp = time.Now().Unix()
 	}
 	_pagesize, _err := strconv.ParseInt(_pagesize_str, 10, 64)
 	if _err != nil {
@@ -69,7 +99,7 @@ func GetBillingBeans(c *gin.Context) {
 	}
 
 	var _service service.AccountService
-	_objs, _err := _service.GetBillingBeans(_uid, _timestamp, _pagesize)
+	_objs, _err := _service.GetBillingBeans(_uid, _stamp, _pagesize)
 	if _err != nil {
 		c.String(http.StatusOK, _err.Error())
 		return
@@ -92,6 +122,13 @@ func CreateAccountBean(c *gin.Context) {
 
 func GenAccount(c *gin.Context) {
 	_uid := c.Params.ByName("uid")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _uid, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
 
 	var _service service.AccountService
 	_ret := _service.GenAccount(_uid)

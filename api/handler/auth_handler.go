@@ -9,6 +9,14 @@ import (
 func Login(c *gin.Context) {
 	_email := c.Query("email")
 	_pwd := c.Query("pwd")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _email, _pwd, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
+
 	var _service service.AuthService
 	_obj, _err := _service.LoginDto(_email, _pwd)
 	if _err != nil {

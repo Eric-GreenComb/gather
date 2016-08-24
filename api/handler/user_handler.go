@@ -11,6 +11,14 @@ import (
 
 func GetUserByEmail(c *gin.Context) {
 	_email := c.Params.ByName("email")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _email, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
+
 	var _service service.UserService
 	_user, _err := _service.GetUserByEmailDto(_email)
 	if _err != nil {
@@ -22,6 +30,14 @@ func GetUserByEmail(c *gin.Context) {
 
 func GetUserByID(c *gin.Context) {
 	_id := c.Params.ByName("id")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _id, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
+
 	var _service service.UserService
 	_user, _err := _service.GetUserByIDDto(_id)
 	if _err != nil {
@@ -51,6 +67,13 @@ func CreateBeanUser(c *gin.Context) {
 func ResetPwd(c *gin.Context) {
 	_email := c.Query("email")
 	_newpwd := c.Query("newpwd")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _email, _newpwd, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
 
 	var _service service.UserService
 	_ret := _service.ResetPwd(_email, _newpwd)
@@ -59,6 +82,13 @@ func ResetPwd(c *gin.Context) {
 
 func ActiveUser(c *gin.Context) {
 	_email := c.Query("email")
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	if !ApiV1CheckSign(_sign, _email, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
 
 	var _service service.UserService
 	_ret := _service.ActiveUser(_email)
