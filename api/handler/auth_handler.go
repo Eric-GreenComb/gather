@@ -6,9 +6,12 @@ import (
 	"net/http"
 )
 
+// POST /auth/login?sign=xxx&timestamp=xxx HTTP/1.1
+// Content-Type: application/x-www-form-urlencoded
+// email=email&pwd=pwd
 func Login(c *gin.Context) {
-	_email := c.Query("email")
-	_pwd := c.Query("pwd")
+	_email := c.PostForm("email")
+	_pwd := c.PostForm("pwd")
 	_sign := c.Query("sign")
 	_timestamp := c.Query("timestamp")
 

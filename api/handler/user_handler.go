@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// GET /user/:email?sign=xxx&timestamp=xxx
 func GetUserByEmail(c *gin.Context) {
 	_email := c.Params.ByName("email")
 	_sign := c.Query("sign")
@@ -28,6 +29,7 @@ func GetUserByEmail(c *gin.Context) {
 	c.JSON(http.StatusOK, _user)
 }
 
+// GET /user/:id?sign=xxx&timestamp=xxx
 func GetUserByID(c *gin.Context) {
 	_id := c.Params.ByName("id")
 	_sign := c.Query("sign")
@@ -47,15 +49,28 @@ func GetUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, _user)
 }
 
+// POST /user/add?sign=xxx&timestamp=xxx HTTP/1.1
+// Content-Type: application/x-www-form-urlencoded
+// email=email&pwd=pwd&invited=
 func CreateBeanUser(c *gin.Context) {
 
-	var _user bean.User
-	// This will infer what binder to use depending on the content-type header.
-	if c.Bind(&_user) != nil {
-		c.JSON(http.StatusOK, gin.H{"error": "bind User error"})
+	_sign := c.Query("sign")
+	_timestamp := c.Query("timestamp")
+
+	_email := c.PostForm("email")
+	_pwd := c.PostForm("pwd")
+	_invited := c.PostForm("invited")
+
+	if !ApiV1CheckSign(_sign, _email, _pwd, _invited, _timestamp) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
 	}
 
-	if len(_user.Invited) == 0 {
+	var _user bean.User
+
+	_user.Email = _email
+	_user.Pwd = _pwd
+	if len(_invited) == 0 || !bson.IsObjectIdHex(_invited) {
 		_user.Invited = bson.ObjectIdHex(global.BANERWAI_INVITED_DEFAULT_USERID)
 	}
 
@@ -64,9 +79,12 @@ func CreateBeanUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
+// POST user/reset?sign=xxx&timestamp=xxx HTTP/1.1
+// Content-Type: application/x-www-form-urlencoded
+// email=email&newpwd=pwd
 func ResetPwd(c *gin.Context) {
-	_email := c.Query("email")
-	_newpwd := c.Query("newpwd")
+	_email := c.PostForm("email")
+	_newpwd := c.PostForm("newpwd")
 	_sign := c.Query("sign")
 	_timestamp := c.Query("timestamp")
 
@@ -80,8 +98,11 @@ func ResetPwd(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
+// POST user/active?sign=xxx&timestamp=xxx HTTP/1.1
+// Content-Type: application/x-www-form-urlencoded
+// email=email
 func ActiveUser(c *gin.Context) {
-	_email := c.Query("email")
+	_email := c.PostForm("email")
 	_sign := c.Query("sign")
 	_timestamp := c.Query("timestamp")
 
