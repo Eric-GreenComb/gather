@@ -15,9 +15,5 @@ func ApiV1CheckSign(sign string, args ...string) bool {
 	if len(sign) == 0 {
 		return false
 	}
-	total := flagparse.BanerwaiApiKey
-	for _, arg := range args {
-		total += arg
-	}
-	return crypto.CompareDoubleMd5(total, sign)
+	return crypto.BanerwaiApiV1CheckSign(sign, flagparse.BanerwaiApiKey, args...)
 }
