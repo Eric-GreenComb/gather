@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/banerwai/gather/flagparse"
 	"github.com/banerwai/gather/service"
 	"github.com/banerwai/global"
 	"github.com/banerwai/global/bean"
@@ -12,18 +13,21 @@ import (
 // GET /user/:email?sign=xxx&timestamp=xxx
 func GetUserByEmail(c *gin.Context) {
 	_email := c.Params.ByName("email")
-	_sign := c.Query("sign")
-	_timestamp := c.Query("timestamp")
 
-	if !ApiV1CheckSign(_sign, _email, _timestamp) {
-		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-		return
+	if flagparse.BanerwaiApiCheckSign {
+		_sign := c.Query("sign")
+		_timestamp := c.Query("timestamp")
+
+		if !ApiV1CheckSign(_sign, _email, _timestamp) {
+			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+			return
+		}
 	}
 
 	var _service service.UserService
 	_user, _err := _service.GetUserByEmailDto(_email)
 	if _err != nil {
-		c.String(http.StatusOK, _err.Error())
+		c.JSON(http.StatusOK, gin.H{"error": _err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, _user)
@@ -32,18 +36,21 @@ func GetUserByEmail(c *gin.Context) {
 // GET /user/:id?sign=xxx&timestamp=xxx
 func GetUserByID(c *gin.Context) {
 	_id := c.Params.ByName("id")
-	_sign := c.Query("sign")
-	_timestamp := c.Query("timestamp")
 
-	if !ApiV1CheckSign(_sign, _id, _timestamp) {
-		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-		return
+	if flagparse.BanerwaiApiCheckSign {
+		_sign := c.Query("sign")
+		_timestamp := c.Query("timestamp")
+
+		if !ApiV1CheckSign(_sign, _id, _timestamp) {
+			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+			return
+		}
 	}
 
 	var _service service.UserService
 	_user, _err := _service.GetUserByIDDto(_id)
 	if _err != nil {
-		c.String(http.StatusOK, _err.Error())
+		c.JSON(http.StatusOK, gin.H{"error": _err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, _user)
@@ -54,16 +61,17 @@ func GetUserByID(c *gin.Context) {
 // email=email&pwd=pwd&invited=
 func CreateBeanUser(c *gin.Context) {
 
-	_sign := c.Query("sign")
-	_timestamp := c.Query("timestamp")
-
 	_email := c.PostForm("email")
 	_pwd := c.PostForm("pwd")
 	_invited := c.PostForm("invited")
 
-	if !ApiV1CheckSign(_sign, _email, _pwd, _invited, _timestamp) {
-		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-		return
+	if flagparse.BanerwaiApiCheckSign {
+		_sign := c.Query("sign")
+		_timestamp := c.Query("timestamp")
+		if !ApiV1CheckSign(_sign, _email, _pwd, _invited, _timestamp) {
+			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+			return
+		}
 	}
 
 	var _user bean.User
@@ -85,12 +93,15 @@ func CreateBeanUser(c *gin.Context) {
 func ResetPwd(c *gin.Context) {
 	_email := c.PostForm("email")
 	_newpwd := c.PostForm("newpwd")
-	_sign := c.Query("sign")
-	_timestamp := c.Query("timestamp")
 
-	if !ApiV1CheckSign(_sign, _email, _newpwd, _timestamp) {
-		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-		return
+	if flagparse.BanerwaiApiCheckSign {
+		_sign := c.Query("sign")
+		_timestamp := c.Query("timestamp")
+
+		if !ApiV1CheckSign(_sign, _email, _newpwd, _timestamp) {
+			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+			return
+		}
 	}
 
 	var _service service.UserService
@@ -103,12 +114,15 @@ func ResetPwd(c *gin.Context) {
 // email=email
 func ActiveUser(c *gin.Context) {
 	_email := c.PostForm("email")
-	_sign := c.Query("sign")
-	_timestamp := c.Query("timestamp")
 
-	if !ApiV1CheckSign(_sign, _email, _timestamp) {
-		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-		return
+	if flagparse.BanerwaiApiCheckSign {
+		_sign := c.Query("sign")
+		_timestamp := c.Query("timestamp")
+
+		if !ApiV1CheckSign(_sign, _email, _timestamp) {
+			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+			return
+		}
 	}
 
 	var _service service.UserService

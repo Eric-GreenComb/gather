@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"github.com/banerwai/gather/flagparse"
 	"github.com/banerwai/gather/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -12,12 +13,14 @@ import (
 func Login(c *gin.Context) {
 	_email := c.PostForm("email")
 	_pwd := c.PostForm("pwd")
-	_sign := c.Query("sign")
-	_timestamp := c.Query("timestamp")
 
-	if !ApiV1CheckSign(_sign, _email, _pwd, _timestamp) {
-		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-		return
+	if flagparse.BanerwaiApiCheckSign {
+		_sign := c.Query("sign")
+		_timestamp := c.Query("timestamp")
+		if !ApiV1CheckSign(_sign, _email, _pwd, _timestamp) {
+			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+			return
+		}
 	}
 
 	var _service service.AuthService

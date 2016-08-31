@@ -12,8 +12,9 @@ var (
 	ThriftBufferSize int
 	ThriftFramed     bool
 
-	BanerwaiApiPort string
-	BanerwaiApiKey  string
+	BanerwaiApiPort      string
+	BanerwaiApiKey       string
+	BanerwaiApiCheckSign bool
 )
 
 func init() {
@@ -25,8 +26,9 @@ func init() {
 		thriftBufferSize = flag.Int("thrift.buffer.size", 0, "0 for unbuffered")
 		thriftFramed     = flag.Bool("thrift.framed", false, "true to enable framing")
 
-		banerwaiApiPort = flag.String("banerwai.api.port", ":3000", "the api listen port")
-		banerwaiApiKey  = flag.String("banerwai.api.key", "private_key", "key for api")
+		banerwaiApiPort      = flag.String("banerwai.api.port", ":3000", "the api listen port")
+		banerwaiApiKey       = flag.String("banerwai.api.key", "private_key", "key for api")
+		banerwaiApiCheckSign = flag.Bool("banerwai.api.check.sign", false, "if check api sign")
 	)
 
 	flag.Parse()
@@ -40,4 +42,5 @@ func init() {
 
 	BanerwaiApiPort = *banerwaiApiPort
 	BanerwaiApiKey = *banerwaiApiKey
+	BanerwaiApiCheckSign = *banerwaiApiCheckSign
 }
