@@ -24,4 +24,6 @@ func SetupV1BussnessRoute(g *gin.Engine) {
 	SetupV1AuthRoute(g)
 
 	SetupV1CategoryRoute(g)
+
+	SetupV1ContactRoute(g)
 }
