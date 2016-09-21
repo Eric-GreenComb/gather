@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/banerwai/gather/flagparse"
+	"github.com/banerwai/gather/common/flagparse"
 	"github.com/banerwai/gather/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -12,7 +12,7 @@ import (
 func LoadCategory(c *gin.Context) {
 	_path := c.Params.ByName("path")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -34,7 +34,7 @@ func LoadCategory(c *gin.Context) {
 // GET /category?sign=xxx&timestamp=xxx
 func GetCategoriesBean(c *gin.Context) {
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -58,7 +58,7 @@ func GetSubCategoriesBean(c *gin.Context) {
 		return
 	}
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 

@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/banerwai/gather/flagparse"
+	"github.com/banerwai/gather/common/flagparse"
 	"github.com/banerwai/gather/service"
 	"github.com/banerwai/global/bean"
 	"github.com/gin-gonic/gin"
@@ -14,7 +14,7 @@ import (
 func GetAccountBean(c *gin.Context) {
 	_uid := c.Params.ByName("uid")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -37,7 +37,7 @@ func GetAccountBean(c *gin.Context) {
 func GetBillingBean(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -64,7 +64,7 @@ func GetDealBillingBeans(c *gin.Context) {
 	_stamp_str := c.Query("stamp")
 	_pagesize_str := c.Query("pagesize")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -100,7 +100,7 @@ func GetBillingBeans(c *gin.Context) {
 	_stamp_str := c.Query("stamp")
 	_pagesize_str := c.Query("pagesize")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -139,10 +139,10 @@ func CreateAccountBean(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"error": "bind data error"})
 	}
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
-		if !ApiV1CheckSign(_sign, _account.UserId.Hex(), _account.Email, _timestamp) {
+		if !ApiV1CheckSign(_sign, _account.UserID.Hex(), _account.Email, _timestamp) {
 			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
 			return
 		}
@@ -158,7 +158,7 @@ func CreateAccountBean(c *gin.Context) {
 func GenAccount(c *gin.Context) {
 	_uid := c.Params.ByName("uid")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -183,10 +183,10 @@ func CreateBillingBean(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"error": "bind data error"})
 	}
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
-		if !ApiV1CheckSign(_sign, _billing.UserId.Hex(), _timestamp) {
+		if !ApiV1CheckSign(_sign, _billing.UserID.Hex(), _timestamp) {
 			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
 			return
 		}
@@ -201,7 +201,7 @@ func CreateBillingBean(c *gin.Context) {
 // Content-Type: application/x-www-form-urlencoded
 func DealBilling(c *gin.Context) {
 	_bid := c.Params.ByName("bid")
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -221,7 +221,7 @@ func DealBilling(c *gin.Context) {
 func CancelBilling(c *gin.Context) {
 	_bid := c.Params.ByName("bid")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 

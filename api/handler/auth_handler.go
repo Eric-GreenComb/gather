@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/banerwai/gather/flagparse"
+	"github.com/banerwai/gather/common/flagparse"
 	"github.com/banerwai/gather/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -14,7 +14,7 @@ func Login(c *gin.Context) {
 	_email := c.PostForm("email")
 	_pwd := c.PostForm("pwd")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 		if !ApiV1CheckSign(_sign, _email, _pwd, _timestamp) {

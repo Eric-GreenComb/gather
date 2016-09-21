@@ -8,9 +8,10 @@ import (
 	"github.com/mikespook/gearman-go/client"
 )
 
+// GearmanAddr gearman address
 var GearmanAddr string
 
-// var GearmanClient *client.Client
+// GearmanResponseHandler GearmanClient *client.Client
 var GearmanResponseHandler client.ResponseHandler
 
 func init() {

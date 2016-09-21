@@ -4,13 +4,18 @@ import (
 	"os"
 
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/banerwai/gather/flagparse"
+	"github.com/banerwai/gather/common/flagparse"
 	"github.com/go-kit/kit/log"
 )
 
-var Logger log.Logger
-var ProtocolFactory thrift.TProtocolFactory
-var TransportFactory thrift.TTransportFactory
+var (
+	// Logger logger
+	Logger log.Logger
+	// ProtocolFactory thrift protocol factory
+	ProtocolFactory thrift.TProtocolFactory
+	// TransportFactory thrift transport factory
+	TransportFactory thrift.TTransportFactory
+)
 
 func init() {
 

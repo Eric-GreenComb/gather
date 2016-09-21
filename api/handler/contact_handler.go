@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/banerwai/gather/flagparse"
+	"github.com/banerwai/gather/common/flagparse"
 	"github.com/banerwai/gather/service"
 	"github.com/banerwai/global/bean"
 	"github.com/gin-gonic/gin"
@@ -13,7 +13,7 @@ import (
 func GetContactTpl(c *gin.Context) {
 	_tplname := c.Params.ByName("tplname")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -33,7 +33,7 @@ func GetContactTpl(c *gin.Context) {
 func GetContactBean(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -56,7 +56,7 @@ func GetContactBean(c *gin.Context) {
 func GetContactSignStatusEnum(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -76,7 +76,7 @@ func GetContactSignStatusEnum(c *gin.Context) {
 func GetClientContactBeans(c *gin.Context) {
 	_email := c.Params.ByName("email")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -99,7 +99,7 @@ func GetClientContactBeans(c *gin.Context) {
 func GetFreelancerContactBeans(c *gin.Context) {
 	_email := c.Params.ByName("email")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -128,7 +128,7 @@ func CreateContactBean(c *gin.Context) {
 	_contact_tpl := c.PostForm("contact_tpl")
 	_tpl_param := c.PostForm("tpl_param")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 		if !ApiV1CheckSign(_sign, _client_email, _freelancer_email, _contact_tpl, _tpl_param, _timestamp) {
@@ -138,7 +138,7 @@ func CreateContactBean(c *gin.Context) {
 	}
 
 	var _obj bean.Contact
-	_obj.Id = bson.NewObjectId()
+	_obj.ID = bson.NewObjectId()
 	_obj.ClientEmail = _client_email
 	_obj.FreeLancerEmail = _freelancer_email
 	_obj.ContactTpl = _contact_tpl
@@ -156,7 +156,7 @@ func UpdateContact(c *gin.Context) {
 	_id := c.PostForm("id")
 	_param := c.PostForm("param")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -180,7 +180,7 @@ func ClientSignContact(c *gin.Context) {
 	_id := c.PostForm("id")
 	_status := c.PostForm("status")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -206,7 +206,7 @@ func FreelancerSignContact(c *gin.Context) {
 	_id := c.PostForm("id")
 	_status := c.PostForm("status")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -231,7 +231,7 @@ func FreelancerSignContact(c *gin.Context) {
 func DealContact(c *gin.Context) {
 	_id := c.PostForm("id")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 

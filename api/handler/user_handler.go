@@ -1,10 +1,10 @@
 package handler
 
 import (
-	"github.com/banerwai/gather/flagparse"
+	"github.com/banerwai/gather/common/flagparse"
 	"github.com/banerwai/gather/service"
-	"github.com/banerwai/global"
 	"github.com/banerwai/global/bean"
+	"github.com/banerwai/global/constant"
 	"github.com/gin-gonic/gin"
 	"labix.org/v2/mgo/bson"
 	"net/http"
@@ -14,7 +14,7 @@ import (
 func GetUserByEmail(c *gin.Context) {
 	_email := c.Params.ByName("email")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -37,7 +37,7 @@ func GetUserByEmail(c *gin.Context) {
 func GetUserByID(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -65,7 +65,7 @@ func CreateBeanUser(c *gin.Context) {
 	_pwd := c.PostForm("pwd")
 	_invited := c.PostForm("invited")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 		if !ApiV1CheckSign(_sign, _email, _pwd, _invited, _timestamp) {
@@ -79,7 +79,7 @@ func CreateBeanUser(c *gin.Context) {
 	_user.Email = _email
 	_user.Pwd = _pwd
 	if len(_invited) == 0 || !bson.IsObjectIdHex(_invited) {
-		_user.Invited = bson.ObjectIdHex(global.BANERWAI_INVITED_DEFAULT_USERID)
+		_user.Invited = bson.ObjectIdHex(constant.BanerwaiInvitedDefaultUserID)
 	}
 
 	var _service service.UserService
@@ -94,7 +94,7 @@ func ResetPwd(c *gin.Context) {
 	_email := c.PostForm("email")
 	_newpwd := c.PostForm("newpwd")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 
@@ -115,7 +115,7 @@ func ResetPwd(c *gin.Context) {
 func ActiveUser(c *gin.Context) {
 	_email := c.PostForm("email")
 
-	if flagparse.BanerwaiApiCheckSign {
+	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
 

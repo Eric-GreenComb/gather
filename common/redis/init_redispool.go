@@ -3,13 +3,13 @@ package redis
 import (
 	"github.com/garyburd/redigo/redis"
 
-	"github.com/banerwai/global"
+	"github.com/banerwai/global/constant"
 	"github.com/banerwai/gommon/etcd"
 )
 
 // 重写生成连接池方法
 func newPool() *redis.Pool {
-	_addr, _err := etcd.GetValue(global.ETCD_KEY_REDIS_ADDR)
+	_addr, _err := etcd.GetValue(constant.EtcdKeyRedisAddr)
 	if _err != nil {
 		return nil
 	}
@@ -26,5 +26,5 @@ func newPool() *redis.Pool {
 	}
 }
 
-// 生成连接池
+// RedisPool 生成连接池
 var RedisPool = newPool()
