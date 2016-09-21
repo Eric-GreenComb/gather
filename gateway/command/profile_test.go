@@ -16,7 +16,7 @@ func TestProfileService(t *testing.T) {
 	_defaultObjectId := "5707cb10ae6faa1d1071a189"
 
 	var _obj bean.Profile
-	_obj.Id = bson.ObjectIdHex(_defaultObjectId)
+	_obj.ID = bson.ObjectIdHex(_defaultObjectId)
 	_obj.UserID = bson.ObjectIdHex(_defaultObjectId)
 	_obj.Name = "Test"
 	_obj.JobTitle = "this is a title"

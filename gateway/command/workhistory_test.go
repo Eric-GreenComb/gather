@@ -15,7 +15,7 @@ func TestWorkHistoryService(t *testing.T) {
 
 	var _defaultObjectId = "5707cb10ae6faa1d1071a189"
 	var _obj bean.WorkHistory
-	_obj.Id = bson.ObjectIdHex(_defaultObjectId)
+	_obj.ID = bson.ObjectIdHex(_defaultObjectId)
 	_obj.ProfileID = bson.ObjectIdHex(_defaultObjectId)
 
 	var lsWorkHistoryAndFeedbacks []bean.WorkHistoryAndFeedback

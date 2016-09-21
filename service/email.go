@@ -2,7 +2,7 @@ package service
 
 import (
 	"encoding/json"
-	"github.com/banerwai/gather/flagparse"
+	"github.com/banerwai/gather/common/flagparse"
 	"github.com/banerwai/global/bean"
 	"github.com/nats-io/nats"
 )

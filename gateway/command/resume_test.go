@@ -14,7 +14,7 @@ func TestResumeService(t *testing.T) {
 	_thrift_service, _ := _service.Default()
 
 	var _obj bean.Resume
-	_obj.Id = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
+	_obj.ID = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
 	_obj.AuthEmail = "ministor@126.com"
 	_obj.UserID = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
 

@@ -9,7 +9,7 @@ import (
 
 	"errors"
 	gatherthrift "github.com/banerwai/gather/common/thrift"
-	banerwaiglobal "github.com/banerwai/global"
+	"github.com/banerwai/global/constant"
 	banerwaicrypto "github.com/banerwai/gommon/crypto"
 	"github.com/banerwai/gommon/etcd"
 )
@@ -31,7 +31,7 @@ func (self *ResumeService) Default() (thriftservice.ResumeService, error) {
 
 func (self *ResumeService) Init() error {
 
-	_addrs, _err := etcd.GetServicesByName(banerwaiglobal.ETCD_KEY_MICROS_QUERY_RESUME)
+	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosQueryResume)
 
 	if _err != nil {
 		return _err

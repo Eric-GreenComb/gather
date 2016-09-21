@@ -7,7 +7,7 @@ import (
 
 	"github.com/banerwai/gather/gateway/command"
 	"github.com/banerwai/gather/gateway/query"
-	"github.com/banerwai/global"
+	"github.com/banerwai/global/constant"
 
 	"labix.org/v2/mgo/bson"
 )
@@ -132,23 +132,23 @@ func (self *ContactService) GetContactSignStatus(contactid string) (v string) {
 func (self *ContactService) GetContactSignStatusEnum(contactid string) (v int) {
 	_bson := self.GetContactSignStatus(contactid)
 	if len(_bson) == 0 {
-		return global.ContactSign_Null
+		return constant.ContactSignNull
 	}
 	mmap := bson.M{}
 	bson.Unmarshal([]byte(_bson), mmap)
 
 	if mmap["client_signup"] == true && mmap["freelancer_signup"] == true {
-		return global.ContactSign_Dealed
+		return constant.ContactSignDealed
 	}
 
 	if mmap["client_signup"] == true {
-		return global.ContactSign_Client
+		return constant.ContactSignClient
 	}
 
 	if mmap["freelancer_signup"] == true {
-		return global.ContactSign_Freelancer
+		return constant.ContactSignFreelancer
 	}
-	return global.ContactSign_Null
+	return constant.ContactSignNull
 }
 
 func (self *ContactService) GetClientContact(clientemail string) (v string) {
