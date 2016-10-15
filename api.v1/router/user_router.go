@@ -1,7 +1,7 @@
 package router
 
 import (
-	"github.com/banerwai/gather/api/handler"
+	"github.com/banerwai/gather/api.v1/handler"
 	"github.com/gin-gonic/gin"
 )
 

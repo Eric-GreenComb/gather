@@ -4,25 +4,17 @@ import (
 	"github.com/banerwai/gather/common/flagparse"
 	"github.com/banerwai/gather/service"
 	"github.com/banerwai/global/bean"
+	apiRequest "github.com/banerwai/global/bean"
+	"github.com/banerwai/gommon/api"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
 	"time"
 )
 
-// GET /account/:uid?sign=xxx&timestamp=xxx
+// GET /account/:uid
 func GetAccountBean(c *gin.Context) {
 	_uid := c.Params.ByName("uid")
-
-	if flagparse.BanerwaiAPICheckSign {
-		_sign := c.Query("sign")
-		_timestamp := c.Query("timestamp")
-
-		if !ApiV1CheckSign(_sign, _uid, _timestamp) {
-			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-			return
-		}
-	}
 
 	var _service service.AccountService
 	_obj, _err := _service.GetAccountBean(_uid)
@@ -33,19 +25,9 @@ func GetAccountBean(c *gin.Context) {
 	c.JSON(http.StatusOK, _obj)
 }
 
-// GET /billing/:id?sign=xxx&timestamp=xxx
+// GET /billing/:id
 func GetBillingBean(c *gin.Context) {
 	_id := c.Params.ByName("id")
-
-	if flagparse.BanerwaiAPICheckSign {
-		_sign := c.Query("sign")
-		_timestamp := c.Query("timestamp")
-
-		if !ApiV1CheckSign(_sign, _id, _timestamp) {
-			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-			return
-		}
-	}
 
 	var _service service.AccountService
 	_obj, _err := _service.GetBillingBean(_id)
@@ -56,23 +38,13 @@ func GetBillingBean(c *gin.Context) {
 	c.JSON(http.StatusOK, _obj)
 }
 
-// GET /billings/deal?uid=uid&stamp=stamp&pagesize=10&sign=xxx&timestamp=xxx
+// GET /billings/deal?uid=uid&stamp=stamp&pagesize=10
 // stamp : page timestamp,for mongo page;
 // timestamp : api timestamp
 func GetDealBillingBeans(c *gin.Context) {
 	_uid := c.Query("uid")
 	_stamp_str := c.Query("stamp")
 	_pagesize_str := c.Query("pagesize")
-
-	if flagparse.BanerwaiAPICheckSign {
-		_sign := c.Query("sign")
-		_timestamp := c.Query("timestamp")
-
-		if !ApiV1CheckSign(_sign, _uid, _stamp_str, _pagesize_str, _timestamp) {
-			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-			return
-		}
-	}
 
 	_stamp, _err := strconv.ParseInt(_stamp_str, 10, 64)
 	if _err != nil {
@@ -92,23 +64,13 @@ func GetDealBillingBeans(c *gin.Context) {
 	c.JSON(http.StatusOK, _objs)
 }
 
-// GET /billings/all?uid=uid&stamp=stamp&pagesize=10&sign=xxx&timestamp=xxx
+// GET /billings/all?uid=uid&stamp=stamp&pagesize=10
 // stamp : page timestamp,for mongo page;
 // timestamp : api timestamp
 func GetBillingBeans(c *gin.Context) {
 	_uid := c.Query("uid")
 	_stamp_str := c.Query("stamp")
 	_pagesize_str := c.Query("pagesize")
-
-	if flagparse.BanerwaiAPICheckSign {
-		_sign := c.Query("sign")
-		_timestamp := c.Query("timestamp")
-
-		if !ApiV1CheckSign(_sign, _uid, _stamp_str, _pagesize_str, _timestamp) {
-			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
-			return
-		}
-	}
 
 	_stamp, _err := strconv.ParseInt(_stamp_str, 10, 64)
 	if _err != nil {
@@ -128,10 +90,21 @@ func GetBillingBeans(c *gin.Context) {
 	c.JSON(http.StatusOK, _objs)
 }
 
+// CreateAccountBean create account handler
 // POST account/add?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // user_id=user_id&email=email
 func CreateAccountBean(c *gin.Context) {
+	var apiReq apiRequest.APIRequest
+	if c.BindJSON(&apiReq) != nil {
+		c.JSON(http.StatusOK, gin.H{"error": "bind error"})
+		return
+	}
+
+	if !api.CheckAPISignature(apiReq) {
+		c.JSON(http.StatusOK, gin.H{"error": "sign error"})
+		return
+	}
 
 	var _account bean.Account
 	// This will infer what binder to use depending on the content-type header.

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/banerwai/gather/api/router"
+	"github.com/banerwai/gather/api.v1/router"
 	"github.com/banerwai/gather/common/flagparse"
 	"github.com/gin-gonic/gin"
 )
