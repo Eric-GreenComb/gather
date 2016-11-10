@@ -14,21 +14,24 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
+// ContactService ContactService
 type ContactService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *ContactService) Default() (thriftservice.ContactService, error) {
-	_err := self.Init()
+// Default service init and open
+func (cs *ContactService) Default() (thriftservice.ContactService, error) {
+	_err := cs.Init()
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return cs.Open()
 }
 
-func (self *ContactService) Init() error {
+// Init service get addr
+func (cs *ContactService) Init() error {
 
 	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosCommandContact)
 
@@ -39,25 +42,26 @@ func (self *ContactService) Init() error {
 		return errors.New("contact command micro service is 0")
 	}
 
-	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
+	cs.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }
 
-func (self *ContactService) Open() (thriftservice.ContactService, error) {
+// Open service open addr
+func (cs *ContactService) Open() (thriftservice.ContactService, error) {
 
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(cs.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
+	cs.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
+	if err := cs.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftcontact.NewContactServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftcontact.NewContactServiceClientFactory(cs.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.ContactService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
@@ -65,8 +69,9 @@ func (self *ContactService) Open() (thriftservice.ContactService, error) {
 	return svc, err
 }
 
-func (self *ContactService) Close() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+// Close service close
+func (cs *ContactService) Close() {
+	if cs.trans.IsOpen() {
+		cs.trans.Close()
 	}
 }

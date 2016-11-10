@@ -10,13 +10,13 @@ import (
 // need start micro render service localhost:36020
 func TestWorkHistoryService(t *testing.T) {
 
-	var _workhistory_service WorkHistoryService
-	_thrift_service, _ := _workhistory_service.Default()
+	var _workhistoryService WorkHistoryService
+	_thriftService, _ := _workhistoryService.Default()
 
-	var _defaultObjectId = "5707cb10ae6faa1d1071a189"
+	var _defaultObjectID = "5707cb10ae6faa1d1071a189"
 	var _obj bean.WorkHistory
-	_obj.ID = bson.ObjectIdHex(_defaultObjectId)
-	_obj.ProfileID = bson.ObjectIdHex(_defaultObjectId)
+	_obj.ID = bson.ObjectIdHex(_defaultObjectID)
+	_obj.ProfileID = bson.ObjectIdHex(_defaultObjectID)
 
 	var lsWorkHistoryAndFeedbacks []bean.WorkHistoryAndFeedback
 
@@ -46,11 +46,11 @@ func TestWorkHistoryService(t *testing.T) {
 
 	b, _ := json.Marshal(_obj)
 
-	v := _thrift_service.UpdateWorkHistory(_defaultObjectId, string(b))
+	v := _thriftService.UpdateWorkHistory(_defaultObjectId, string(b))
 
 	if v != "OK" {
 		t.Errorf("UpdateWorkHistory error")
 	}
-	_workhistory_service.Close()
+	_workhistoryService.Close()
 
 }

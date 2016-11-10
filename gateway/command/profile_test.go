@@ -10,14 +10,14 @@ import (
 // need start micro render service localhost:36020
 func TestProfileService(t *testing.T) {
 
-	var _profile_service ProfileService
-	_thrift_service, _ := _profile_service.Default()
+	var _profileService ProfileService
+	_thriftService, _ := _profileService.Default()
 
-	_defaultObjectId := "5707cb10ae6faa1d1071a189"
+	_defaultObjectID := "5707cb10ae6faa1d1071a189"
 
 	var _obj bean.Profile
-	_obj.ID = bson.ObjectIdHex(_defaultObjectId)
-	_obj.UserID = bson.ObjectIdHex(_defaultObjectId)
+	_obj.ID = bson.ObjectIdHex(_defaultObjectID)
+	_obj.UserID = bson.ObjectIdHex(_defaultObjectID)
 	_obj.Name = "Test"
 	_obj.JobTitle = "this is a title"
 	_obj.Overview = "this is a overview go"
@@ -28,23 +28,23 @@ func TestProfileService(t *testing.T) {
 	_obj.WorkHours = 40
 
 	b, _ := json.Marshal(_obj)
-	_profile_id := _thrift_service.AddProfile(string(b))
+	_profileID := _thriftService.AddProfile(string(b))
 
-	if !bson.IsObjectIdHex(_profile_id) {
+	if !bson.IsObjectIdHex(_profileID) {
 		t.Errorf("AddProfile error")
 	}
 
-	_map_update := make(map[string]string)
-	_map_update["freelancer_name"] = "freelancer_name"
-	_map_update["job_title"] = "job_title"
-	_map_update["hour_rate"] = "1601234"
-	_map_update["portfolio_nums"] = "4"
+	_mapUpdate := make(map[string]string)
+	_mapUpdate["freelancer_name"] = "freelancer_name"
+	_mapUpdate["job_title"] = "job_title"
+	_mapUpdate["hour_rate"] = "1601234"
+	_mapUpdate["portfolio_nums"] = "4"
 
-	v := _thrift_service.UpdateProfileBase(_profile_id, _map_update)
+	v := _thriftService.UpdateProfileBase(_profileID, _mapUpdate)
 
 	if v != "OK" {
 		t.Errorf("UpdateProfileBase error")
 	}
-	_profile_service.Close()
+	_profileService.Close()
 
 }

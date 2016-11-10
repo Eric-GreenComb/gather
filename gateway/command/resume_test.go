@@ -11,7 +11,7 @@ import (
 func TestResumeService(t *testing.T) {
 
 	var _service ResumeService
-	_thrift_service, _ := _service.Default()
+	_thriftService, _ := _service.Default()
 
 	var _obj bean.Resume
 	_obj.ID = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
@@ -35,16 +35,16 @@ func TestResumeService(t *testing.T) {
 	_obj.ToolandArchs = lsToolandArchs
 
 	b, _ := json.Marshal(_obj)
-	v := _thrift_service.AddResume(string(b))
+	v := _thriftService.AddResume(string(b))
 	if v != "OK" {
 		t.Errorf("AddResume error")
 	}
 
-	_map_update := make(map[string]string)
-	_map_update["auth_email"] = "ministor@126.com"
-	_map_update["phone"] = "13811111112"
+	_mapUpdate := make(map[string]string)
+	_mapUpdate["auth_email"] = "ministor@126.com"
+	_mapUpdate["phone"] = "13811111112"
 	userid := "5707cb10ae6faa1d1071a189"
-	v = _thrift_service.UpdateResumeBase(userid, _map_update)
+	v = _thriftService.UpdateResumeBase(userid, _mapUpdate)
 
 	if v != "OK" {
 		t.Errorf("UpdateResume error")

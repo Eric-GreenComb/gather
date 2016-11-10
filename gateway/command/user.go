@@ -14,21 +14,24 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
+// UserService UserService
 type UserService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *UserService) Default() (thriftservice.UserService, error) {
-	_err := self.Init()
+// Default service init and open
+func (us *UserService) Default() (thriftservice.UserService, error) {
+	_err := us.Init()
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return us.Open()
 }
 
-func (self *UserService) Init() error {
+// Init service get addr
+func (us *UserService) Init() error {
 
 	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosCommandUser)
 
@@ -39,25 +42,26 @@ func (self *UserService) Init() error {
 		return errors.New("user command micro service is 0")
 	}
 
-	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
+	us.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }
 
-func (self *UserService) Open() (thriftservice.UserService, error) {
+// Open service open addr
+func (us *UserService) Open() (thriftservice.UserService, error) {
 
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(us.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
+	us.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
+	if err := us.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftuser.NewUserServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftuser.NewUserServiceClientFactory(us.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.UserService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
@@ -65,8 +69,9 @@ func (self *UserService) Open() (thriftservice.UserService, error) {
 	return svc, err
 }
 
-func (self *UserService) Close() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+// Close service close
+func (us *UserService) Close() {
+	if us.trans.IsOpen() {
+		us.trans.Close()
 	}
 }

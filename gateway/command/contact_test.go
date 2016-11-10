@@ -7,14 +7,14 @@ import (
 // need start micro render service localhost:36020
 func TestContactService(t *testing.T) {
 
-	var _contact_service ContactService
-	_thrift_service, _ := _contact_service.Default()
+	var _contactService ContactService
+	_thriftService, _ := _contactService.Default()
 
-	_v := _thrift_service.Ping()
+	_v := _thriftService.Ping()
 
 	if _v != "pong" {
 		t.Errorf("ContactService error")
 	}
-	_contact_service.Close()
+	_contactService.Close()
 
 }
