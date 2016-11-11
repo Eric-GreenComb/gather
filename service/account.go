@@ -11,81 +11,89 @@ import (
 	// "labix.org/v2/mgo/bson"
 )
 
+// AccountService AccountService
 type AccountService struct {
 }
 
-var _account_command_service command.AccountService
-var _account_query_service query.AccountService
+var _accountCommandService command.AccountService
+var _accountQueryService query.AccountService
 
 /**
  * command section
  */
 
-func (self *AccountService) CreateAccount(json_account string) (v string) {
-	_service, _err := _account_command_service.Default()
+// CreateAccount create account by account json
+func (as *AccountService) CreateAccount(jsonAccount string) (v string) {
+	_service, _err := _accountCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_command_service.Close()
-	v = _service.CreateAccount(json_account)
+	defer _accountCommandService.Close()
+	v = _service.CreateAccount(jsonAccount)
 	return
 }
 
-func (self *AccountService) CreateAccountBean(account bean.Account) (v string) {
+// CreateAccountBean create account by account bean
+func (as *AccountService) CreateAccountBean(account bean.Account) (v string) {
 	b, err := json.Marshal(account)
 	if err != nil {
 		return err.Error()
 	}
-	v = self.CreateAccount(string(b))
+	v = as.CreateAccount(string(b))
 	return
 }
 
-func (self *AccountService) CreateBilling(json_billing string) (v string) {
-	_service, _err := _account_command_service.Default()
+// CreateBilling create billing by billing json
+func (as *AccountService) CreateBilling(jsonBilling string) (v string) {
+	_service, _err := _accountCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_command_service.Close()
-	v = _service.CreateBilling(json_billing)
+	defer _accountCommandService.Close()
+	v = _service.CreateBilling(jsonBilling)
 	return
 }
 
-func (self *AccountService) CreateBillingBean(billing bean.Billing) (v string) {
+// CreateBillingBean create billing by billing bean
+func (as *AccountService) CreateBillingBean(billing bean.Billing) (v string) {
 	b, err := json.Marshal(billing)
 	if err != nil {
 		return err.Error()
 	}
-	v = self.CreateBilling(string(b))
+	v = as.CreateBilling(string(b))
 	return
 }
 
-func (self *AccountService) DealBilling(billing_id string) (v string) {
-	_service, _err := _account_command_service.Default()
+// DealBilling deal a billing
+func (as *AccountService) DealBilling(billingID string) (v string) {
+	_service, _err := _accountCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_command_service.Close()
-	v = _service.DealBilling(billing_id)
+	defer _accountCommandService.Close()
+	v = _service.DealBilling(billingID)
 	return
 }
 
-func (self *AccountService) CancelBilling(billing_id string) (v string) {
-	_service, _err := _account_command_service.Default()
+// CancelBilling cancel a billing
+func (as *AccountService) CancelBilling(billingID string) (v string) {
+	_service, _err := _accountCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_command_service.Close()
-	v = _service.CancelBilling(billing_id)
+	defer _accountCommandService.Close()
+	v = _service.CancelBilling(billingID)
 	return
 }
 
-func (self *AccountService) GenAccount(user_id string) (v string) {
-	_service, _err := _account_command_service.Default()
+// GenAccount gen account by billing
+func (as *AccountService) GenAccount(userID string) (v string) {
+	_service, _err := _accountCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_command_service.Close()
-	v = _service.GenAccount(user_id)
+	defer _accountCommandService.Close()
+	v = _service.GenAccount(userID)
 	return
 }
 
@@ -93,21 +101,23 @@ func (self *AccountService) GenAccount(user_id string) (v string) {
  * query section
  */
 
-func (self *AccountService) GetAccountByUserId(user_id string) (v string) {
-	_service, _err := _account_query_service.Default()
+// GetAccountByUserID get account json by userID
+func (as *AccountService) GetAccountByUserID(userID string) (v string) {
+	_service, _err := _accountQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_query_service.Close()
-	v = _service.GetAccountByUserId(user_id)
+	defer _accountQueryService.Close()
+	v = _service.GetAccountByUserId(userID)
 	return
 }
 
-func (self *AccountService) GetAccountBean(user_id string) (bean.Account, error) {
+// GetAccountBean get account bean by userID
+func (as *AccountService) GetAccountBean(userID string) (bean.Account, error) {
 	var _obj bean.Account
-	_json := self.GetAccountByUserId(user_id)
+	_json := self.GetAccountByUserId(userID)
 	if len(_json) == 0 {
-		return _obj, errors.New("account :" + user_id + " is null")
+		return _obj, errors.New("account :" + userID + " is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &_obj)
@@ -117,21 +127,23 @@ func (self *AccountService) GetAccountBean(user_id string) (bean.Account, error)
 	return _obj, nil
 }
 
-func (self *AccountService) GetBillingById(id string) (v string) {
-	_service, _err := _account_query_service.Default()
+// GetBillingByID get billing json by ID
+func (as *AccountService) GetBillingByID(ID string) (v string) {
+	_service, _err := _accountQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_query_service.Close()
+	defer _accountQueryService.Close()
 	v = _service.GetBillingById(id)
 	return
 }
 
-func (self *AccountService) GetBillingBean(id string) (bean.Billing, error) {
+// GetBillingBean get billing bean by ID
+func (as *AccountService) GetBillingBean(ID string) (bean.Billing, error) {
 	var _obj bean.Billing
-	_json := self.GetBillingById(id)
+	_json := as.GetBillingById(ID)
 	if len(_json) == 0 {
-		return _obj, errors.New("billing :" + id + " is null")
+		return _obj, errors.New("billing :" + ID + " is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &_obj)
@@ -141,22 +153,24 @@ func (self *AccountService) GetBillingBean(id string) (bean.Billing, error) {
 	return _obj, nil
 }
 
-func (self *AccountService) GetDealBillingByUserId(user_id string, timestamp int64, pagesize int64) (v string) {
-	_service, _err := _account_query_service.Default()
+// GetDealBillingByUserID get dealed billings json by userID
+func (as *AccountService) GetDealBillingByUserID(userID string, timestamp int64, pagesize int64) (v string) {
+	_service, _err := _accountQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_query_service.Close()
-	v = _service.GetDealBillingByUserId(user_id, timestamp, pagesize)
+	defer _accountQueryService.Close()
+	v = _service.GetDealBillingByUserId(userID, timestamp, pagesize)
 	return
 }
 
-func (self *AccountService) GetDealBillingBeans(user_id string, timestamp int64, pagesize int64) ([]bean.Billing, error) {
+// GetDealBillingBeans get dealed billing beans by userID
+func (as *AccountService) GetDealBillingBeans(userID string, timestamp int64, pagesize int64) ([]bean.Billing, error) {
 	var _objs []bean.Billing
 
-	_json := self.GetDealBillingByUserId(user_id, timestamp, pagesize)
+	_json := as.GetDealBillingByUserId(userID, timestamp, pagesize)
 	if len(_json) == 0 {
-		return _objs, errors.New("billings :" + user_id + "'s deal billings is null")
+		return _objs, errors.New("billings :" + userID + "'s deal billings is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &_objs)
@@ -166,22 +180,24 @@ func (self *AccountService) GetDealBillingBeans(user_id string, timestamp int64,
 	return _objs, nil
 }
 
-func (self *AccountService) GetBillingByUserId(user_id string, timestamp int64, pagesize int64) (v string) {
-	_service, _err := _account_query_service.Default()
+// GetBillingByUserID get billings json by userID
+func (as *AccountService) GetBillingByUserID(userID string, timestamp int64, pagesize int64) (v string) {
+	_service, _err := _accountQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _account_query_service.Close()
-	v = _service.GetBillingByUserId(user_id, timestamp, pagesize)
+	defer _accountQueryService.Close()
+	v = _service.GetBillingByUserId(userID, timestamp, pagesize)
 	return
 }
 
-func (self *AccountService) GetBillingBeans(user_id string, timestamp int64, pagesize int64) ([]bean.Billing, error) {
+// GetBillingBeans get billing beans by userID
+func (as *AccountService) GetBillingBeans(userID string, timestamp int64, pagesize int64) ([]bean.Billing, error) {
 	var _objs []bean.Billing
 
-	_json := self.GetBillingByUserId(user_id, timestamp, pagesize)
+	_json := as.GetBillingByUserId(userID, timestamp, pagesize)
 	if len(_json) == 0 {
-		return _objs, errors.New("billings :" + user_id + "'s billings is null")
+		return _objs, errors.New("billings :" + userID + "'s billings is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &_objs)

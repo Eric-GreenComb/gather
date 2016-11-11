@@ -9,27 +9,29 @@ import (
 	"strings"
 )
 
+// AuthService AuthService
 type AuthService struct {
 }
 
-var _auth_query_service query.AuthService
+var _authQueryService query.AuthService
 
 /**
  * query section
  */
 
-func (self *AuthService) Login(email string, pwd string) (string, error) {
+// Login Login return user json
+func (as *AuthService) Login(email string, pwd string) (string, error) {
 	if len(email) == 0 || len(pwd) == 0 {
 		return "", errors.New("input is null")
 	}
 	if !regexp.IsEmail(email) {
 		return "", errors.New("email regexp is error ")
 	}
-	_service, _err := _auth_query_service.Default()
+	_service, _err := _authQueryService.Default()
 	if _err != nil {
 		return "", _err
 	}
-	defer _auth_query_service.Close()
+	defer _authQueryService.Close()
 	v := _service.Login(email, pwd)
 	if strings.Contains(v, "error:") {
 		return "", errors.New(v)
@@ -37,8 +39,9 @@ func (self *AuthService) Login(email string, pwd string) (string, error) {
 	return v, nil
 }
 
-func (self *AuthService) LoginDto(email string, pwd string) (bean.UserDto, error) {
-	_v, _err := self.Login(email, pwd)
+// LoginDto return user bean
+func (as *AuthService) LoginDto(email string, pwd string) (bean.UserDto, error) {
+	_v, _err := as.Login(email, pwd)
 	var _user bean.UserDto
 	if _err != nil {
 		return _user, _err

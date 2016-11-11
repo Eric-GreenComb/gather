@@ -8,38 +8,42 @@ import (
 	"encoding/json"
 )
 
-var _category_query_service query.CategoryService
-
+// CategoryService CategoryService
 type CategoryService struct {
 }
+
+var _categoryQueryService query.CategoryService
 
 /**
  * query section
  */
 
-func (self *CategoryService) LoadCategory(path string) (v bool) {
-	_service, _err := _category_query_service.Default()
+// LoadCategory load category json 2 mem
+func (cs *CategoryService) LoadCategory(path string) (v bool) {
+	_service, _err := _categoryQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _category_query_service.Close()
+	defer _categoryQueryService.Close()
 	v = _service.LoadCategory(path)
 	return
 }
 
-func (self *CategoryService) GetCategories() (v string) {
-	_service, _err := _category_query_service.Default()
+// GetCategories get categories json
+func (cs *CategoryService) GetCategories() (v string) {
+	_service, _err := _categoryQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _category_query_service.Close()
+	defer _categoryQueryService.Close()
 	v = _service.GetCategories()
 	return
 }
 
-func (self *CategoryService) GetCategoriesBean() []bean.Category {
+// GetCategoriesBean get category beans
+func (cs *CategoryService) GetCategoriesBean() []bean.Category {
 	var cats []bean.Category
-	_json := self.GetCategories()
+	_json := cs.GetCategories()
 	if len(_json) == 0 {
 		return cats
 	}
@@ -50,19 +54,21 @@ func (self *CategoryService) GetCategoriesBean() []bean.Category {
 	return cats
 }
 
-func (self *CategoryService) GetSubCategories(serialnumber int32) (v string) {
-	_service, _err := _category_query_service.Default()
+// GetSubCategories get subcategories json
+func (cs *CategoryService) GetSubCategories(serialnumber int32) (v string) {
+	_service, _err := _categoryQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _category_query_service.Close()
+	defer _categoryQueryService.Close()
 	v = _service.GetSubCategories(serialnumber)
 	return
 }
 
-func (self *CategoryService) GetSubCategoriesBean(serialnumber int32) []bean.SubCategory {
+// GetSubCategoriesBean get subcategory beans
+func (cs *CategoryService) GetSubCategoriesBean(serialnumber int32) []bean.SubCategory {
 	var subs []bean.SubCategory
-	_json := self.GetSubCategories(serialnumber)
+	_json := cs.GetSubCategories(serialnumber)
 	if len(_json) == 0 {
 		return subs
 	}
