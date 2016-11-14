@@ -7,10 +7,12 @@ import (
 	"github.com/nats-io/nats"
 )
 
+// EmailService EmailService
 type EmailService struct {
 }
 
-func (self *EmailService) SendEmail(email bean.Email) error {
+// SendEmail send email bean
+func (es *EmailService) SendEmail(email bean.Email) error {
 	nc, err := nats.Connect(flagparse.NatsUrls)
 	defer nc.Close()
 
@@ -29,7 +31,8 @@ func (self *EmailService) SendEmail(email bean.Email) error {
 	return nil
 }
 
-func (self *EmailService) SendTpl(email_extra bean.EmailExtra) error {
+// SendTpl send tpl
+func (es *EmailService) SendTpl(emailEtra bean.EmailExtra) error {
 	nc, err := nats.Connect(flagparse.NatsUrls)
 	defer nc.Close()
 
@@ -37,7 +40,7 @@ func (self *EmailService) SendTpl(email_extra bean.EmailExtra) error {
 		return err
 	}
 
-	b, err := json.Marshal(email_extra)
+	b, err := json.Marshal(emailEtra)
 	if err != nil {
 		return err
 	}

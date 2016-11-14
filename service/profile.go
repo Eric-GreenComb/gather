@@ -9,90 +9,99 @@ import (
 	"github.com/banerwai/gather/gateway/query"
 )
 
+// ProfileService ProfileService
 type ProfileService struct {
 }
 
-var _profile_command_service command.ProfileService
-var _profile_query_service query.ProfileService
+var _profileCommandService command.ProfileService
+var _profileQueryService query.ProfileService
 
 /**
  * command section
  */
 
-func (self *ProfileService) AddProfile(json_profile string) (v string) {
-	_service, _err := _profile_command_service.Default()
+// AddProfile add a profile json
+func (ps *ProfileService) AddProfile(jsonProfile string) (v string) {
+	_service, _err := _profileCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_command_service.Close()
-	v = _service.AddProfile(json_profile)
+	defer _profileCommandService.Close()
+	v = _service.AddProfile(jsonProfile)
 	return
 }
 
-func (self *ProfileService) AddProfileBean(profile bean.Profile) (v string) {
+// AddProfileBean add a profile bean
+func (ps *ProfileService) AddProfileBean(profile bean.Profile) (v string) {
 	b, err := json.Marshal(profile)
 	if err != nil {
 		return err.Error()
 	}
-	v = self.AddProfile(string(b))
+	v = ps.AddProfile(string(b))
 	return
 }
 
-func (self *ProfileService) UpdateProfile(profile_id string, json_profile string) (v string) {
-	_service, _err := _profile_command_service.Default()
+// UpdateProfile update profile by json
+func (ps *ProfileService) UpdateProfile(profileID string, jsonProfile string) (v string) {
+	_service, _err := _profileCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_command_service.Close()
-	v = _service.UpdateProfile(profile_id, json_profile)
+	defer _profileCommandService.Close()
+	v = _service.UpdateProfile(profileID, jsonProfile)
 	return
 }
 
-func (self *ProfileService) UpdateProfileBean(profile_id string, profile bean.Profile) (v string) {
+// UpdateProfileBean update profile by bean
+func (ps *ProfileService) UpdateProfileBean(profileID string, profile bean.Profile) (v string) {
 	b, err := json.Marshal(profile)
 	if err != nil {
 		return err.Error()
 	}
-	v = self.UpdateProfile(profile_id, string(b))
+	v = ps.UpdateProfile(profileID, string(b))
 	return
 }
 
-func (self *ProfileService) UpdateProfileStatus(profile_id string, status bool) (v string) {
-	_service, _err := _profile_command_service.Default()
+// UpdateProfileStatus update profile status
+func (ps *ProfileService) UpdateProfileStatus(profileID string, status bool) (v string) {
+	_service, _err := _profileCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_command_service.Close()
-	v = _service.UpdateProfileStatus(profile_id, status)
+	defer _profileCommandService.Close()
+	v = _service.UpdateProfileStatus(profileID, status)
 	return
 }
 
-func (self *ProfileService) UpdateProfileBase(profile_id string, mmap map[string]string) (v string) {
-	_service, _err := _profile_command_service.Default()
+// UpdateProfileBase update profile by map
+func (ps *ProfileService) UpdateProfileBase(profileID string, mmap map[string]string) (v string) {
+	_service, _err := _profileCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_command_service.Close()
-	v = _service.UpdateProfileBase(profile_id, mmap)
+	defer _profileCommandService.Close()
+	v = _service.UpdateProfileBase(profileID, mmap)
 	return
 }
 
-func (self *ProfileService) UpdateProfileAgencyMembers(profile_id string, agency_members string) (v string) {
-	_service, _err := _profile_command_service.Default()
+// UpdateProfileAgencyMembers update profile agency members json
+func (ps *ProfileService) UpdateProfileAgencyMembers(profileID string, agencyMembers string) (v string) {
+	_service, _err := _profileCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_command_service.Close()
-	v = _service.UpdateProfileAgencyMembers(profile_id, agency_members)
+	defer _profileCommandService.Close()
+	v = _service.UpdateProfileAgencyMembers(profileID, agencyMembers)
 	return
 }
 
-func (self *ProfileService) UpdateProfileAgencyMembersBean(profile_id string, agency_members []bean.AgencyMember) (v string) {
-	b, err := json.Marshal(agency_members)
+// UpdateProfileAgencyMembersBean update profile agency member beans
+func (ps *ProfileService) UpdateProfileAgencyMembersBean(profileID string, agencyMembers []bean.AgencyMember) (v string) {
+	b, err := json.Marshal(agencyMembers)
 	if err != nil {
 		return err.Error()
 	}
-	v = self.UpdateProfileAgencyMembers(profile_id, string(b))
+	v = ps.UpdateProfileAgencyMembers(profileID, string(b))
 	return
 }
 
@@ -100,21 +109,23 @@ func (self *ProfileService) UpdateProfileAgencyMembersBean(profile_id string, ag
  * query section
  */
 
-func (self *ProfileService) GetProfile(profile_id string) (v string) {
-	_service, _err := _profile_query_service.Default()
+// GetProfile get profile json by ID
+func (ps *ProfileService) GetProfile(profileID string) (v string) {
+	_service, _err := _profileQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_query_service.Close()
-	v = _service.GetProfile(profile_id)
+	defer _profileQueryService.Close()
+	v = _service.GetProfile(profileID)
 	return
 }
 
-func (self *ProfileService) GetProfileBean(profile_id string) (bean.Profile, error) {
+// GetProfileBean get profile bean by ID
+func (ps *ProfileService) GetProfileBean(profileID string) (bean.Profile, error) {
 	var profile bean.Profile
-	_json := self.GetProfile(profile_id)
+	_json := ps.GetProfile(profileID)
 	if len(_json) == 0 {
-		return profile, errors.New("profile :" + profile_id + " is null")
+		return profile, errors.New("profile :" + profileID + " is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &profile)
@@ -124,22 +135,24 @@ func (self *ProfileService) GetProfileBean(profile_id string) (bean.Profile, err
 	return profile, nil
 }
 
-func (self *ProfileService) GetProfilesByUserId(user_id string) (v string) {
-	_service, _err := _profile_query_service.Default()
+// GetProfilesByUserID get profiles json by userID
+func (ps *ProfileService) GetProfilesByUserID(userID string) (v string) {
+	_service, _err := _profileQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_query_service.Close()
-	v = _service.GetProfilesByUserId(user_id)
+	defer _profileQueryService.Close()
+	v = _service.GetProfilesByUserID(userID)
 	return
 }
 
-func (self *ProfileService) GetProfilesByUserIdBean(user_id string) ([]bean.Profile, error) {
+// GetProfilesByUserIDBean get profile beans by userID
+func (ps *ProfileService) GetProfilesByUserIDBean(userID string) ([]bean.Profile, error) {
 	var profiles []bean.Profile
 
-	_json := self.GetProfilesByUserId(user_id)
+	_json := ps.GetProfilesByUserID(userID)
 	if len(_json) == 0 {
-		return profiles, errors.New("user :" + user_id + "'s profile is null")
+		return profiles, errors.New("user :" + userID + "'s profile is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &profiles)
@@ -149,22 +162,24 @@ func (self *ProfileService) GetProfilesByUserIdBean(user_id string) ([]bean.Prof
 	return profiles, nil
 }
 
-func (self *ProfileService) GetProfilesByCategory(category_id int64, timestamp int64, pagesize int64) (v string) {
-	_service, _err := _profile_query_service.Default()
+// GetProfilesByCategory get profiles json by category
+func (ps *ProfileService) GetProfilesByCategory(categoryID int64, timestamp int64, pagesize int64) (v string) {
+	_service, _err := _profileQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_query_service.Close()
-	v = _service.GetProfilesByCategory(category_id, timestamp, pagesize)
+	defer _profileQueryService.Close()
+	v = _service.GetProfilesByCategory(categoryID, timestamp, pagesize)
 	return
 }
 
-func (self *ProfileService) GetProfilesByCategoryBean(category_id int64, timestamp int64, pagesize int64) ([]bean.Profile, error) {
+// GetProfilesByCategoryBean get profile beans by category
+func (ps *ProfileService) GetProfilesByCategoryBean(categoryID int64, timestamp int64, pagesize int64) ([]bean.Profile, error) {
 	var profiles []bean.Profile
 
-	_json := self.GetProfilesByCategory(category_id, timestamp, pagesize)
+	_json := ps.GetProfilesByCategory(categoryID, timestamp, pagesize)
 	if len(_json) == 0 {
-		return profiles, errors.New("category_id :" + string(category_id) + "'s profile is null")
+		return profiles, errors.New("categoryID :" + string(categoryID) + "'s profile is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &profiles)
@@ -174,22 +189,24 @@ func (self *ProfileService) GetProfilesByCategoryBean(category_id int64, timesta
 	return profiles, nil
 }
 
-func (self *ProfileService) GetProfilesBySubCategory(subcategory_id int64, timestamp int64, pagesize int64) (v string) {
-	_service, _err := _profile_query_service.Default()
+// GetProfilesBySubCategory get profiles json by subcategory
+func (ps *ProfileService) GetProfilesBySubCategory(subcategoryID int64, timestamp int64, pagesize int64) (v string) {
+	_service, _err := _profileQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _profile_query_service.Close()
-	v = _service.GetProfilesBySubCategory(subcategory_id, timestamp, pagesize)
+	defer _profileQueryService.Close()
+	v = _service.GetProfilesBySubCategory(subcategoryID, timestamp, pagesize)
 	return
 }
 
-func (self *ProfileService) GetProfilesBySubCategoryBean(subcategory_id int64, timestamp int64, pagesize int64) ([]bean.Profile, error) {
+// GetProfilesBySubCategoryBean get profile beans by subcategory
+func (ps *ProfileService) GetProfilesBySubCategoryBean(subcategoryID int64, timestamp int64, pagesize int64) ([]bean.Profile, error) {
 	var profiles []bean.Profile
 
-	_json := self.GetProfilesBySubCategory(subcategory_id, timestamp, pagesize)
+	_json := ps.GetProfilesBySubCategory(subcategoryID, timestamp, pagesize)
 	if len(_json) == 0 {
-		return profiles, errors.New("subcategory_id :" + string(subcategory_id) + "'s profile is null")
+		return profiles, errors.New("subcategoryID :" + string(subcategoryID) + "'s profile is null")
 	}
 
 	err := json.Unmarshal([]byte(_json), &profiles)
@@ -199,20 +216,22 @@ func (self *ProfileService) GetProfilesBySubCategoryBean(subcategory_id int64, t
 	return profiles, nil
 }
 
-func (self *ProfileService) SearchProfiles(option_mmap map[string]int64, key_mmap map[string]string, timestamp int64, pagesize int64) (v string) {
-	_service, _err := _profile_query_service.Default()
+// SearchProfiles search profiles json by keys map
+func (ps *ProfileService) SearchProfiles(optionMap map[string]int64, keyMap map[string]string, timestamp int64, pagesize int64) (v string) {
+	_service, _err := _profileQueryService.Default()
 	if _err != nil {
 		return
 	}
 
-	defer _profile_query_service.Close()
-	v = _service.SearchProfiles(option_mmap, key_mmap, timestamp, pagesize)
+	defer _profileQueryService.Close()
+	v = _service.SearchProfiles(optionMap, keyMap, timestamp, pagesize)
 	return
 }
 
-func (self *ProfileService) SearchProfilesBean(option_mmap map[string]int64, key_mmap map[string]string, timestamp int64, pagesize int64) ([]bean.Profile, error) {
+// SearchProfilesBean search profile beans by keys map
+func (ps *ProfileService) SearchProfilesBean(optionMap map[string]int64, keyMap map[string]string, timestamp int64, pagesize int64) ([]bean.Profile, error) {
 	var profiles []bean.Profile
-	_json := self.SearchProfiles(option_mmap, key_mmap, timestamp, pagesize)
+	_json := ps.SearchProfiles(optionMap, keyMap, timestamp, pagesize)
 	if len(_json) == 0 {
 		return profiles, errors.New("search is not result")
 	}
