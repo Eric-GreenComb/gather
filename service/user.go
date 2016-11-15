@@ -8,50 +8,55 @@ import (
 	"labix.org/v2/mgo/bson"
 )
 
+// UserService UserService
 type UserService struct {
 }
 
-var _user_command_service command.UserService
-var _user_query_service query.UserService
+var _userCommandService command.UserService
+var _userQueryService query.UserService
 
 /**
  * command section
  */
 
-func (self *UserService) CreateUser(mmap map[string]string) (v string) {
-	_service, _err := _user_command_service.Default()
+// CreateUser create user by map
+func (us *UserService) CreateUser(mmap map[string]string) (v string) {
+	_service, _err := _userCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _user_command_service.Close()
+	defer _userCommandService.Close()
 	v = _service.CreateUser(mmap)
 	return
 }
 
-func (self *UserService) CreateBeanUser(user bean.User) (v string) {
+// CreateBeanUser create user by user bean
+func (us *UserService) CreateBeanUser(user bean.User) (v string) {
 	_mmap := make(map[string]string)
 	_mmap["invited"] = user.Invited.Hex()
 	_mmap["email"] = user.Email
 	_mmap["pwd"] = user.Pwd
-	return self.CreateUser(_mmap)
+	return us.CreateUser(_mmap)
 }
 
-func (self *UserService) ResetPwd(email string, newpwd string) (v bool) {
-	_service, _err := _user_command_service.Default()
+// ResetPwd reset password
+func (us *UserService) ResetPwd(email string, newpwd string) (v bool) {
+	_service, _err := _userCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _user_command_service.Close()
+	defer _userCommandService.Close()
 	v = _service.ResetPwd(email, newpwd)
 	return
 }
 
-func (self *UserService) ActiveUser(email string) (v bool) {
-	_service, _err := _user_command_service.Default()
+// ActiveUser active user
+func (us *UserService) ActiveUser(email string) (v bool) {
+	_service, _err := _userCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _user_command_service.Close()
+	defer _userCommandService.Close()
 	v = _service.ActiveUser(email)
 	return
 }
@@ -60,19 +65,21 @@ func (self *UserService) ActiveUser(email string) (v bool) {
  * query section
  */
 
-func (self *UserService) GetUserByEmail(email string) (v string) {
-	_service, _err := _user_query_service.Default()
+// GetUserByEmail get user json by email
+func (us *UserService) GetUserByEmail(email string) (v string) {
+	_service, _err := _userQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _user_query_service.Close()
+	defer _userQueryService.Close()
 	v = _service.GetUserByEmail(email)
 	return
 }
 
-func (self *UserService) GetUserByEmailDto(email string) (bean.UserDto, error) {
+// GetUserByEmailDto get user bean by email
+func (us *UserService) GetUserByEmailDto(email string) (bean.UserDto, error) {
 	var _user bean.UserDto
-	_data := self.GetUserByEmail(email)
+	_data := us.GetUserByEmail(email)
 	if len(_data) == 0 {
 		return _user, errors.New("get user by email is error")
 	}
@@ -81,33 +88,36 @@ func (self *UserService) GetUserByEmailDto(email string) (bean.UserDto, error) {
 	return _user, nil
 }
 
-func (self *UserService) GetUserByID(id string) (v string) {
-	_service, _err := _user_query_service.Default()
+// GetUserByID get user by ID
+func (us *UserService) GetUserByID(ID string) (v string) {
+	_service, _err := _userQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _user_query_service.Close()
-	v = _service.GetUserByID(id)
+	defer _userQueryService.Close()
+	v = _service.GetUserByID(ID)
 	return
 }
 
-func (self *UserService) GetUserByIDDto(id string) (bean.UserDto, error) {
+// GetUserByIDDto get user bean by ID
+func (us *UserService) GetUserByIDDto(ID string) (bean.UserDto, error) {
 	var _user bean.UserDto
-	_data := self.GetUserByID(id)
+	_data := us.GetUserByID(ID)
 	if len(_data) == 0 {
-		return _user, errors.New("get user by id is error")
+		return _user, errors.New("get user by ID is error")
 	}
 	bson.Unmarshal([]byte(_data), &_user)
 
 	return _user, nil
 }
 
-func (self *UserService) CountUser() (v int64) {
-	_service, _err := _user_query_service.Default()
+// CountUser count user
+func (us *UserService) CountUser() (v int64) {
+	_service, _err := _userQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _user_query_service.Close()
+	defer _userQueryService.Close()
 	v = _service.CountUser()
 	return
 }

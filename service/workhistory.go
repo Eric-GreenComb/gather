@@ -9,50 +9,56 @@ import (
 	"labix.org/v2/mgo/bson"
 )
 
+// WorkHistoryService WorkHistoryService
 type WorkHistoryService struct {
 }
 
-var _workhistory_command_service command.WorkHistoryService
-var _workhistory_query_service query.WorkHistoryService
+var _workhistoryCommandService command.WorkHistoryService
+var _workhistoryQueryService query.WorkHistoryService
 
 /**
  * command section
  */
 
-func (self *WorkHistoryService) UpdateWorkHistory(prifile_id, workhistory string) (v string) {
-	_service, _err := _workhistory_command_service.Default()
+// UpdateWorkHistory update user work history by profileID
+func (whs *WorkHistoryService) UpdateWorkHistory(profileID, workhistory string) (v string) {
+	_service, _err := _workhistoryCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _workhistory_command_service.Close()
-	v = _service.UpdateWorkHistory(prifile_id, workhistory)
+	defer _workhistoryCommandService.Close()
+	v = _service.UpdateWorkHistory(profileID, workhistory)
 	return
 }
 
-func (self *WorkHistoryService) UpdateWorkHistoryBean(prifile_id string, workhistory bean.WorkHistory) (v string) {
+// UpdateWorkHistoryBean update user work history beans by profileID
+func (whs *WorkHistoryService) UpdateWorkHistoryBean(profileID string, workhistory bean.WorkHistory) (v string) {
 	b, err := json.Marshal(workhistory)
 	if err != nil {
 		return err.Error()
 	}
-	v = self.UpdateWorkHistory(prifile_id, string(b))
+	v = whs.UpdateWorkHistory(profileID, string(b))
 	return
 }
 
 /**
  * query section
  */
-func (self *WorkHistoryService) GetWorkHistory(profile_id string) (v string) {
-	_service, _err := _workhistory_query_service.Default()
+
+//GetWorkHistory get work history json by profileID
+func (whs *WorkHistoryService) GetWorkHistory(profileID string) (v string) {
+	_service, _err := _workhistoryQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _workhistory_query_service.Close()
-	v = _service.GetWorkHistory(profile_id)
+	defer _workhistoryQueryService.Close()
+	v = _service.GetWorkHistory(profileID)
 	return
 }
 
-func (self *WorkHistoryService) GetWorkHistoryBean(profile_id string) (v bean.WorkHistory) {
-	_workhistory := self.GetWorkHistory(profile_id)
+// GetWorkHistoryBean get work history bean by profileID
+func (whs *WorkHistoryService) GetWorkHistoryBean(profileID string) (v bean.WorkHistory) {
+	_workhistory := whs.GetWorkHistory(profileID)
 	bson.Unmarshal([]byte(_workhistory), &v)
 	return
 }

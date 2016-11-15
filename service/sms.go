@@ -7,10 +7,12 @@ import (
 	"github.com/nats-io/nats"
 )
 
+// SmsService SmsService
 type SmsService struct {
 }
 
-func (self *SmsService) SendSms(sms bean.SMS) error {
+// SendSms send sms bean
+func (ss *SmsService) SendSms(sms bean.SMS) error {
 	nc, err := nats.Connect(flagparse.NatsUrls)
 	defer nc.Close()
 

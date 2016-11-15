@@ -6,32 +6,35 @@ import (
 	"github.com/banerwai/global/bean"
 )
 
+// TokenService TokenService
 type TokenService struct {
 }
 
-var _token_command_service command.TokenService
-var _token_query_service query.TokenService
+var _tokenCommandService command.TokenService
+var _tokenQueryService query.TokenService
 
 /**
  * command section
  */
 
-func (self *TokenService) NewToken_(key string, ttype int64) (v string) {
-	_service, _err := _token_command_service.Default()
+// NewToken_ create a new token
+func (ts *TokenService) NewToken_(key string, ttype int64) (v string) {
+	_service, _err := _tokenCommandService.Default()
 	if _err != nil {
-		return
+		return _err.Error()
 	}
-	defer _token_command_service.Close()
+	defer _tokenCommandService.Close()
 	v = _service.NewToken_(key, ttype)
 	return
 }
 
-func (self *TokenService) DeleteToken(key string, ttype int64) (v bool) {
-	_service, _err := _token_command_service.Default()
+// DeleteToken delete token
+func (ts *TokenService) DeleteToken(key string, ttype int64) (v bool) {
+	_service, _err := _tokenCommandService.Default()
 	if _err != nil {
 		return
 	}
-	defer _token_command_service.Close()
+	defer _tokenCommandService.Close()
 	v = _service.DeleteToken(key, ttype)
 	return
 }
@@ -40,16 +43,17 @@ func (self *TokenService) DeleteToken(key string, ttype int64) (v bool) {
  * query section
  */
 
+// VerifyToken verify token
 // return -1 不存在
 // return -2 过期
 // return -3 db error
 // return 1 验证pass
-func (self *TokenService) VerifyToken(token string, ttype int64, overhour float64) (v int64) {
-	_service, _err := _token_query_service.Default()
+func (ts *TokenService) VerifyToken(token string, ttype int64, overhour float64) (v int64) {
+	_service, _err := _tokenQueryService.Default()
 	if _err != nil {
 		return
 	}
-	defer _token_query_service.Close()
+	defer _tokenQueryService.Close()
 	v = _service.VerifyToken(token, ttype, overhour)
 	return
 }
@@ -58,7 +62,8 @@ func (self *TokenService) VerifyToken(token string, ttype int64, overhour float6
  * common section
  */
 
-func (self *TokenService) GetOverHours(ttype int64) float64 {
+// GetOverHours get overtime hours
+func (ts *TokenService) GetOverHours(ttype int64) float64 {
 	switch ttype {
 
 	// 0 - 2.0

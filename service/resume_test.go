@@ -12,7 +12,7 @@ func TestResumeBase(t *testing.T) {
 	var _service ResumeService
 
 	var _obj bean.Resume
-	_obj.Id = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
+	_obj.ID = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
 	_obj.AuthEmail = "ministor@126.com"
 	_obj.UserID = bson.ObjectIdHex("5707cb10ae6faa1d1071a189")
 
@@ -53,19 +53,19 @@ func TestResumeBase(t *testing.T) {
 
 	_obj.SkillExperiences = lsSkillExperiences
 
-	userid := "5707cb10ae6faa1d1071a189"
+	userID := "5707cb10ae6faa1d1071a189"
 
-	v = _service.UpdateResumeBean(userid, _obj)
+	v = _service.UpdateResumeBean(userID, _obj)
 
 	if v != "OK" {
 		t.Errorf("UpdateResumeBean error")
 	}
 
-	_map_update := make(map[string]string)
-	_map_update["auth_email"] = "ministor@126.com"
-	_map_update["phone"] = "13811111111"
+	_mapUpdate := make(map[string]string)
+	_mapUpdate["auth_email"] = "ministor@126.com"
+	_mapUpdate["phone"] = "13811111111"
 
-	v = _service.UpdateResumeBase(userid, _map_update)
+	v = _service.UpdateResumeBase(userID, _mapUpdate)
 
 	if v != "OK" {
 		t.Errorf("UpdateResumeBase error")
@@ -78,9 +78,9 @@ func TestResumeBase(t *testing.T) {
 	_edu1.Description = "description"
 	lsEducationes = append(lsEducationes, _edu1)
 
-	v = _service.UpdateResumeEducationsBean(userid, lsEducationes)
+	v = _service.UpdateResumeEducationsBean(userID, lsEducationes)
 
-	_bean := _service.GetResumeBean(userid)
+	_bean := _service.GetResumeBean(userID)
 
 	if _bean.AuthEmail != "ministor@126.com" {
 		t.Errorf("GetResumeBean error")
