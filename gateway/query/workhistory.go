@@ -14,22 +14,25 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
+// WorkHistoryService WorkHistoryService
 type WorkHistoryService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *WorkHistoryService) Default() (thriftservice.WorkHistoryService, error) {
+// Default service init and open
+func (whs *WorkHistoryService) Default() (thriftservice.WorkHistoryService, error) {
 
-	_err := self.Init()
+	_err := whs.Init()
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return whs.Open()
 }
 
-func (self *WorkHistoryService) Init() error {
+// Init service get addr
+func (whs *WorkHistoryService) Init() error {
 
 	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosCommandWorkhistory)
 
@@ -40,25 +43,26 @@ func (self *WorkHistoryService) Init() error {
 		return errors.New("workhistory query micro service is 0")
 	}
 
-	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
+	whs.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }
 
-func (self *WorkHistoryService) Open() (thriftservice.WorkHistoryService, error) {
+// Open service open addr
+func (whs *WorkHistoryService) Open() (thriftservice.WorkHistoryService, error) {
 
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(whs.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
+	whs.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
+	if err := whs.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftworkhistory.NewWorkHistoryServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftworkhistory.NewWorkHistoryServiceClientFactory(whs.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.WorkHistoryService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
@@ -66,8 +70,9 @@ func (self *WorkHistoryService) Open() (thriftservice.WorkHistoryService, error)
 	return svc, err
 }
 
-func (self *WorkHistoryService) Close() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+// Close service close
+func (whs *WorkHistoryService) Close() {
+	if whs.trans.IsOpen() {
+		whs.trans.Close()
 	}
 }

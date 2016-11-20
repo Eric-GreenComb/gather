@@ -10,7 +10,7 @@ func TestTokenOpenService(t *testing.T) {
 	var _tokenService TokenService
 	_thriftService, _ := _tokenService.Default()
 
-	_thriftService.NewToken_("ministor@126.com", 1)
+	_thriftService.CreateToken("ministor@126.com", 1)
 
 	_tokenService.Close()
 

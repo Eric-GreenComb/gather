@@ -14,22 +14,25 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
+// ResumeService ResumeService
 type ResumeService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *ResumeService) Default() (thriftservice.ResumeService, error) {
+// Default service init and open
+func (rs *ResumeService) Default() (thriftservice.ResumeService, error) {
 
-	_err := self.Init()
+	_err := rs.Init()
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return rs.Open()
 }
 
-func (self *ResumeService) Init() error {
+// Init service get addr
+func (rs *ResumeService) Init() error {
 
 	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosQueryResume)
 
@@ -40,25 +43,26 @@ func (self *ResumeService) Init() error {
 		return errors.New("resume query micro service is 0")
 	}
 
-	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
+	rs.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }
 
-func (self *ResumeService) Open() (thriftservice.ResumeService, error) {
+// Open service open addr
+func (rs *ResumeService) Open() (thriftservice.ResumeService, error) {
 
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(rs.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
+	rs.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
+	if err := rs.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftresume.NewResumeServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftresume.NewResumeServiceClientFactory(rs.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.ResumeService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
@@ -66,8 +70,9 @@ func (self *ResumeService) Open() (thriftservice.ResumeService, error) {
 	return svc, err
 }
 
-func (self *ResumeService) Close() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+// Close service close
+func (rs *ResumeService) Close() {
+	if rs.trans.IsOpen() {
+		rs.trans.Close()
 	}
 }

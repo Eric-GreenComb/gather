@@ -9,10 +9,10 @@ import (
 
 func TestWorkHistoryDefaultService(t *testing.T) {
 
-	var _workhistory_service WorkHistoryService
-	_thrift_service, _ := _workhistory_service.Default()
+	var _workhistoryService WorkHistoryService
+	_thriftService, _ := _workhistoryService.Default()
 
-	v := _thrift_service.GetWorkHistory("5707cb10ae6faa1d1071a189")
+	v := _thriftService.GetWorkHistory("5707cb10ae6faa1d1071a189")
 
 	var _workhistory bean.WorkHistory
 	bson.Unmarshal([]byte(v), &_workhistory)
@@ -21,6 +21,6 @@ func TestWorkHistoryDefaultService(t *testing.T) {
 	if len(_workhistory.HistoryAndFeedbacks) != 1 {
 		t.Errorf("GetWorkHistory error")
 	}
-	_workhistory_service.Close()
+	_workhistoryService.Close()
 
 }

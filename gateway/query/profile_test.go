@@ -5,17 +5,17 @@ import (
 	"testing"
 	"time"
 
-	banerwaiglobal "github.com/banerwai/global"
 	"github.com/banerwai/global/bean"
+	banerwaiglobal "github.com/banerwai/global/constant"
 )
 
 // need start micro render service localhost:39050
 func TestProfileDefaultService(t *testing.T) {
 
-	var _profile_service ProfileService
-	_thrift_service, _ := _profile_service.Default()
+	var _profileService ProfileService
+	_thriftService, _ := _profileService.Default()
 
-	v := _thrift_service.GetProfile("5744757a48b2b40eff000001")
+	v := _thriftService.GetProfile("5744757a48b2b40eff000001")
 
 	var _profile bean.Profile
 	json.Unmarshal([]byte(v), &_profile)
@@ -23,20 +23,20 @@ func TestProfileDefaultService(t *testing.T) {
 	if len(_profile.JobTitle) == 0 {
 		t.Errorf("GetProfile error")
 	}
-	_profile_service.Close()
+	_profileService.Close()
 
-	_profile_service.Init()
-	_thrift_service, _ = _profile_service.Open()
-	defer _profile_service.Close()
+	_profileService.Init()
+	_thriftService, _ = _profileService.Open()
+	defer _profileService.Close()
 
-	option_mmap := make(map[string]int64)
+	optionMap := make(map[string]int64)
 
-	option_mmap["serial_number"] = 531770282584862733
+	optionMap["serial_number"] = 531770282584862733
 
-	key_mmap := make(map[string]string)
-	key_mmap["overview"] = "go"
+	keyMap := make(map[string]string)
+	keyMap["overview"] = "go"
 
-	v1 := _thrift_service.SearchProfiles(option_mmap, key_mmap, time.Now().Unix(), banerwaiglobal.Pagination_PAGESIZE_Web)
+	v1 := _thriftService.SearchProfiles(optionMap, keyMap, time.Now().Unix(), banerwaiglobal.DefaultPageSize)
 
 	var _profiles []bean.Profile
 	json.Unmarshal([]byte(v1), &_profiles)

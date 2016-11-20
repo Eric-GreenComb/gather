@@ -14,22 +14,25 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
+// ProfileService ProfileService
 type ProfileService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *ProfileService) Default() (thriftservice.ProfileService, error) {
+// Default service init and open
+func (ps *ProfileService) Default() (thriftservice.ProfileService, error) {
 
-	_err := self.Init()
+	_err := ps.Init()
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return ps.Open()
 }
 
-func (self *ProfileService) Init() error {
+// Init service get addr
+func (ps *ProfileService) Init() error {
 
 	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosQueryProfile)
 
@@ -39,24 +42,25 @@ func (self *ProfileService) Init() error {
 	if len(_addrs) == 0 {
 		return errors.New("profile query micro service is 0")
 	}
-	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
+	ps.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 	return nil
 }
 
-func (self *ProfileService) Open() (thriftservice.ProfileService, error) {
+// Open service open addr
+func (ps *ProfileService) Open() (thriftservice.ProfileService, error) {
 
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(ps.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
+	ps.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
+	if err := ps.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftprofile.NewProfileServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftprofile.NewProfileServiceClientFactory(ps.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.ProfileService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
@@ -64,8 +68,9 @@ func (self *ProfileService) Open() (thriftservice.ProfileService, error) {
 	return svc, err
 }
 
-func (self *ProfileService) Close() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+// Close service close
+func (ps *ProfileService) Close() {
+	if ps.trans.IsOpen() {
+		ps.trans.Close()
 	}
 }

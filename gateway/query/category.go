@@ -14,22 +14,25 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
+// CategoryService CategoryService
 type CategoryService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *CategoryService) Default() (thriftservice.CategoryService, error) {
+// Default service init and open
+func (cs *CategoryService) Default() (thriftservice.CategoryService, error) {
 
-	_err := self.Init()
+	_err := cs.Init()
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return cs.Open()
 }
 
-func (self *CategoryService) Init() error {
+// Init service get addr
+func (cs *CategoryService) Init() error {
 
 	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosQueryCategory)
 
@@ -40,25 +43,26 @@ func (self *CategoryService) Init() error {
 		return errors.New("category query micro service is 0")
 	}
 
-	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
+	cs.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }
 
-func (self *CategoryService) Open() (thriftservice.CategoryService, error) {
+// Open service open addr
+func (cs *CategoryService) Open() (thriftservice.CategoryService, error) {
 
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(cs.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
+	cs.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
+	if err := cs.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftcategory.NewCategoryServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftcategory.NewCategoryServiceClientFactory(cs.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.CategoryService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
@@ -66,8 +70,9 @@ func (self *CategoryService) Open() (thriftservice.CategoryService, error) {
 	return svc, err
 }
 
-func (self *CategoryService) Close() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+// Close service close
+func (cs *CategoryService) Close() {
+	if cs.trans.IsOpen() {
+		cs.trans.Close()
 	}
 }

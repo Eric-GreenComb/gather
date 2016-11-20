@@ -8,11 +8,11 @@ import (
 // need start micro render service localhost:36020
 func TestTokenOpenService(t *testing.T) {
 
-	var _auth_service AuthService
-	_thrift_service, _ := _auth_service.Default()
-	defer _auth_service.Close()
+	var _authService AuthService
+	_thriftService, _ := _authService.Default()
+	defer _authService.Close()
 
-	v := _thrift_service.Login("ministor@126.com", "a11111")
+	v := _thriftService.Login("ministor@126.com", "a11111")
 	if strings.Contains(v, "error:") {
 		t.Errorf(v)
 	}

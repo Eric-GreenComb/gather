@@ -9,10 +9,10 @@ import (
 
 func TestResumeDefaultService(t *testing.T) {
 
-	var _resume_service ResumeService
-	_thrift_service, _ := _resume_service.Default()
+	var _resumeService ResumeService
+	_thriftService, _ := _resumeService.Default()
 
-	v := _thrift_service.GetResume("5707cb10ae6faa1d1071a189")
+	v := _thriftService.GetResume("5707cb10ae6faa1d1071a189")
 	var resume bean.Resume
 	bson.Unmarshal([]byte(v), &resume)
 	fmt.Println(resume)
@@ -20,6 +20,6 @@ func TestResumeDefaultService(t *testing.T) {
 	if resume.AuthEmail != "ministor@126.com" {
 		t.Errorf("GetResume error")
 	}
-	_resume_service.Close()
+	_resumeService.Close()
 
 }

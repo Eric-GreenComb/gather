@@ -17,14 +17,14 @@ var _tokenQueryService query.TokenService
  * command section
  */
 
-// NewToken_ create a new token
-func (ts *TokenService) NewToken_(key string, ttype int64) (v string) {
+// CreateToken create a new token
+func (ts *TokenService) CreateToken(key string, ttype int64) (v string) {
 	_service, _err := _tokenCommandService.Default()
 	if _err != nil {
 		return _err.Error()
 	}
 	defer _tokenCommandService.Close()
-	v = _service.NewToken_(key, ttype)
+	v = _service.CreateToken(key, ttype)
 	return
 }
 

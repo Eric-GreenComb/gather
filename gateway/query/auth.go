@@ -14,21 +14,24 @@ import (
 	"github.com/banerwai/gommon/etcd"
 )
 
+// AuthService AuthService
 type AuthService struct {
 	trans thrift.TTransport
 	addr  string
 }
 
-func (self *AuthService) Default() (thriftservice.AuthService, error) {
-	_err := self.Init()
+// Default service init and open
+func (as *AuthService) Default() (thriftservice.AuthService, error) {
+	_err := as.Init()
 	if _err != nil {
 		return nil, _err
 	}
 
-	return self.Open()
+	return as.Open()
 }
 
-func (self *AuthService) Init() error {
+// Init service get addr
+func (as *AuthService) Init() error {
 
 	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosQueryAuth)
 
@@ -39,25 +42,26 @@ func (self *AuthService) Init() error {
 		return errors.New("auth query micro service is 0")
 	}
 
-	self.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
+	as.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 
 	return nil
 }
 
-func (self *AuthService) Open() (thriftservice.AuthService, error) {
+// Open service open addr
+func (as *AuthService) Open() (thriftservice.AuthService, error) {
 
-	transportSocket, err := thrift.NewTSocket(self.addr)
+	transportSocket, err := thrift.NewTSocket(as.addr)
 	if err != nil {
 		gatherthrift.Logger.Log("during", "thrift.NewTSocket", "err", err)
 		return nil, err
 	}
-	self.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
+	as.trans = gatherthrift.TransportFactory.GetTransport(transportSocket)
 	// defer trans.Close()
-	if err := self.trans.Open(); err != nil {
+	if err := as.trans.Open(); err != nil {
 		gatherthrift.Logger.Log("during", "thrift transport.Open", "err", err)
 		return nil, err
 	}
-	cli := thriftauth.NewAuthServiceClientFactory(self.trans, gatherthrift.ProtocolFactory)
+	cli := thriftauth.NewAuthServiceClientFactory(as.trans, gatherthrift.ProtocolFactory)
 
 	var svc thriftservice.AuthService
 	svc = thriftclient.New(cli, gatherthrift.Logger)
@@ -65,8 +69,9 @@ func (self *AuthService) Open() (thriftservice.AuthService, error) {
 	return svc, err
 }
 
-func (self *AuthService) Close() {
-	if self.trans.IsOpen() {
-		self.trans.Close()
+// Close service close
+func (as *AuthService) Close() {
+	if as.trans.IsOpen() {
+		as.trans.Close()
 	}
 }

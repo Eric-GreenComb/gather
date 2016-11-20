@@ -8,23 +8,23 @@ import (
 // need start micro render service localhost:39010
 func TestCategoryDefaultService(t *testing.T) {
 
-	var _category_service CategoryService
-	_thrift_service, _ := _category_service.Default()
+	var _categoryService CategoryService
+	_thriftService, _ := _categoryService.Default()
 
-	v := _thrift_service.SayHi("eric")
+	v := _thriftService.Ping()
 
-	if v != "hi,eric" {
-		t.Errorf("TestCategoryDefaultService error")
+	if v != "pong" {
+		t.Errorf("Ping error")
 	}
-	_category_service.Close()
+	_categoryService.Close()
 
-	_category_service.Init()
-	_thrift_service, _ = _category_service.Open()
-	defer _category_service.Close()
+	_categoryService.Init()
+	_thriftService, _ = _categoryService.Open()
+	defer _categoryService.Close()
 
-	_b := _thrift_service.LoadCategory("category.json")
+	_b := _thriftService.LoadCategory("category.json")
 	fmt.Println(_b)
-	v1 := _thrift_service.GetSubCategories(10100)
+	v1 := _thriftService.GetSubCategories(10100)
 	if !strings.Contains(v1, "10101") {
 		t.Errorf("TestCategoryDefaultService error")
 	}

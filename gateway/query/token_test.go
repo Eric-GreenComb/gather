@@ -9,11 +9,11 @@ import (
 // need start micro render service localhost:6020
 func TestTokenOpenService(t *testing.T) {
 
-	var _token_service TokenService
-	_thrift_service, _ := _token_service.Default()
-	defer _token_service.Close()
+	var _tokenService TokenService
+	_thriftService, _ := _tokenService.Default()
+	defer _tokenService.Close()
 
-	_v := _thrift_service.VerifyToken("ministor@126.com", bean.TokenActiveEmail, getOverHours(bean.TokenActiveEmail))
+	_v := _thriftService.VerifyToken("ministor@126.com", bean.TokenActiveEmail, getOverHours(bean.TokenActiveEmail))
 	if _v != 1 {
 		t.Errorf("VerifyToken error")
 	}
