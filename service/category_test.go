@@ -8,7 +8,7 @@ import (
 func TestAuth(t *testing.T) {
 
 	var _service CategoryService
-	b := _service.LoadCategory("category.json")
+	b := _service.LoadCategory("category")
 	if b != true {
 		t.Errorf("LoadCategory error")
 	}

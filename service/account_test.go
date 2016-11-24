@@ -1,9 +1,10 @@
 package service
 
 import (
-	"github.com/banerwai/global"
+	"fmt"
 	"github.com/banerwai/global/bean"
-	"labix.org/v2/mgo/bson"
+	"github.com/banerwai/global/constant"
+	"gopkg.in/mgo.v2/bson"
 	"time"
 
 	"testing"
@@ -16,22 +17,24 @@ func TestAccountService(t *testing.T) {
 	_userID := "5707cb10ae6faa1d1071a189"
 
 	var _obj bean.Billing
-	_obj.Id = bson.ObjectIdHex(_userID)
-	_obj.UserId = bson.ObjectIdHex(_userID)
-	_obj.ProfileId = bson.ObjectIdHex(_userID)
+	_obj.ID = bson.ObjectIdHex(_userID)
+	_obj.UserID = bson.ObjectIdHex(_userID)
+	_obj.PayUserID = bson.ObjectIdHex(_userID)
+	_obj.ServiceID = bson.ObjectIdHex(_userID)
+	_obj.LinkID = bson.ObjectIdHex(_userID)
 
 	_obj.Operate = 1
-	_obj.Currency = global.CURRENCY_CNY
+	_obj.Currency = constant.CurrencyCNY
 	_obj.Amount = 4000
-	_obj.PayType = global.PayType_BankRemittance
+	_obj.PayType = constant.PayTypeBankRemittance
 
 	_billingID := _service.CreateBillingBean(_obj)
 
-	if !bson.IsObjectIdHex(_userID) {
+	if !bson.IsObjectIdHex(_billingID) {
 		t.Errorf("CreateBillingBean error")
 	}
 
-	_ok := _service.DealBilling(_userID)
+	_ok := _service.DealBilling(_billingID)
 	if _ok != "OK" {
 		t.Errorf("DealBilling error")
 	}
@@ -42,7 +45,7 @@ func TestAccountService(t *testing.T) {
 	}
 
 	_account, _ := _service.GetAccountBean(_userID)
-	if _account.UserId.Hex() != _userID {
+	if _account.UserID.Hex() != _userID {
 		t.Errorf("GetAccountBean error")
 	}
 
@@ -52,7 +55,7 @@ func TestAccountService(t *testing.T) {
 	}
 
 	_billings, _ := _service.GetBillingBeans(_userID, time.Now().Unix(), 10)
-	if len(_billings) < 3 {
-		t.Errorf("GetBillingBeans error")
+	for _, _billing := range _billings {
+		fmt.Println(_billing.Amount)
 	}
 }

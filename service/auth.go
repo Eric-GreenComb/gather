@@ -5,7 +5,7 @@ import (
 	"github.com/banerwai/gather/gateway/query"
 	"github.com/banerwai/global/bean"
 	"github.com/banerwai/gommon/regexp"
-	"labix.org/v2/mgo/bson"
+	"gopkg.in/mgo.v2/bson"
 	"strings"
 )
 

@@ -1,13 +1,13 @@
 package query
 
 import (
+	"errors"
 	"github.com/apache/thrift/lib/go/thrift"
 
 	thriftclient "github.com/banerwai/micros/query/contact/client/thrift"
 	thriftservice "github.com/banerwai/micros/query/contact/service"
 	thriftcontact "github.com/banerwai/micros/query/contact/thrift/gen-go/contact"
 
-	"errors"
 	gatherthrift "github.com/banerwai/gather/common/thrift"
 	"github.com/banerwai/global/constant"
 	banerwaicrypto "github.com/banerwai/gommon/crypto"
@@ -40,7 +40,7 @@ func (cs *ContactService) Init() error {
 		return _err
 	}
 	if len(_addrs) == 0 {
-		return errorsProfileService.New("profile query micro service is 0")
+		return errors.New("profile query micro service is 0")
 	}
 	cs.addr = _addrs[banerwaicrypto.GetRandomItNum(len(_addrs))]
 	return nil

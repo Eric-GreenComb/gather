@@ -9,7 +9,7 @@ import (
 	"github.com/banerwai/gather/gateway/query"
 	"github.com/banerwai/global/constant"
 
-	"labix.org/v2/mgo/bson"
+	"gopkg.in/mgo.v2/bson"
 )
 
 // ContactService ContactService

@@ -3,7 +3,7 @@ package service
 import (
 	"encoding/json"
 	"github.com/banerwai/global/bean"
-	"labix.org/v2/mgo/bson"
+	"gopkg.in/mgo.v2/bson"
 
 	"github.com/banerwai/gather/gateway/command"
 	"github.com/banerwai/gather/gateway/query"

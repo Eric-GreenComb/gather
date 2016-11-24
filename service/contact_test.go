@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/banerwai/global/bean"
 	"github.com/banerwai/global/constant"
-	"labix.org/v2/mgo/bson"
+	"gopkg.in/mgo.v2/bson"
 	"strings"
 
 	"testing"
@@ -53,7 +53,7 @@ func TestContactService(t *testing.T) {
 	if _err != nil {
 		t.Errorf("GetContactBean error")
 	}
-	if !bson.IsObjectIdHex(_contact.Id.Hex()) {
+	if !bson.IsObjectIdHex(_contact.ID.Hex()) {
 		t.Errorf("GetContactBean error")
 	}
 	if len(_contact.ContactContent) == 0 {

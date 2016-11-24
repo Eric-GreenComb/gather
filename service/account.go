@@ -108,14 +108,14 @@ func (as *AccountService) GetAccountByUserID(userID string) (v string) {
 		return
 	}
 	defer _accountQueryService.Close()
-	v = _service.GetAccountByUserId(userID)
+	v = _service.GetAccountByUserID(userID)
 	return
 }
 
 // GetAccountBean get account bean by userID
 func (as *AccountService) GetAccountBean(userID string) (bean.Account, error) {
 	var _obj bean.Account
-	_json := self.GetAccountByUserId(userID)
+	_json := as.GetAccountByUserID(userID)
 	if len(_json) == 0 {
 		return _obj, errors.New("account :" + userID + " is null")
 	}
@@ -134,14 +134,14 @@ func (as *AccountService) GetBillingByID(ID string) (v string) {
 		return
 	}
 	defer _accountQueryService.Close()
-	v = _service.GetBillingById(id)
+	v = _service.GetBillingByID(ID)
 	return
 }
 
 // GetBillingBean get billing bean by ID
 func (as *AccountService) GetBillingBean(ID string) (bean.Billing, error) {
 	var _obj bean.Billing
-	_json := as.GetBillingById(ID)
+	_json := as.GetBillingByID(ID)
 	if len(_json) == 0 {
 		return _obj, errors.New("billing :" + ID + " is null")
 	}
@@ -160,7 +160,7 @@ func (as *AccountService) GetDealBillingByUserID(userID string, timestamp int64,
 		return
 	}
 	defer _accountQueryService.Close()
-	v = _service.GetDealBillingByUserId(userID, timestamp, pagesize)
+	v = _service.GetDealBillingByUserID(userID, timestamp, pagesize)
 	return
 }
 
@@ -168,7 +168,7 @@ func (as *AccountService) GetDealBillingByUserID(userID string, timestamp int64,
 func (as *AccountService) GetDealBillingBeans(userID string, timestamp int64, pagesize int64) ([]bean.Billing, error) {
 	var _objs []bean.Billing
 
-	_json := as.GetDealBillingByUserId(userID, timestamp, pagesize)
+	_json := as.GetDealBillingByUserID(userID, timestamp, pagesize)
 	if len(_json) == 0 {
 		return _objs, errors.New("billings :" + userID + "'s deal billings is null")
 	}
@@ -187,7 +187,7 @@ func (as *AccountService) GetBillingByUserID(userID string, timestamp int64, pag
 		return
 	}
 	defer _accountQueryService.Close()
-	v = _service.GetBillingByUserId(userID, timestamp, pagesize)
+	v = _service.GetBillingByUserID(userID, timestamp, pagesize)
 	return
 }
 
@@ -195,7 +195,7 @@ func (as *AccountService) GetBillingByUserID(userID string, timestamp int64, pag
 func (as *AccountService) GetBillingBeans(userID string, timestamp int64, pagesize int64) ([]bean.Billing, error) {
 	var _objs []bean.Billing
 
-	_json := as.GetBillingByUserId(userID, timestamp, pagesize)
+	_json := as.GetBillingByUserID(userID, timestamp, pagesize)
 	if len(_json) == 0 {
 		return _objs, errors.New("billings :" + userID + "'s billings is null")
 	}

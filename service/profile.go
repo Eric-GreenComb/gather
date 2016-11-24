@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/banerwai/global/bean"
 
 	"github.com/banerwai/gather/gateway/command"
@@ -193,10 +194,11 @@ func (ps *ProfileService) GetProfilesByCategoryBean(categoryID int64, timestamp 
 func (ps *ProfileService) GetProfilesBySubCategory(subcategoryID int64, timestamp int64, pagesize int64) (v string) {
 	_service, _err := _profileQueryService.Default()
 	if _err != nil {
-		return
+		return _err.Error()
 	}
 	defer _profileQueryService.Close()
 	v = _service.GetProfilesBySubCategory(subcategoryID, timestamp, pagesize)
+	fmt.Println(v)
 	return
 }
 
