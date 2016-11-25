@@ -34,71 +34,53 @@ func TestProfileAddProfile(t *testing.T) {
 		t.Errorf("AddProfile error")
 	}
 
-	// _mapUpdate := make(map[string]string)
-	// _mapUpdate["freelancer_name"] = "freelancer_name"
-	// _mapUpdate["job_title"] = "job_title"
-	// _mapUpdate["hour_rate"] = "1601234"
-	// _mapUpdate["portfolio_nums"] = "4"
+	_mapUpdate := make(map[string]string)
+	_mapUpdate["freelancer_name"] = "freelancer_name"
+	_mapUpdate["job_title"] = "job_title"
+	_mapUpdate["hour_rate"] = "1601234"
+	_mapUpdate["portfolio_nums"] = "4"
 
-	// v := _service.UpdateProfileBase(_profileID, _mapUpdate)
+	v := _service.UpdateProfileBase(_profileID, _mapUpdate)
 
-	// if v != "OK" {
-	// 	t.Errorf("UpdateProfileBase error")
-	// }
-
-	// _bean, _ := _service.GetProfileBean(_profileID)
-	// fmt.Println(_bean)
-
-	// if len(_bean.JobTitle) == 0 {
-	// 	t.Errorf("GetProfile error")
-	// }
-
-	_json := _service.GetProfilesBySubCategory(10101, time.Now().Unix(), banerwaiglobal.DefaultPageSize)
-	fmt.Println(_json)
-
-	if len(_json) != 0 {
-		t.Errorf(_json)
+	if v != "OK" {
+		t.Errorf("UpdateProfileBase error")
 	}
-	// var profiles []bean.Profile
-	// err := json.Unmarshal([]byte(_json), &profiles)
-	// if err != nil {
-	// 	t.Errorf("Unmarshal error")
-	// }
 
-	// if len(profiles) == 0 {
-	// 	t.Errorf("len error")
-	// }
+	_bean, _ := _service.GetProfileBean(_profileID)
+	fmt.Println(_bean)
 
-	// optionMap := make(map[string]int64)
+	if len(_bean.JobTitle) == 0 {
+		t.Errorf("GetProfile error")
+	}
 
-	// optionMap["serial_number"] = 10101
+}
 
-	// keyMmap := make(map[string]string)
-	// keyMmap["overview"] = "go"
+func TestProfileSearchProfile(t *testing.T) {
 
-	// _json := _service.SearchProfiles(optionMap, keyMmap, time.Now().Unix(), banerwaiglobal.DefaultPageSize)
-	// if len(_json) == 0 {
-	// 	t.Errorf(_json)
-	// }
+	var _service ProfileService
 
-	// var profiles []bean.Profile
-	// _err := json.Unmarshal([]byte(_json), &profiles)
-	// if _err != nil {
-	// 	t.Errorf(_err.Error())
-	// }
+	_beans, _err := _service.GetProfilesBySubCategoryBean(10101, time.Now().UnixNano(), banerwaiglobal.DefaultPageSize)
+	for _, _obj := range _beans {
+		fmt.Println(_obj.JobTitle)
+	}
 
-	// fmt.Println(len(profiles))
-	// if len(profiles) == 0 {
-	// 	t.Errorf("len is 0")
-	// }
+	if _err != nil {
+		t.Errorf(_err.Error())
+	}
 
-	// _beans, _err := _service.SearchProfilesBean(optionMap, keyMmap, time.Now().Unix(), banerwaiglobal.DefaultPageSize)
+	optionMap := make(map[string]int64)
+	optionMap["serial_number"] = 10101
 
-	// if _err != nil {
-	// 	t.Errorf(_err.Error())
-	// }
+	keyMmap := make(map[string]string)
+	keyMmap["overview"] = "go"
 
-	// if len(_beans) == 0 {
-	// 	t.Errorf("len is 0")
-	// }
+	_searchs, _err := _service.SearchProfilesBean(optionMap, keyMmap, time.Now().UnixNano(), banerwaiglobal.DefaultPageSize)
+
+	if _err != nil {
+		t.Errorf(_err.Error())
+	}
+
+	if len(_searchs) == 0 {
+		t.Errorf("len is 0")
+	}
 }
