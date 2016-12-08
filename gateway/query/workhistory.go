@@ -34,7 +34,7 @@ func (whs *WorkHistoryService) Default() (thriftservice.WorkHistoryService, erro
 // Init service get addr
 func (whs *WorkHistoryService) Init() error {
 
-	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosCommandWorkhistory)
+	_addrs, _err := etcd.GetServicesByName(constant.EtcdKeyMicrosQueryWorkhistory)
 
 	if _err != nil {
 		return _err

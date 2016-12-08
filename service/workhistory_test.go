@@ -12,7 +12,7 @@ func TestWorkHistoryBase(t *testing.T) {
 
 	var _defaultObjectID = "5707cb10ae6faa1d1071a189"
 	var _obj bean.WorkHistory
-	_obj.Id = bson.ObjectIdHex(_defaultObjectID)
+	_obj.ID = bson.ObjectIdHex(_defaultObjectID)
 	_obj.ProfileID = bson.ObjectIdHex(_defaultObjectID)
 
 	var lsWorkHistoryAndFeedbacks []bean.WorkHistoryAndFeedback
@@ -41,13 +41,13 @@ func TestWorkHistoryBase(t *testing.T) {
 
 	_obj.HistoryAndFeedbacks = lsWorkHistoryAndFeedbacks
 
-	v := _service.UpdateWorkHistoryBean(_defaultObjectId, _obj)
+	v := _service.UpdateWorkHistoryBean(_defaultObjectID, _obj)
 
 	if v != "OK" {
 		t.Errorf("UpdateWorkHistoryBean error")
 	}
 
-	_bean := _service.GetWorkHistoryBean(_defaultObjectId)
+	_bean := _service.GetWorkHistoryBean(_defaultObjectID)
 
 	if _bean.HistoryAndFeedbacks[0].WorkFeedbacks[0].WorkRate != 4 {
 		t.Errorf("GetWorkHistoryBean error")
