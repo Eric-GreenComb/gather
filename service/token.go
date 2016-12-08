@@ -48,7 +48,7 @@ func (ts *TokenService) DeleteToken(key string, ttype int64) (v bool) {
 // return -2 过期
 // return -3 db error
 // return 1 验证pass
-func (ts *TokenService) VerifyToken(token string, ttype int64, overhour float64) (v int64) {
+func (ts *TokenService) VerifyToken(token string, ttype int64, overhour int64) (v int64) {
 	_service, _err := _tokenQueryService.Default()
 	if _err != nil {
 		return
@@ -63,7 +63,7 @@ func (ts *TokenService) VerifyToken(token string, ttype int64, overhour float64)
  */
 
 // GetOverHours get overtime hours
-func (ts *TokenService) GetOverHours(ttype int64) float64 {
+func (ts *TokenService) GetOverHours(ttype int64) int64 {
 	switch ttype {
 
 	// 0 - 2.0

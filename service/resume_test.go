@@ -33,8 +33,8 @@ func TestResumeBase(t *testing.T) {
 	_obj.ToolandArchs = lsToolandArchs
 
 	v := _service.AddResumeBean(_obj)
-	if v != "OK" {
-		t.Errorf("AddResume error")
+	if !bson.IsObjectIdHex(v) {
+		t.Errorf(v)
 	}
 
 	var _tool3 bean.ToolandArch

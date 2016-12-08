@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/banerwai/global/bean"
 	"testing"
 )
@@ -12,6 +13,7 @@ func TestTokenADV(t *testing.T) {
 
 	_v := _service.VerifyToken("ministor@126.com", int64(bean.TokenActiveEmail), _service.GetOverHours(bean.TokenActiveEmail))
 	if _v != 1 {
+		fmt.Println(_v)
 		t.Errorf("VerifyToken error")
 	}
 

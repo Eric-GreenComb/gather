@@ -216,7 +216,7 @@ func (rs *ResumeService) GetResume(userID string) (v string) {
 
 // GetResumeBean get resume bean by userID
 func (rs *ResumeService) GetResumeBean(userID string) (v bean.Resume) {
-	_resume := self.GetResume(userID)
+	_resume := rs.GetResume(userID)
 	bson.Unmarshal([]byte(_resume), &v)
 	return
 }
