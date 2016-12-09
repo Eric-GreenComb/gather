@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-// POST /auth/login?sign=xxx&timestamp=xxx HTTP/1.1
+// Login POST /auth/login?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // email=email&pwd=pwd
 func Login(c *gin.Context) {

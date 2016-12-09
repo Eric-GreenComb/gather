@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-// GET /category/:path?sign=xxx&timestamp=xxx
+// LoadCategory GET /category/:path?sign=xxx&timestamp=xxx
 func LoadCategory(c *gin.Context) {
 	_path := c.Params.ByName("path")
 
@@ -31,7 +31,7 @@ func LoadCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"error": true})
 }
 
-// GET /category?sign=xxx&timestamp=xxx
+// GetCategoriesBean GET /category?sign=xxx&timestamp=xxx
 func GetCategoriesBean(c *gin.Context) {
 
 	if flagparse.BanerwaiAPICheckSign {
@@ -50,7 +50,7 @@ func GetCategoriesBean(c *gin.Context) {
 	c.JSON(http.StatusOK, _cats)
 }
 
-// GET /category/:serialnumber?sign=xxx&timestamp=xxx
+// GetSubCategoriesBean GET /category/:serialnumber?sign=xxx&timestamp=xxx
 func GetSubCategoriesBean(c *gin.Context) {
 	_serialnumber := c.Params.ByName("sn")
 	if len(_serialnumber) == 0 {

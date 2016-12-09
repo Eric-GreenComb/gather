@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetupV1CategoryRoute category route
 func SetupV1CategoryRoute(g *gin.Engine) {
 	r := g.Group("/api/v1")
 	{

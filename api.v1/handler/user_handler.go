@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-// GET /user/:email?sign=xxx&timestamp=xxx
+// GetUserByEmail GET /user/:email?sign=xxx&timestamp=xxx
 func GetUserByEmail(c *gin.Context) {
 	_email := c.Params.ByName("email")
 
@@ -33,7 +33,7 @@ func GetUserByEmail(c *gin.Context) {
 	c.JSON(http.StatusOK, _user)
 }
 
-// GET /user/:id?sign=xxx&timestamp=xxx
+// GetUserByID GET /user/:id?sign=xxx&timestamp=xxx
 func GetUserByID(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
@@ -56,7 +56,7 @@ func GetUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, _user)
 }
 
-// POST /user/add?sign=xxx&timestamp=xxx HTTP/1.1
+// CreateBeanUser POST /user/add?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // email=email&pwd=pwd&invited=
 func CreateBeanUser(c *gin.Context) {
@@ -87,7 +87,7 @@ func CreateBeanUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST user/reset?sign=xxx&timestamp=xxx HTTP/1.1
+// ResetPwd POST user/reset?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // email=email&newpwd=pwd
 func ResetPwd(c *gin.Context) {
@@ -109,7 +109,7 @@ func ResetPwd(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST user/active?sign=xxx&timestamp=xxx HTTP/1.1
+// ActiveUser POST user/active?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // email=email
 func ActiveUser(c *gin.Context) {

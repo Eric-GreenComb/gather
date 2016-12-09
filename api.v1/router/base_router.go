@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetupBaseRoute base route
 func SetupBaseRoute(g *gin.Engine) {
 	r := g.Group("/")
 	{
@@ -13,6 +14,7 @@ func SetupBaseRoute(g *gin.Engine) {
 	}
 }
 
+// SetupV1BussnessRoute bussness route
 func SetupV1BussnessRoute(g *gin.Engine) {
 	r := g.Group("/api/v1")
 	{

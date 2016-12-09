@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-// GET /account/:uid
+// GetAccountBean GET /account/:uid
 func GetAccountBean(c *gin.Context) {
 	_uid := c.Params.ByName("uid")
 
@@ -25,7 +25,7 @@ func GetAccountBean(c *gin.Context) {
 	c.JSON(http.StatusOK, _obj)
 }
 
-// GET /billing/:id
+// GetBillingBean GET /billing/:id
 func GetBillingBean(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
@@ -38,19 +38,19 @@ func GetBillingBean(c *gin.Context) {
 	c.JSON(http.StatusOK, _obj)
 }
 
-// GET /billings/deal?uid=uid&stamp=stamp&pagesize=10
+// GetDealBillingBeans GET /billings/deal?uid=uid&stamp=stamp&pagesize=10
 // stamp : page timestamp,for mongo page;
 // timestamp : api timestamp
 func GetDealBillingBeans(c *gin.Context) {
 	_uid := c.Query("uid")
-	_stamp_str := c.Query("stamp")
-	_pagesize_str := c.Query("pagesize")
+	_stampStr := c.Query("stamp")
+	_pagesizeStr := c.Query("pagesize")
 
-	_stamp, _err := strconv.ParseInt(_stamp_str, 10, 64)
+	_stamp, _err := strconv.ParseInt(_stampStr, 10, 64)
 	if _err != nil {
 		_stamp = time.Now().Unix()
 	}
-	_pagesize, _err := strconv.ParseInt(_pagesize_str, 10, 64)
+	_pagesize, _err := strconv.ParseInt(_pagesizeStr, 10, 64)
 	if _err != nil {
 		_pagesize = 10
 	}
@@ -64,19 +64,19 @@ func GetDealBillingBeans(c *gin.Context) {
 	c.JSON(http.StatusOK, _objs)
 }
 
-// GET /billings/all?uid=uid&stamp=stamp&pagesize=10
+// GetBillingBeans GET /billings/all?uid=uid&stamp=stamp&pagesize=10
 // stamp : page timestamp,for mongo page;
 // timestamp : api timestamp
 func GetBillingBeans(c *gin.Context) {
 	_uid := c.Query("uid")
-	_stamp_str := c.Query("stamp")
-	_pagesize_str := c.Query("pagesize")
+	_stampStr := c.Query("stamp")
+	_pagesizeStr := c.Query("pagesize")
 
-	_stamp, _err := strconv.ParseInt(_stamp_str, 10, 64)
+	_stamp, _err := strconv.ParseInt(_stampStr, 10, 64)
 	if _err != nil {
 		_stamp = time.Now().Unix()
 	}
-	_pagesize, _err := strconv.ParseInt(_pagesize_str, 10, 64)
+	_pagesize, _err := strconv.ParseInt(_pagesizeStr, 10, 64)
 	if _err != nil {
 		_pagesize = 10
 	}
@@ -126,7 +126,7 @@ func CreateAccountBean(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST /account/gen/:uid?sign=xxx&timestamp=xxx HTTP/1.1
+// GenAccount POST /account/gen/:uid?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 func GenAccount(c *gin.Context) {
 	_uid := c.Params.ByName("uid")
@@ -146,7 +146,7 @@ func GenAccount(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST billing/add?sign=xxx&timestamp=xxx HTTP/1.1
+// CreateBillingBean POST billing/add?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // user_id=user_id&email=email
 func CreateBillingBean(c *gin.Context) {
@@ -170,7 +170,7 @@ func CreateBillingBean(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST billing/deal/:bid?sign=xxx&timestamp=xxx HTTP/1.1
+// DealBilling POST billing/deal/:bid?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 func DealBilling(c *gin.Context) {
 	_bid := c.Params.ByName("bid")
@@ -189,7 +189,7 @@ func DealBilling(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST billing/cancel/:bid?sign=xxx&timestamp=xxx HTTP/1.1
+// CancelBilling POST billing/cancel/:bid?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 func CancelBilling(c *gin.Context) {
 	_bid := c.Params.ByName("bid")

@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-// GET /contact/tpl/:tplname?sign=xxx&timestamp=xxx
+// GetContactTpl GET /contact/tpl/:tplname?sign=xxx&timestamp=xxx
 func GetContactTpl(c *gin.Context) {
 	_tplname := c.Params.ByName("tplname")
 
@@ -29,7 +29,7 @@ func GetContactTpl(c *gin.Context) {
 	c.JSON(http.StatusOK, _tpl)
 }
 
-// GET /contact/:id?sign=xxx&timestamp=xxx
+// GetContactBean GET /contact/:id?sign=xxx&timestamp=xxx
 func GetContactBean(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
@@ -52,7 +52,7 @@ func GetContactBean(c *gin.Context) {
 	c.JSON(http.StatusOK, _obj)
 }
 
-// GET /contact/:id/status?sign=xxx&timestamp=xxx
+// GetContactSignStatusEnum GET /contact/:id/status?sign=xxx&timestamp=xxx
 func GetContactSignStatusEnum(c *gin.Context) {
 	_id := c.Params.ByName("id")
 
@@ -72,7 +72,7 @@ func GetContactSignStatusEnum(c *gin.Context) {
 	c.JSON(http.StatusOK, _obj)
 }
 
-// GET /contact/client/:id?sign=xxx&timestamp=xxx
+// GetClientContactBeans GET /contact/client/:id?sign=xxx&timestamp=xxx
 func GetClientContactBeans(c *gin.Context) {
 	_email := c.Params.ByName("email")
 
@@ -95,7 +95,7 @@ func GetClientContactBeans(c *gin.Context) {
 	c.JSON(http.StatusOK, _objs)
 }
 
-// GET /contact/freelancer/:id?sign=xxx&timestamp=xxx
+// GetFreelancerContactBeans GET /contact/freelancer/:id?sign=xxx&timestamp=xxx
 func GetFreelancerContactBeans(c *gin.Context) {
 	_email := c.Params.ByName("email")
 
@@ -118,20 +118,20 @@ func GetFreelancerContactBeans(c *gin.Context) {
 	c.JSON(http.StatusOK, _objs)
 }
 
-// POST contact/add?sign=xxx&timestamp=xxx HTTP/1.1
+// CreateContactBean POST contact/add?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // client_email=client_email&freelancer_email=freelancer_email&contact_tpl=contact_tpl&tpl_param=tpl_param
 func CreateContactBean(c *gin.Context) {
 
-	_client_email := c.PostForm("client_email")
-	_freelancer_email := c.PostForm("freelancer_email")
-	_contact_tpl := c.PostForm("contact_tpl")
-	_tpl_param := c.PostForm("tpl_param")
+	_clientEmail := c.PostForm("client_email")
+	_freelancerEmail := c.PostForm("freelancer_email")
+	_contactTpl := c.PostForm("contact_tpl")
+	_tplParam := c.PostForm("tpl_param")
 
 	if flagparse.BanerwaiAPICheckSign {
 		_sign := c.Query("sign")
 		_timestamp := c.Query("timestamp")
-		if !ApiV1CheckSign(_sign, _client_email, _freelancer_email, _contact_tpl, _tpl_param, _timestamp) {
+		if !ApiV1CheckSign(_sign, _clientEmail, _freelancerEmail, _contactTpl, _tplParam, _timestamp) {
 			c.JSON(http.StatusOK, gin.H{"error": "sign error"})
 			return
 		}
@@ -139,17 +139,17 @@ func CreateContactBean(c *gin.Context) {
 
 	var _obj bean.Contact
 	_obj.ID = bson.NewObjectId()
-	_obj.ClientEmail = _client_email
-	_obj.FreeLancerEmail = _freelancer_email
-	_obj.ContactTpl = _contact_tpl
-	_obj.TplParam = _tpl_param
+	_obj.ClientEmail = _clientEmail
+	_obj.FreeLancerEmail = _freelancerEmail
+	_obj.ContactTpl = _contactTpl
+	_obj.TplParam = _tplParam
 
 	var _service service.ContactService
 	_ret := _service.CreateContactBean(_obj)
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST contact/update?sign=xxx&timestamp=xxx HTTP/1.1
+// UpdateContact POST contact/update?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // id=id&param=param
 func UpdateContact(c *gin.Context) {
@@ -167,13 +167,13 @@ func UpdateContact(c *gin.Context) {
 	}
 
 	var _service service.ContactService
-	_mmap_update := make(map[string]string)
-	_mmap_update["tpl_param"] = _param
-	_ret := _service.UpdateContact(_id, _mmap_update)
+	_mmapUpdate := make(map[string]string)
+	_mmapUpdate["tpl_param"] = _param
+	_ret := _service.UpdateContact(_id, _mmapUpdate)
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST contact/sign/client?sign=xxx&timestamp=xxx HTTP/1.1
+// ClientSignContact POST contact/sign/client?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // id=id&status=status
 func ClientSignContact(c *gin.Context) {
@@ -199,7 +199,7 @@ func ClientSignContact(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST contact/sign/freelance?sign=xxx&timestamp=xxx HTTP/1.1
+// FreelancerSignContact POST contact/sign/freelance?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // id=id&status=status
 func FreelancerSignContact(c *gin.Context) {
@@ -225,7 +225,7 @@ func FreelancerSignContact(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"success": _ret})
 }
 
-// POST contact/deal?sign=xxx&timestamp=xxx HTTP/1.1
+// DealContact POST contact/deal?sign=xxx&timestamp=xxx HTTP/1.1
 // Content-Type: application/x-www-form-urlencoded
 // id=id&status=true
 func DealContact(c *gin.Context) {
